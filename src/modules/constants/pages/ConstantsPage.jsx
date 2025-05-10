@@ -4,7 +4,7 @@ import HasAccess from "../../../services/auth/HasAccess.jsx";
 import config from "../../../config.js";
 
 const ConstantsPage = () => {
-    return <HasAccess access={[config.ROLES.ROLE_SUPER_ADMIN]}><ConstantsContainer /></HasAccess>
+    return <ConstantsContainer />
 };
 
 export default ConstantsPage;

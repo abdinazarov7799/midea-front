@@ -18,18 +18,18 @@ import NotFoundPage from  "../modules/auth/pages/NotFoundPage";
 
 // PAGES
 import OverlayLoader from "../components/OverlayLoader.jsx";
-import UsersPage from "../modules/users/pages/UsersPage.jsx";
-import AdminsPage from "../modules/admins/pages/AdminsPage.jsx";
-import PharmaciesPage from "../modules/pharmacies/pages/PharmaciesPage.jsx";
 import TranslationPage from "../modules/translations/pages/TranslationPage.jsx";
 import ConstantsPage from "../modules/constants/pages/ConstantsPage.jsx";
-import RegionsPage from "../modules/regions/pages/RegionsPage.jsx";
-import DistrictsPage from "../modules/districts/pages/DistrictsPage.jsx";
-import MedicinesPage from "../modules/medicines/pages/MedicinesPage.jsx";
-import VisitsPage from "../modules/visits/pages/VisitsPage.jsx";
-import MedInstitutionsPage from "../modules/med-institutions/pages/MedInstitutionsPage.jsx";
-import StocksPage from "../modules/stocks/pages/StocksPage.jsx";
-import DoctorsPage from "../modules/doctors/pages/DoctorsPage.jsx";
+import WarehousesPage from "../modules/warehouses/WarehousesPage.jsx";
+import WarehouseWorkersContainer from "../modules/warehouse-workers/WarehouseWorkersContainer.jsx";
+import WarehouseSectionsPage from "../modules/warehouse-sections/WarehouseSectionsPage.jsx";
+import TeamLeadsPage from "../modules/team-leads/TeamLeadsPage.jsx";
+import CategoriesPage from "../modules/categories/CategoriesPage.jsx";
+import ProductsPage from "../modules/products/ProductsPage.jsx";
+import ManagersPage from "../modules/managers/ManagersPage.jsx";
+import DealersPage from "../modules/dealers/DealersPage.jsx";
+import CouriersPage from "../modules/couriers/CouriersPage.jsx";
+import ClientsPage from "../modules/clients/ClientsPage.jsx";
 // PAGES
 
 
@@ -40,20 +40,20 @@ const Router = () => {
         <IsAuth>
           <Routes>
             <Route path={"/"} element={<DashboardLayout />}>
-              <Route path={"/regions"} element={<RegionsPage />}/>
-              <Route path={"/districts"} element={<DistrictsPage />}/>
-              <Route path={"/medicines"} element={<MedicinesPage />}/>
-              <Route path={"/visits"} element={<VisitsPage />}/>
-              <Route path={"/stocks"} element={<StocksPage />}/>
-              <Route path={"/doctors"} element={<DoctorsPage />}/>
-              <Route path={"/users"} element={<UsersPage />}/>
-              <Route path={"/med-institutions"} element={<MedInstitutionsPage />}/>
-              <Route path={"/admins"} element={<AdminsPage />}/>
-              <Route path={"/pharmacies"} element={<PharmaciesPage />}/>
+              <Route path={"/warehouses"} element={<WarehousesPage />}/>
+              <Route path={"/warehouse-workers"} element={<WarehouseWorkersContainer />}/>
+              <Route path={"/warehouse-sections"} element={<WarehouseSectionsPage />}/>
+              <Route path={"/team-leads"} element={<TeamLeadsPage />}/>
+              <Route path={"/categories"} element={<CategoriesPage />}/>
+              <Route path={"/products"} element={<ProductsPage />}/>
+              <Route path={"/managers"} element={<ManagersPage />}/>
+              <Route path={"/dealers"} element={<DealersPage />}/>
+              <Route path={"/couriers"} element={<CouriersPage />}/>
+              <Route path={"/clients"} element={<ClientsPage />}/>
               <Route path={"/translations"} element={<TranslationPage />}/>
               <Route path={"/constants"} element={<ConstantsPage />}/>
-              <Route path={"auth/*"} element={<Navigate to={"/users"} replace />}/>
-              <Route path={"/"} element={<Navigate to={"/users"} replace />}/>
+              <Route path={"auth/*"} element={<Navigate to={"/warehouses"} replace />}/>
+              <Route path={"/"} element={<Navigate to={"/warehouses"} replace />}/>
               <Route path={"*"} element={<NotFoundPage />} />
             </Route>
           </Routes>
