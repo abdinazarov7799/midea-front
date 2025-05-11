@@ -59,11 +59,6 @@ const ClientsContainer = () => {
             key: "phone"
         },
         {
-            title: t("Type"),
-            dataIndex: "type",
-            key: "type"
-        },
-        {
             title: t("Balance"),
             dataIndex: "balance",
             key: "balance"
