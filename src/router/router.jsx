@@ -40,12 +40,12 @@ const Router = () => {
         <IsAuth>
           <Routes>
             <Route path={"/"} element={<DashboardLayout />}>
+              <Route path={"/categories"} element={<CategoriesPage />}/>
+              <Route path={"/products"} element={<ProductsPage />}/>
               <Route path={"/warehouses"} element={<WarehousesPage />}/>
               <Route path={"/warehouse-workers"} element={<WarehouseWorkersContainer />}/>
               <Route path={"/warehouse-sections"} element={<WarehouseSectionsPage />}/>
               <Route path={"/team-leads"} element={<TeamLeadsPage />}/>
-              <Route path={"/categories"} element={<CategoriesPage />}/>
-              <Route path={"/products"} element={<ProductsPage />}/>
               <Route path={"/managers"} element={<ManagersPage />}/>
               <Route path={"/dealers"} element={<DealersPage />}/>
               <Route path={"/couriers"} element={<CouriersPage />}/>

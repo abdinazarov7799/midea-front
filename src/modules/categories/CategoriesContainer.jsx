@@ -8,7 +8,7 @@ import {KEYS} from "../../constants/key.js";
 import {URLS} from "../../constants/url.js";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
-import CreateEditRegion from "./components/CreateEditCategories.jsx";
+import CreateEditCategories from "./components/CreateEditCategories.jsx";
 
 const CategoriesContainer = () => {
     const {t} = useTranslation();
@@ -46,16 +46,22 @@ const CategoriesContainer = () => {
             title: t("ID"),
             dataIndex: "id",
             key: "id",
+            width: 250,
         },
         {
-            title: t("Name uz"),
-            dataIndex: "nameUz",
-            key: "nameUz"
+            title: t("Name"),
+            dataIndex: "name",
+            key: "name"
         },
         {
-            title: t("Name ru"),
-            dataIndex: "nameRu",
-            key: "nameRu"
+            title: t("Code"),
+            dataIndex: "code",
+            key: "code"
+        },
+        {
+            title: t("Dscription"),
+            dataIndex: "description",
+            key: "description"
         },
         {
             title: t("Edit / Delete"),
@@ -121,7 +127,7 @@ const CategoriesContainer = () => {
                 onCancel={() => setIsCreateModalOpen(false)}
                 footer={null}
             >
-                <CreateEditRegion setIsModalOpen={setIsCreateModalOpen}/>
+                <CreateEditCategories setIsModalOpen={setIsCreateModalOpen}/>
             </Modal>
             <Modal
                 title={t("Edit")}
@@ -129,7 +135,7 @@ const CategoriesContainer = () => {
                 onCancel={() => setIsEditModalOpen(false)}
                 footer={null}
             >
-                <CreateEditRegion
+                <CreateEditCategories
                     selected={selected}
                     setIsModalOpen={setIsEditModalOpen}
                 />

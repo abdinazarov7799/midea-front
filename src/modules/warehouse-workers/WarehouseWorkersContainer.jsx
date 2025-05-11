@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Button, Input, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
+import {Button, Checkbox, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -8,7 +8,7 @@ import {KEYS} from "../../constants/key.js";
 import {URLS} from "../../constants/url.js";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
-import CreateEditRegion from "./components/CreateEditWarehouseWorkers.jsx";
+import CreateEditWarehouseWorkers from "./components/CreateEditWarehouseWorkers.jsx";
 
 const WarehouseWorkersContainer = () => {
     const {t} = useTranslation();
@@ -46,16 +46,42 @@ const WarehouseWorkersContainer = () => {
             title: t("ID"),
             dataIndex: "id",
             key: "id",
+            width: 250
         },
         {
-            title: t("Name uz"),
-            dataIndex: "nameUz",
-            key: "nameUz"
+            title: t("User ID"),
+            dataIndex: "userId",
+            key: "userId",
+            width: 250
         },
         {
-            title: t("Name ru"),
-            dataIndex: "nameRu",
-            key: "nameRu"
+            title: t("Username"),
+            dataIndex: "username",
+            key: "username"
+        },
+        {
+            title: t("Phone"),
+            dataIndex: "phone",
+            key: "phone"
+        },
+        {
+            title: t("Full name"),
+            dataIndex: "fullName",
+            key: "fullName"
+        },
+        {
+            title: t("Warehouse"),
+            dataIndex: "warehouse",
+            key: "warehouse",
+            render: (text, record) => get(text,'name')
+        },
+        {
+            title: t("is active"),
+            dataIndex: "active",
+            key: "active",
+            render: (props,data,index) => (
+                <Checkbox checked={get(data,'active')} />
+            )
         },
         {
             title: t("Edit / Delete"),
@@ -121,7 +147,7 @@ const WarehouseWorkersContainer = () => {
                 onCancel={() => setIsCreateModalOpen(false)}
                 footer={null}
             >
-                <CreateEditRegion setIsModalOpen={setIsCreateModalOpen}/>
+                <CreateEditWarehouseWorkers setIsModalOpen={setIsCreateModalOpen}/>
             </Modal>
             <Modal
                 title={t("Edit")}
@@ -129,7 +155,7 @@ const WarehouseWorkersContainer = () => {
                 onCancel={() => setIsEditModalOpen(false)}
                 footer={null}
             >
-                <CreateEditRegion
+                <CreateEditWarehouseWorkers
                     selected={selected}
                     setIsModalOpen={setIsEditModalOpen}
                 />

@@ -1,16 +1,16 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from "react-i18next";
 import usePostQuery from "../../../hooks/api/usePostQuery.js";
 import {KEYS} from "../../../constants/key.js";
 import {URLS} from "../../../constants/url.js";
-import {Button, Form, Input, Select} from "antd";
-import useGetAllQuery from "../../../hooks/api/useGetAllQuery.js";
+import {Button, Checkbox, Form, Input} from "antd";
 import {get} from "lodash";
 import usePutQuery from "../../../hooks/api/usePatchQuery.js";
 
-const CreateEditCouriers = ({itemData,setIsModalOpen}) => {
+const CreateEditCouriers = ({selected,setIsModalOpen}) => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
+    const [isActive, setIsActive] = useState(get(selected,'active',true));
 
     const { mutate, isLoading } = usePostQuery({
         listKeyId: KEYS.couriers_list,
@@ -21,15 +21,22 @@ const CreateEditCouriers = ({itemData,setIsModalOpen}) => {
 
     useEffect(() => {
         form.setFieldsValue({
-            nameUz: get(itemData,'nameUz'),
-            nameRu: get(itemData,'nameRu'),
+            username: get(selected,'username'),
+            password: get(selected,'password'),
+            phone: get(selected,'phone'),
+            fullName: get(selected,'fullName'),
         });
-    }, [itemData]);
+        setIsActive(get(selected,'active',true));
+    }, [selected]);
 
     const onFinish = (values) => {
-        if (itemData){
+        const formData = {
+            ...values,
+            active: isActive,
+        }
+        if (selected){
             mutateEdit(
-                { url: `${URLS.couriers_edit}/${get(itemData,'id')}`, attributes: values },
+                { url: `${URLS.couriers_edit}/${get(selected,'id')}`, attributes: formData },
                 {
                     onSuccess: () => {
                         setIsModalOpen(false);
@@ -38,7 +45,7 @@ const CreateEditCouriers = ({itemData,setIsModalOpen}) => {
             );
         }else {
             mutate(
-                { url: URLS.couriers_add, attributes: values },
+                { url: URLS.couriers_add, attributes: formData },
                 {
                     onSuccess: () => {
                         setIsModalOpen(false);
@@ -57,24 +64,47 @@ const CreateEditCouriers = ({itemData,setIsModalOpen}) => {
                 form={form}
             >
                 <Form.Item
-                    label={t("Name uz")}
-                    name="nameUz"
+                    label={t("Username")}
+                    name="username"
                     rules={[{required: true,}]}
                 >
                     <Input />
                 </Form.Item>
 
                 <Form.Item
-                    label={t("Name ru")}
-                    name="nameRu"
+                    label={t("Password")}
+                    name="password"
                     rules={[{required: true,}]}
                 >
                     <Input />
                 </Form.Item>
 
+                <Form.Item
+                    label={t("Phone")}
+                    name="phone"
+                    rules={[{required: true,}]}
+                >
+                    <Input />
+                </Form.Item>
+
+                <Form.Item
+                    label={t("Full name")}
+                    name="fullName"
+                    rules={[{required: true,}]}
+                >
+                    <Input />
+                </Form.Item>
+
+                <Form.Item
+                    name="active"
+                    valuePropName="active"
+                >
+                    <Checkbox checked={isActive} onChange={(e) => setIsActive(e.target.checked)}>{t("is active")} ?</Checkbox>
+                </Form.Item>
+
                 <Form.Item>
                     <Button block type="primary" htmlType="submit" loading={isLoading || isLoadingEdit}>
-                        {itemData ? t("Edit") : t("Create")}
+                        {selected ? t("Edit") : t("Create")}
                     </Button>
                 </Form.Item>
             </Form>

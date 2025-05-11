@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Button, Input, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
+import {Button, Checkbox, Input, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -8,7 +8,7 @@ import {KEYS} from "../../constants/key.js";
 import {URLS} from "../../constants/url.js";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
-import CreateEditRegion from "./components/CreateEditWarehouseSections.jsx";
+import CreateEditWarehouseSections from "./components/CreateEditWarehouseSections.jsx";
 
 const WarehouseSectionsContainer = () => {
     const {t} = useTranslation();
@@ -46,16 +46,42 @@ const WarehouseSectionsContainer = () => {
             title: t("ID"),
             dataIndex: "id",
             key: "id",
+            width: 250
         },
         {
-            title: t("Name uz"),
-            dataIndex: "nameUz",
-            key: "nameUz"
+            title: t("Name"),
+            dataIndex: "name",
+            key: "name"
         },
         {
-            title: t("Name ru"),
-            dataIndex: "nameRu",
-            key: "nameRu"
+            title: t("Warehouse"),
+            dataIndex: "warehouse",
+            key: "warehouse",
+            render: (text, record) => get(text,'name')
+        },
+        {
+            title: t("is service section"),
+            dataIndex: "serviceSection",
+            key: "serviceSection",
+            render: (props,data,index) => (
+                <Checkbox checked={get(data,'serviceSection')} />
+            )
+        },
+        {
+            title: t("is trash section"),
+            dataIndex: "trashSection",
+            key: "trashSection",
+            render: (props,data,index) => (
+                <Checkbox checked={get(data,'trashSection')} />
+            )
+        },
+        {
+            title: t("is active"),
+            dataIndex: "active",
+            key: "active",
+            render: (props,data,index) => (
+                <Checkbox checked={get(data,'active')} />
+            )
         },
         {
             title: t("Edit / Delete"),
@@ -121,7 +147,7 @@ const WarehouseSectionsContainer = () => {
                 onCancel={() => setIsCreateModalOpen(false)}
                 footer={null}
             >
-                <CreateEditRegion setIsModalOpen={setIsCreateModalOpen}/>
+                <CreateEditWarehouseSections setIsModalOpen={setIsCreateModalOpen}/>
             </Modal>
             <Modal
                 title={t("Edit")}
@@ -129,7 +155,7 @@ const WarehouseSectionsContainer = () => {
                 onCancel={() => setIsEditModalOpen(false)}
                 footer={null}
             >
-                <CreateEditRegion
+                <CreateEditWarehouseSections
                     selected={selected}
                     setIsModalOpen={setIsEditModalOpen}
                 />

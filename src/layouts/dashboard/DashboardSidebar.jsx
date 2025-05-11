@@ -15,6 +15,34 @@ const DashboardSidebar = () => {
 
     const items = [
         {
+            label: t("Categories"),
+            key: "/categories",
+        },
+        {
+            label: t("Products"),
+            key: "/products",
+        },
+        {
+            label: t("Dealers"),
+            key: "/dealers",
+        },
+        {
+            label: t("Team leads"),
+            key: "/team-leads",
+        },
+        {
+            label: t("Managers"),
+            key: "/managers",
+        },
+        {
+            label: t("Couriers"),
+            key: "/couriers",
+        },
+        {
+            label: t("Clients"),
+            key: "/clients",
+        },
+        {
             label: t("Warehouses"),
             key: "/warehouses",
         },
@@ -27,42 +55,12 @@ const DashboardSidebar = () => {
             key: "/warehouse-sections",
         },
         {
-            label: t("Team leads"),
-            key: "/team-leads",
-        },
-        {
-            label: t("Categories"),
-            key: "/categories",
-        },
-        {
-            label: t("Products"),
-            key: "/products",
-        },
-        {
-            label: t("Managers"),
-            key: "/managers",
-        },
-        {
-            label: t("Dealers"),
-            key: "/dealers",
-        },
-        {
-            label: t("Couriers"),
-            key: "/couriers",
-        },
-        {
-            label: t("Clients"),
-            key: "/clients",
-        },
-        {
             label: t("Constants"),
             key: "/constants",
-            access: [config.ROLES.ROLE_SUPER_ADMIN],
         },
         {
             label: t("Translations"),
             key: "/translations",
-            access: [config.ROLES.ROLE_SUPER_ADMIN],
         },
     ]
 

@@ -3,12 +3,12 @@ import {useTranslation} from "react-i18next";
 import usePostQuery from "../../../hooks/api/usePostQuery.js";
 import {KEYS} from "../../../constants/key.js";
 import {URLS} from "../../../constants/url.js";
-import {Button, Form, Input, Select} from "antd";
-import useGetAllQuery from "../../../hooks/api/useGetAllQuery.js";
+import {Button, Form, Input} from "antd";
 import {get} from "lodash";
 import usePutQuery from "../../../hooks/api/usePatchQuery.js";
+import TextArea from "antd/es/input/TextArea";
 
-const CreateEditCategories = ({itemData,setIsModalOpen}) => {
+const CreateEditCategories = ({selected,setIsModalOpen}) => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
 
@@ -21,15 +21,16 @@ const CreateEditCategories = ({itemData,setIsModalOpen}) => {
 
     useEffect(() => {
         form.setFieldsValue({
-            nameUz: get(itemData,'nameUz'),
-            nameRu: get(itemData,'nameRu'),
+            name: get(selected,'name'),
+            code: get(selected,'code'),
+            description: get(selected,'description'),
         });
-    }, [itemData]);
+    }, [selected]);
 
     const onFinish = (values) => {
-        if (itemData){
+        if (selected){
             mutateEdit(
-                { url: `${URLS.categories_edit}/${get(itemData,'id')}`, attributes: values },
+                { url: `${URLS.categories_edit}/${get(selected,'id')}`, attributes: values },
                 {
                     onSuccess: () => {
                         setIsModalOpen(false);
@@ -57,24 +58,32 @@ const CreateEditCategories = ({itemData,setIsModalOpen}) => {
                 form={form}
             >
                 <Form.Item
-                    label={t("Name uz")}
-                    name="nameUz"
+                    label={t("Name")}
+                    name="name"
                     rules={[{required: true,}]}
                 >
                     <Input />
                 </Form.Item>
 
                 <Form.Item
-                    label={t("Name ru")}
-                    name="nameRu"
+                    label={t("Code")}
+                    name="code"
                     rules={[{required: true,}]}
                 >
                     <Input />
                 </Form.Item>
 
+                <Form.Item
+                    label={t("Description")}
+                    name="description"
+                    rules={[{required: true,}]}
+                >
+                    <TextArea />
+                </Form.Item>
+
                 <Form.Item>
                     <Button block type="primary" htmlType="submit" loading={isLoading || isLoadingEdit}>
-                        {itemData ? t("Edit") : t("Create")}
+                        {selected ? t("Edit") : t("Create")}
                     </Button>
                 </Form.Item>
             </Form>

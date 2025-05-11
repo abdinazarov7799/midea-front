@@ -1,16 +1,17 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from "react-i18next";
 import usePostQuery from "../../../hooks/api/usePostQuery.js";
 import {KEYS} from "../../../constants/key.js";
 import {URLS} from "../../../constants/url.js";
-import {Button, Form, Input, Select} from "antd";
+import {Button, Checkbox, Form, Input, Select} from "antd";
 import useGetAllQuery from "../../../hooks/api/useGetAllQuery.js";
 import {get} from "lodash";
 import usePutQuery from "../../../hooks/api/usePatchQuery.js";
 
-const CreateEditWarehouses = ({itemData,setIsModalOpen}) => {
+const CreateEditWarehouses = ({selected,setIsModalOpen}) => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
+    const [active, setActive] = useState(get(selected,'active',true));
 
     const { mutate, isLoading } = usePostQuery({
         listKeyId: KEYS.warehouses_list,
@@ -19,17 +20,32 @@ const CreateEditWarehouses = ({itemData,setIsModalOpen}) => {
         listKeyId: KEYS.warehouses_list,
     });
 
+    const { data:dealers,isLoading:isLoadingDealers } = useGetAllQuery({
+        key: KEYS.dealers_list,
+        url: URLS.dealers_list,
+        params: {
+            params: {
+                size: 1000
+            }
+        }
+    })
+
     useEffect(() => {
         form.setFieldsValue({
-            nameUz: get(itemData,'nameUz'),
-            nameRu: get(itemData,'nameRu'),
+            name: get(selected,'name'),
+            dealerIds: get(selected,'dealers')?.map(dealer=> get(dealer,'id')),
         });
-    }, [itemData]);
+        setActive(get(selected,'active',true));
+    }, [selected]);
 
     const onFinish = (values) => {
-        if (itemData){
+        const formData = {
+            ...values,
+            active,
+        }
+        if (selected){
             mutateEdit(
-                { url: `${URLS.warehouses_edit}/${get(itemData,'id')}`, attributes: values },
+                { url: `${URLS.warehouses_edit}/${get(selected,'id')}`, attributes: formData },
                 {
                     onSuccess: () => {
                         setIsModalOpen(false);
@@ -38,7 +54,7 @@ const CreateEditWarehouses = ({itemData,setIsModalOpen}) => {
             );
         }else {
             mutate(
-                { url: URLS.warehouses_add, attributes: values },
+                { url: URLS.warehouses_add, attributes: formData },
                 {
                     onSuccess: () => {
                         setIsModalOpen(false);
@@ -57,24 +73,44 @@ const CreateEditWarehouses = ({itemData,setIsModalOpen}) => {
                 form={form}
             >
                 <Form.Item
-                    label={t("Name uz")}
-                    name="nameUz"
+                    label={t("Name")}
+                    name="name"
                     rules={[{required: true,}]}
                 >
                     <Input />
                 </Form.Item>
 
                 <Form.Item
-                    label={t("Name ru")}
-                    name="nameRu"
-                    rules={[{required: true,}]}
+                    label={t("Dealers")}
+                    name="dealerIds"
+                    rules={[{required: true,}]}>
+                    <Select
+                        showSearch
+                        placeholder={t("Dealers")}
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+                        loading={isLoadingDealers}
+                        mode={"multiple"}
+                        options={get(dealers,'data.content')?.map((item) => {
+                            return {
+                                value: get(item,'id'),
+                                label: get(item,'fullName')
+                            }
+                        })}
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    name="active"
+                    valuePropName="active"
                 >
-                    <Input />
+                    <Checkbox checked={active} onChange={(e) => setActive(e.target.checked)}>{t("is active")} ?</Checkbox>
                 </Form.Item>
 
                 <Form.Item>
                     <Button block type="primary" htmlType="submit" loading={isLoading || isLoadingEdit}>
-                        {itemData ? t("Edit") : t("Create")}
+                        {selected ? t("Edit") : t("Create")}
                     </Button>
                 </Form.Item>
             </Form>

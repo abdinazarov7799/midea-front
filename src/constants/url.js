@@ -44,4 +44,5 @@ export const URLS = {
     clients_add: '/api/admin/clients/add',
     clients_edit: '/api/admin/clients/edit',
     clients_delete: '/api/admin/clients/delete',
+    client_types_list: '/api/client-types/get',
 };

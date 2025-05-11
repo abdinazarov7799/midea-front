@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Button, Input, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
+import {Button, Checkbox, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -8,7 +8,7 @@ import {KEYS} from "../../constants/key.js";
 import {URLS} from "../../constants/url.js";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
-import CreateEditRegion from "./components/CreateEditProducts.jsx";
+import CreateEditProducts from "./components/CreateEditProducts.jsx";
 
 const ProductsContainer = () => {
     const {t} = useTranslation();
@@ -46,16 +46,46 @@ const ProductsContainer = () => {
             title: t("ID"),
             dataIndex: "id",
             key: "id",
+            width: 250
         },
         {
-            title: t("Name uz"),
-            dataIndex: "nameUz",
-            key: "nameUz"
+            title: t("Model"),
+            dataIndex: "model",
+            key: "model"
         },
         {
-            title: t("Name ru"),
-            dataIndex: "nameRu",
-            key: "nameRu"
+            title: t("Price"),
+            dataIndex: "price",
+            key: "price"
+        },
+        {
+            title: t("Manager interest"),
+            dataIndex: "managerInterest",
+            key: "managerInterest"
+        },
+        {
+            title: t("Team lead interest"),
+            dataIndex: "teamLeadInterest",
+            key: "teamLeadInterest"
+        },
+        {
+            title: t("Dealer interest"),
+            dataIndex: "dealerInterest",
+            key: "dealerInterest"
+        },
+        {
+            title: t("Category"),
+            dataIndex: "category",
+            key: "category",
+            render: (text, record) => get(text,'name')
+        },
+        {
+            title: t("is active"),
+            dataIndex: "active",
+            key: "active",
+            render: (props,data,index) => (
+                <Checkbox checked={get(data,'active')} />
+            )
         },
         {
             title: t("Edit / Delete"),
@@ -121,7 +151,7 @@ const ProductsContainer = () => {
                 onCancel={() => setIsCreateModalOpen(false)}
                 footer={null}
             >
-                <CreateEditRegion setIsModalOpen={setIsCreateModalOpen}/>
+                <CreateEditProducts setIsModalOpen={setIsCreateModalOpen}/>
             </Modal>
             <Modal
                 title={t("Edit")}
@@ -129,7 +159,7 @@ const ProductsContainer = () => {
                 onCancel={() => setIsEditModalOpen(false)}
                 footer={null}
             >
-                <CreateEditRegion
+                <CreateEditProducts
                     selected={selected}
                     setIsModalOpen={setIsEditModalOpen}
                 />

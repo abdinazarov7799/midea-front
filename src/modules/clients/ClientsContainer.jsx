@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Button, Input, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
+import {Button, Checkbox, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -8,7 +8,7 @@ import {KEYS} from "../../constants/key.js";
 import {URLS} from "../../constants/url.js";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
-import CreateEditRegion from "./components/CreateEditClients.jsx";
+import CreateEditClients from "./components/CreateEditClients.jsx";
 
 const ClientsContainer = () => {
     const {t} = useTranslation();
@@ -46,16 +46,41 @@ const ClientsContainer = () => {
             title: t("ID"),
             dataIndex: "id",
             key: "id",
+            width: 250
         },
         {
-            title: t("Name uz"),
-            dataIndex: "nameUz",
-            key: "nameUz"
+            title: t("Name"),
+            dataIndex: "name",
+            key: "name"
         },
         {
-            title: t("Name ru"),
-            dataIndex: "nameRu",
-            key: "nameRu"
+            title: t("Phone"),
+            dataIndex: "phone",
+            key: "phone"
+        },
+        {
+            title: t("Type"),
+            dataIndex: "type",
+            key: "type"
+        },
+        {
+            title: t("Balance"),
+            dataIndex: "balance",
+            key: "balance"
+        },
+        {
+            title: t("Dealer"),
+            dataIndex: "dealer",
+            key: "dealer",
+            render: (text, record) => get(text,'fullName')
+        },
+        {
+            title: t("is legal"),
+            dataIndex: "legal",
+            key: "legal",
+            render: (props,data,index) => (
+                <Checkbox checked={get(data,'legal')} />
+            )
         },
         {
             title: t("Edit / Delete"),
@@ -121,7 +146,7 @@ const ClientsContainer = () => {
                 onCancel={() => setIsCreateModalOpen(false)}
                 footer={null}
             >
-                <CreateEditRegion setIsModalOpen={setIsCreateModalOpen}/>
+                <CreateEditClients setIsModalOpen={setIsCreateModalOpen}/>
             </Modal>
             <Modal
                 title={t("Edit")}
@@ -129,7 +154,7 @@ const ClientsContainer = () => {
                 onCancel={() => setIsEditModalOpen(false)}
                 footer={null}
             >
-                <CreateEditRegion
+                <CreateEditClients
                     selected={selected}
                     setIsModalOpen={setIsEditModalOpen}
                 />
