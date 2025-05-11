@@ -30,22 +30,11 @@ const CreateEditClients = ({selected,setIsModalOpen}) => {
         }
     })
 
-    const { data:clientTypes,isLoading:isLoadingClientTypes } = useGetAllQuery({
-        key: KEYS.client_types_list,
-        url: URLS.client_types_list,
-        params: {
-            params: {
-                size: 1000
-            }
-        }
-    })
-
     useEffect(() => {
         form.setFieldsValue({
             name: get(selected,'name'),
             balance: get(selected,'balance'),
             phone: get(selected,'phone'),
-            type: get(selected,'type'),
             dealerId: get(selected,'dealer.id'),
         });
         setLegal(get(selected,'legal',false));
@@ -100,26 +89,6 @@ const CreateEditClients = ({selected,setIsModalOpen}) => {
                             return {
                                 value: get(item,'id'),
                                 label: get(item,'fullName')
-                            }
-                        })}
-                    />
-                </Form.Item>
-
-                <Form.Item
-                    label={t("Type")}
-                    name="type"
-                    rules={[{required: true,}]}>
-                    <Select
-                        showSearch
-                        placeholder={t("Type")}
-                        optionFilterProp="children"
-                        filterOption={(input, option) =>
-                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-                        loading={isLoadingClientTypes}
-                        options={get(clientTypes,'data')?.map((item) => {
-                            return {
-                                value: item,
-                                label: t(item)
                             }
                         })}
                     />
