@@ -30,6 +30,10 @@ import ManagersPage from "../modules/managers/ManagersPage.jsx";
 import DealersPage from "../modules/dealers/DealersPage.jsx";
 import CouriersPage from "../modules/couriers/CouriersPage.jsx";
 import ClientsPage from "../modules/clients/ClientsPage.jsx";
+import CreateOrderPage from "../modules/tg-web-app/CreateOrderPage.jsx";
+import CreateClientPage from "../modules/tg-web-app/CreateClientPage.jsx";
+import ViewOrders from "../modules/tg-web-app/ViewOrders.jsx";
+import TransferWarehouseItemPage from "../modules/tg-web-app/TransferWarehouseItemPage.jsx";
 // PAGES
 
 
@@ -64,6 +68,10 @@ const Router = () => {
             <Route path={"/auth"} element={<AuthLayout />}>
               <Route index element={<LoginPage />} />
             </Route>
+            <Route path={"/create-order-form/:roleId/:userId"} element={<CreateOrderPage />}/>
+            <Route path={"/create-client-form/:roleId/:userId"} element={<CreateClientPage />}/>
+            <Route path={"/view-orders/:roleId/:userId"} element={<ViewOrders />}/>
+            <Route path={"/transfer-warehouse-item/:roleId/:userId"} element={<TransferWarehouseItemPage />}/>
             <Route path={"*"} element={<Navigate to={"/auth"} replace />} />
           </Routes>
         </IsGuest>
