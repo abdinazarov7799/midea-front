@@ -73,7 +73,7 @@ const CreateClientPage = () => {
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" block loading={isLoading || isLoadingCreate}>
-                        {t("Login")}
+                        {t("Create")}
                     </Button>
                 </Form.Item>
             </Form>
