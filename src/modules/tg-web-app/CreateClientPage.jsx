@@ -6,8 +6,10 @@ import {useTranslation} from "react-i18next";
 import useGetAllQuery from "../../hooks/api/useGetAllQuery.js";
 import {get} from "lodash";
 import usePostQuery from "../../hooks/api/usePostQuery.js";
+import {useParams} from "react-router-dom";
 
 const CreateClientPage = () => {
+    const {roleId,userId} = useParams()
     const [form] = Form.useForm();
     const {t} = useTranslation();
     const telegram = useTelegram();
@@ -27,7 +29,7 @@ const CreateClientPage = () => {
     const createClient = (values) => {
         mutate({
             url: "/api/web/clients/create",
-            attributes: {...values,legal: isLegal}
+            attributes: {...values,legal: isLegal,creatorId: userId}
         }, {
             onSuccess: () => {
                 telegram.onClose();
