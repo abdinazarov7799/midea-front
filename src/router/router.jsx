@@ -37,6 +37,8 @@ import TransferWarehouseItemPage from "../modules/tg-web-app/TransferWarehouseIt
 import AddStockPage from "../modules/tg-web-app/AddStockPage.jsx";
 import ReturnedOrderViewPage from "../modules/tg-web-app/ReturnedOrderViewPage.jsx";
 import ReturnedOrderPage from "../modules/tg-web-app/ReturnedOrderPage.jsx";
+import WareHouseSendItemPage from "../modules/tg-web-app/WareHouseSendItemPage.jsx";
+import WarehouseSendItemViewPage from "../modules/tg-web-app/WarehouseSendItemViewPage.jsx";
 // PAGES
 
 
@@ -76,7 +78,8 @@ const Router = () => {
             <Route path={"/add-stock/:roleId/:userId"} element={<AddStockPage />}/>
             <Route path={"/returned-order/:roleId/:userId"} element={<ReturnedOrderPage />}/>
             <Route path="/returned-order-view/:id/:userId/:roleId" element={<ReturnedOrderViewPage />} />
-            <Route path={"/warehouse-send-item/:roleId/:userId"} element={<TransferWarehouseItemPage />}/>
+            <Route path={"/warehouse-send-item/:roleId/:userId"} element={<WareHouseSendItemPage />}/>
+            <Route path={"/warehouse-send-item-view/:id/:roleId/:userId"} element={<WarehouseSendItemViewPage />}/>
             <Route path={"/warehouse-transfers/:roleId/:userId"} element={<TransferWarehouseItemPage />}/>
             <Route path={"/view-courier-orders/:roleId/:userId"} element={<ViewOrders />}/>
             <Route path={"/view-payment-history/:roleId/:userId"} element={<ViewOrders />}/>
