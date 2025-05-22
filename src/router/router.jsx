@@ -70,8 +70,13 @@ const Router = () => {
             </Route>
             <Route path={"/create-order-form/:roleId/:userId"} element={<CreateOrderPage />}/>
             <Route path={"/create-client-form/:roleId/:userId"} element={<CreateClientPage />}/>
-            <Route path={"/view-orders/:roleId/:userId"} element={<ViewOrders />}/>
-            <Route path={"/transfer-warehouse-item/:roleId/:userId"} element={<TransferWarehouseItemPage />}/>
+            <Route path={"/add-stock/:roleId/:userId"} element={<CreateClientPage />}/>
+            <Route path={"/returned-order/:roleId/:userId"} element={<CreateClientPage />}/>
+            <Route path={"/warehouse-send-item/:roleId/:userId"} element={<TransferWarehouseItemPage />}/>
+            <Route path={"/warehouse-transfers/:roleId/:userId"} element={<TransferWarehouseItemPage />}/>
+            <Route path={"/view-courier-orders/:roleId/:userId"} element={<ViewOrders />}/>
+            <Route path={"/view-payment-history/:roleId/:userId"} element={<ViewOrders />}/>
+            <Route path={"/view-balance/:roleId/:userId"} element={<ViewOrders />}/>
             <Route path={"*"} element={<Navigate to={"/auth"} replace />} />
           </Routes>
         </IsGuest>

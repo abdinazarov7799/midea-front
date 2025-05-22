@@ -7,14 +7,16 @@ import useGetAllQuery from "../../hooks/api/useGetAllQuery.js";
 import {get} from "lodash";
 import usePostQuery from "../../hooks/api/usePostQuery.js";
 import {useParams} from "react-router-dom";
+import InputMask from 'react-input-mask';
+import {ArrowLeftOutlined} from "@ant-design/icons";
 
 const CreateClientPage = () => {
     const {roleId,userId} = useParams()
     const [form] = Form.useForm();
     const {t} = useTranslation();
-    const telegram = useTelegram();
-    const [isLegal, setIsLegal] = React.useState(false);
+    const params = window.location.search
 
+    const telegram = useTelegram();
     const {data, isLoading} = useGetAllQuery({
         key: 'web-dealers-list',
         url: '/api/web/dealers/get-all',
@@ -29,7 +31,7 @@ const CreateClientPage = () => {
     const createClient = (values) => {
         mutate({
             url: "/api/web/clients/create",
-            attributes: {...values,legal: isLegal,creatorId: userId}
+            attributes: {...values,creatorId: userId, phone: `+998${values.phone?.trim()}`},
         }, {
             onSuccess: () => {
                 telegram.onClose();
@@ -39,6 +41,7 @@ const CreateClientPage = () => {
 
     return (
         <Container>
+            {!!params && <Button icon={<ArrowLeftOutlined/>} style={{marginBottom: 10}} onClick={() => history.back()}>{t("Orqaga")}</Button>}
             <Form form={form} onFinish={createClient} layout="vertical">
                 <Form.Item
                     label={t("Dealer")}
@@ -62,8 +65,33 @@ const CreateClientPage = () => {
                 <Form.Item name={'name'} rules={[{required: true}]} label={'Name'}>
                     <Input/>
                 </Form.Item>
-                <Form.Item name={'phone'} rules={[{required: true}]} label={'Phone'}>
-                    <Input/>
+                <Form.Item
+                    name="phone"
+                    label={t('Phone')}
+                    rules={[
+                        { required: true, message: t("Phone is required") },
+                        {
+                            pattern: /^\d{9}$/,
+                            message: t("Invalid phone number"),
+                        }
+                    ]}
+                >
+                    <InputMask
+                        mask="99 999 99 99"
+                        maskChar={null}
+                        onChange={(e) => {
+                            const onlyDigits = e.target.value.replace(/\D/g, '');
+                            form.setFieldsValue({ phone: onlyDigits });
+                        }}
+                    >
+                        {(inputProps) => (
+                            <Input
+                                {...inputProps}
+                                addonBefore="+998"
+                                maxLength={12}
+                            />
+                        )}
+                    </InputMask>
                 </Form.Item>
                 <Form.Item name={'type'} rules={[{required: true}]} label={'Type'}>
                     <Select options={[{label: t("ACCOUNTED"), value: 'ACCOUNTED'}, {
@@ -74,8 +102,8 @@ const CreateClientPage = () => {
                 <Form.Item name={'balance'} rules={[{required: true}]} label={'Balance'}>
                     <InputNumber style={{width: '100%'}}/>
                 </Form.Item>
-                <Form.Item name={'legal'} label={'Legal'}>
-                    <Checkbox checked={isLegal} onChange={() => setIsLegal(prevState => !prevState)}/>
+                <Form.Item name={'legal'} label={'Legal'} valuePropName={'checked'}>
+                    <Checkbox />
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" block loading={isLoading || isLoadingCreate}>
