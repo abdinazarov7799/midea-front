@@ -7,6 +7,7 @@ import { get } from 'lodash';
 import {useTranslation} from "react-i18next";
 import dayjs from "dayjs";
 import {ArrowLeftOutlined} from "@ant-design/icons";
+import {useTelegram} from "../../hooks/telegram/useTelegram.js";
 
 const { Text } = Typography;
 
@@ -14,6 +15,7 @@ const ReturnedOrderViewPage = () => {
     const { id, userId, roleId } = useParams();
     const [form] = Form.useForm();
     const {t} = useTranslation();
+    const telegram = useTelegram();
 
     const { data } = useGetAllQuery({
         key: ['single-order', id],
@@ -21,6 +23,11 @@ const ReturnedOrderViewPage = () => {
         params: {
             params: { roleId }
         }
+    });
+
+    const { data:returnedCodes } = useGetAllQuery({
+        key: ['returned-codes'],
+        url: `/api/common/return-codes/get`,
     });
 
     const { mutate, isLoading } = usePutQuery({});
@@ -31,8 +38,11 @@ const ReturnedOrderViewPage = () => {
         mutate({
             url: `/api/web/warehouse-workers/confirm-return/${id}/${userId}`,
             attributes: {
-                reason: values.reason,
-                comment: values.comment
+                ...values
+            }
+        },{
+            onSuccess: () => {
+                telegram.onClose();
             }
         });
     };
@@ -60,23 +70,21 @@ const ReturnedOrderViewPage = () => {
             <p><b>{t("Client izohi")}:</b> {order?.creatorComment || 'Ma\'lumot yo‘q'}</p>
             <p><b>{t("WW izohi")}:</b> {order?.warehouseWorkerComment || 'Ma\'lumot yo‘q'}</p>
             <p><b>{t("Courier izohi")}:</b> {order?.courierComment || 'Ma\'lumot yo‘q'}</p>
-            <p><b>{t("Status")}:</b> <Text type="danger">{order?.status}</Text></p>
+            <p><b>{t("Status")}:</b> <Text type="danger">{t(order?.status)}</Text></p>
             <p><b>{t("Kuryer")}:</b> {order?.courier || t('Biriktirilmagan')}</p>
 
             <Form form={form} layout="vertical" onFinish={onFinish} style={{ marginTop: 24 }}>
                 <Form.Item
-                    name="reason"
+                    name="returnCode"
                     label={t("Sababni tanlang")}
                     rules={[{ required: true }]}
                 >
                     <Select
                         placeholder={t("Tanlash")}
-                        options={[
-                            { label: t('CUSTOMER_DECLINED'), value: 'CUSTOMER_DECLINED' },
-                        ]}
+                        options={get(returnedCodes,'data',[])?.map(item => ({label: t(item), value: item}))}
                     />
                 </Form.Item>
-                <Form.Item name="comment" label={t("Izoh qoldiring")} rules={[{ required: true }]}>
+                <Form.Item name="returnReason" label={t("Izoh qoldiring")} rules={[{ required: true }]}>
                     <Input.TextArea placeholder={t("Comment")} />
                 </Form.Item>
                 <Form.Item>

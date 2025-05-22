@@ -6,12 +6,15 @@ import useGetAllQuery from "../../hooks/api/useGetAllQuery.js";
 import usePostQuery from "../../hooks/api/usePostQuery.js";
 import { useParams } from "react-router-dom";
 import { get } from 'lodash';
+import {useTelegram} from "../../hooks/telegram/useTelegram.js";
+import {useTranslation} from "react-i18next";
 
 const AddStockPage = () => {
     const [form] = Form.useForm();
     const { userId } = useParams();
-
+    const telegram = useTelegram();
     const [items, setItems] = useState([]);
+    const {t} = useTranslation();
 
     const { data: productsData, isLoading: loadingProducts } = useGetAllQuery({
         key: ['product-list'],
@@ -81,17 +84,21 @@ const AddStockPage = () => {
                 sectionId: values.sectionId,
                 items
             }
+        },{
+            onSuccess: data => {
+                telegram.onClose()
+            }
         });
     };
 
     return (
         <Container>
             <Form layout="vertical" form={form} onFinish={onFinish}>
-                <label style={{ fontWeight: 500 }}>Mahsulotlarni tanlang va qo‘shing</label>
+                <label style={{ fontWeight: 500 }}>{t("Mahsulotlarni tanlang va qo‘shing")}</label>
                 {items.map((item, index) => (
                     <div key={index} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
                         <Select
-                            placeholder="Tanlash"
+                            placeholder={t("Tanlash")}
                             style={{ flex: 2 }}
                             showSearch
                             loading={loadingProducts}
@@ -118,12 +125,12 @@ const AddStockPage = () => {
                 ))}
 
                 <Button block onClick={addItem}>
-                    Mahsulot qo‘shish
+                    {t("Mahsulot qo‘shish")}
                 </Button>
 
                 <Form.Item
                     name="sectionId"
-                    label="Omborxona bo‘limini tanlang:"
+                    label={t("Omborxona bo‘limini tanlang:")}
                     rules={[{ required: true }]}
                     style={{ marginTop: 16 }}
                 >
@@ -132,7 +139,7 @@ const AddStockPage = () => {
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit" block loading={submitting}>
-                        Tasdiqlash
+                        {t("Tasdiqlash")}
                     </Button>
                 </Form.Item>
             </Form>

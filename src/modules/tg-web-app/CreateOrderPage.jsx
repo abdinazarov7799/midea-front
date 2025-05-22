@@ -8,28 +8,26 @@ import usePostQuery from '../../hooks/api/usePostQuery';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DeleteOutlined } from '@ant-design/icons';
 import TextArea from "antd/es/input/TextArea";
+import {useTelegram} from "../../hooks/telegram/useTelegram.js";
 
 const CreateOrderPage = () => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
     const { userId, roleId } = useParams();
     const navigate = useNavigate();
-
+    const telegram = useTelegram()
     const [items, setItems] = useState([]);
 
-    // Clients by dealerId
     const { data: clientsData } = useGetAllQuery({
         key: ['client-list', userId],
         url: `/api/web/clients/get-all/${userId}`
     });
 
-    // Warehouses
     const { data: warehousesData } = useGetAllQuery({
         key: ['warehouse-list'],
         url: '/api/web/warehouses/get'
     });
 
-    // Products
     const { data: productsData, isLoading: isLoadingProducts } = useGetAllQuery({
         key: ['product-list'],
         url: '/api/web/products/get',
@@ -83,6 +81,10 @@ const CreateOrderPage = () => {
                 creatorRoleId: roleId,
                 dealerId: userId,
                 items
+            }
+        },{
+            onSuccess: (res) => {
+                telegram.onClose()
             }
         });
     };
