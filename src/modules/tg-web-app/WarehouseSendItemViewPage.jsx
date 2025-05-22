@@ -46,8 +46,7 @@ const WarehouseSendItemViewPage = () => {
         if (!courierId) return message.error(t("Iltimos, kuryerni tanlang"));
 
         confirmShipping.mutate({
-            url: `/api/web/warehouse-workers/link-courier/${id}/${userId}`,
-            attributes: { courierId, completed: false }
+            url: `/api/web/warehouse-workers/link-courier/${id}/${userId}?courierId=${courierId}&completed=${!get(orderData,'data.deliver')}`,
         }, {
             onSuccess: () => {
                 message.success(t("Kuryer biriktirildi"));
@@ -67,8 +66,8 @@ const WarehouseSendItemViewPage = () => {
                 productId: item.product.id,
                 quantity: item.quantity
             })),
-            fromSection: order.fromSection?.id,       // kerakli bo‘lsa
-            toSection: order.toSection?.id || null,    // kerakli bo‘lsa
+            fromSection: order.fromSection?.id,
+            toSection: order.toSection?.id || null,
             toWarehouse: order.warehouseId,
             comment: order.creatorComment || '',
             innerTransfer: true
