@@ -40,6 +40,7 @@ import ReturnedOrderPage from "../modules/tg-web-app/ReturnedOrderPage.jsx";
 import WareHouseSendItemPage from "../modules/tg-web-app/WareHouseSendItemPage.jsx";
 import WarehouseSendItemViewPage from "../modules/tg-web-app/WarehouseSendItemViewPage.jsx";
 import OrdersPage from "../modules/orders/OrdersPage.jsx";
+import StockMovementsPage from "../modules/stocks-movements/StockMovementsPage.jsx";
 // PAGES
 
 
@@ -63,6 +64,7 @@ const Router = () => {
               <Route path={"/translations"} element={<TranslationPage />}/>
               <Route path={"/constants"} element={<ConstantsPage />}/>
               <Route path={"/orders"} element={<OrdersPage />}/>
+              <Route path={"/stock-movements"} element={<StockMovementsPage />}/>
               <Route path={"auth/*"} element={<Navigate to={"/categories"} replace />}/>
               <Route path={"/"} element={<Navigate to={"/categories"} replace />}/>
               <Route path={"*"} element={<NotFoundPage />} />

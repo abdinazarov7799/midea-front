@@ -59,6 +59,22 @@ const DashboardSidebar = () => {
             key: "/orders",
         },
         {
+            label: t("Stock movements"),
+            key: "/stock-movements",
+        },
+        {
+            label: t("Payments"),
+            key: "/payments",
+        },
+        {
+            label: t("Inventories"),
+            key: "/inventories",
+        },
+        {
+            label: t("Accruals"),
+            key: "/accruals",
+        },
+        {
             label: t("Constants"),
             key: "/constants",
         },
