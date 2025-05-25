@@ -11,5 +11,6 @@ export const KEYS = {
     dealers_list: "dealers_list",
     couriers_list: "couriers_list",
     clients_list: "clients_list",
-    client_types_list: "client_types_list"
+    client_types_list: "client_types_list",
+    orders_list: "orders_list",
 };

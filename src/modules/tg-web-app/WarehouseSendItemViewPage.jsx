@@ -91,7 +91,7 @@ const WarehouseSendItemViewPage = () => {
                 </p>
             ))}
             <p><b>{t("Menejer")}:</b> {order.manager}</p>
-            <p><b>{t("Client izohi")}:</b> {order?.creatorComment || 'Ma\'lumot yo‘q'}</p>
+            <p><b>{t("Yaratuvchi izohi")}:</b> {order?.creatorComment || 'Ma\'lumot yo‘q'}</p>
             <p><b>{t("WW izohi")}:</b> {order?.warehouseWorkerComment || 'Ma\'lumot yo‘q'}</p>
             <p><b>{t("Courier izohi")}:</b> {order?.courierComment || 'Ma\'lumot yo‘q'}</p>
             <p><b>{t("Status")}:</b> <Text type="success">{t("Yangi")}</Text></p>

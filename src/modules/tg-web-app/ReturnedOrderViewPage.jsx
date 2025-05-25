@@ -67,7 +67,7 @@ const ReturnedOrderViewPage = () => {
                 </a>
             </p>
             <p><b>{t("Yaratilgan")}:</b> {dayjs(order?.createdAt).format('DD-MM-YYYY HH:mm')}</p>
-            <p><b>{t("Client izohi")}:</b> {order?.creatorComment || 'Ma\'lumot yo‘q'}</p>
+            <p><b>{t("Yaratuvchi izohi")}:</b> {order?.creatorComment || 'Ma\'lumot yo‘q'}</p>
             <p><b>{t("WW izohi")}:</b> {order?.warehouseWorkerComment || 'Ma\'lumot yo‘q'}</p>
             <p><b>{t("Courier izohi")}:</b> {order?.courierComment || 'Ma\'lumot yo‘q'}</p>
             <p><b>{t("Status")}:</b> <Text type="danger">{t(order?.status)}</Text></p>

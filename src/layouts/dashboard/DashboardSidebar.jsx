@@ -55,6 +55,10 @@ const DashboardSidebar = () => {
             key: "/warehouse-sections",
         },
         {
+            label: t("Orders"),
+            key: "/orders",
+        },
+        {
             label: t("Constants"),
             key: "/constants",
         },
