@@ -42,6 +42,7 @@ import WarehouseSendItemViewPage from "../modules/tg-web-app/WarehouseSendItemVi
 import OrdersPage from "../modules/orders/OrdersPage.jsx";
 import StockMovementsPage from "../modules/stocks-movements/StockMovementsPage.jsx";
 import PaymentsPage from "../modules/payments/PaymentsPage.jsx";
+import AccrualsPage from "../modules/accruals/AccrualsPage.jsx";
 // PAGES
 
 
@@ -67,6 +68,7 @@ const Router = () => {
               <Route path={"/orders"} element={<OrdersPage />}/>
               <Route path={"/stock-movements"} element={<StockMovementsPage />}/>
               <Route path={"/payments"} element={<PaymentsPage />}/>
+              <Route path={"/accruals"} element={<AccrualsPage />}/>
               <Route path={"auth/*"} element={<Navigate to={"/categories"} replace />}/>
               <Route path={"/"} element={<Navigate to={"/categories"} replace />}/>
               <Route path={"*"} element={<NotFoundPage />} />

@@ -48,4 +48,5 @@ export const URLS = {
     orders_list: '/api/admin/orders/get-all',
     stock_movements_list: '/api/admin/stock-movements/get-all',
     payments_list: '/api/admin/payments/get-all',
+    accruals_list: '/api/admin/accruals/get',
 };
