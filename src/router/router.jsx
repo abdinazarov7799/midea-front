@@ -33,7 +33,6 @@ import ClientsPage from "../modules/clients/ClientsPage.jsx";
 import CreateOrderPage from "../modules/tg-web-app/CreateOrderPage.jsx";
 import CreateClientPage from "../modules/tg-web-app/CreateClientPage.jsx";
 import ViewOrders from "../modules/tg-web-app/ViewOrders.jsx";
-import TransferWarehouseItemPage from "../modules/tg-web-app/TransferWarehouseItemPage.jsx";
 import AddStockPage from "../modules/tg-web-app/AddStockPage.jsx";
 import ReturnedOrderViewPage from "../modules/tg-web-app/ReturnedOrderViewPage.jsx";
 import ReturnedOrderPage from "../modules/tg-web-app/ReturnedOrderPage.jsx";
@@ -43,6 +42,8 @@ import OrdersPage from "../modules/orders/OrdersPage.jsx";
 import StockMovementsPage from "../modules/stocks-movements/StockMovementsPage.jsx";
 import PaymentsPage from "../modules/payments/PaymentsPage.jsx";
 import AccrualsPage from "../modules/accruals/AccrualsPage.jsx";
+import WarehouseTransferPage from "../modules/tg-web-app/WarehouseTransferPage.jsx";
+import WarehouseTransferFormPage from "../modules/tg-web-app/WarehouseTransferFormPage.jsx";
 // PAGES
 
 
@@ -88,7 +89,9 @@ const Router = () => {
             <Route path="/returned-order-view/:id/:userId/:roleId" element={<ReturnedOrderViewPage />} />
             <Route path={"/warehouse-send-item/:roleId/:userId"} element={<WareHouseSendItemPage />}/>
             <Route path={"/warehouse-send-item-view/:id/:roleId/:userId"} element={<WarehouseSendItemViewPage />}/>
-            <Route path={"/warehouse-transfers/:roleId/:userId"} element={<TransferWarehouseItemPage />}/>
+            <Route path={"/warehouse-transfers/:roleId/:userId"} element={<WarehouseTransferPage />}/>
+            <Route path={"/warehouse-transfers-form/:roleId/:userId"} element={<WarehouseTransferFormPage />}/>
+
             <Route path={"/view-courier-orders/:roleId/:userId"} element={<ViewOrders />}/>
             <Route path={"/view-payment-history/:roleId/:userId"} element={<ViewOrders />}/>
             <Route path={"/view-balance/:roleId/:userId"} element={<ViewOrders />}/>

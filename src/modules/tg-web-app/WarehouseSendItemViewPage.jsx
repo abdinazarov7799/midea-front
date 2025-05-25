@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import usePutQuery from '../../hooks/api/usePutQuery';
 import usePostQuery from '../../hooks/api/usePostQuery';
-import { get } from 'lodash';
+import {get, isEqual} from 'lodash';
 import {ArrowLeftOutlined} from "@ant-design/icons";
 
 const { Text } = Typography;
@@ -14,7 +14,6 @@ const WarehouseSendItemViewPage = () => {
     const { t } = useTranslation();
     const { id, roleId, userId } = useParams();
     const [courierId, setCourierId] = useState(null);
-    const [isCourierAssigned, setIsCourierAssigned] = useState(false);
     const [formDisabled, setFormDisabled] = useState(false);
 
     const { data: orderData } = useGetAllQuery({
@@ -29,15 +28,13 @@ const WarehouseSendItemViewPage = () => {
     });
 
     const confirmShipping = usePutQuery({});
-    const transferItems = usePostQuery({});
+    const linkCourier = usePostQuery({});
 
     const order = get(orderData, 'data', {});
     const couriers = get(couriersData, 'data.content', []);
 
     useEffect(() => {
-        if (order?.courier) {
-            setIsCourierAssigned(true);
-            setCourierId(order.courier.id);
+        if (!isEqual(get(order,'status'),'READY_TO_SHIP')) {
             setFormDisabled(true);
         }
     }, [order]);
@@ -45,57 +42,40 @@ const WarehouseSendItemViewPage = () => {
     const handleCourierAssign = () => {
         if (!courierId) return message.error(t("Iltimos, kuryerni tanlang"));
 
-        confirmShipping.mutate({
+        linkCourier.mutate({
             url: `/api/web/warehouse-workers/link-courier/${id}/${userId}?courierId=${courierId}&completed=${!get(orderData,'data.deliver')}`,
         }, {
             onSuccess: () => {
                 message.success(t("Kuryer biriktirildi"));
-                setIsCourierAssigned(true);
                 setFormDisabled(true);
             }
         });
     };
 
-    const handleSend = () => {
-        if (!isCourierAssigned) {
-            return message.error(t("Kuryerni biriktirish kerak"));
-        }
-
-        const transferBody = {
-            stocks: order.items.map(item => ({
-                productId: item.product.id,
-                quantity: item.quantity
-            })),
-            fromSection: order.fromSection?.id,
-            toSection: order.toSection?.id || null,
-            toWarehouse: order.warehouseId,
-            comment: order.creatorComment || '',
-            innerTransfer: true
-        };
-
-        transferItems.mutate({
-            url: `/api/web/warehouse-workers/transfer/${userId}`,
-            attributes: transferBody
+    const handleConfirm = (confirmed) => {
+        confirmShipping.mutate({
+            url: `/api/web/warehouse-workers/confirm-shipping/${id}/${userId}?confirm=${confirmed}`,
         }, {
-            onSuccess: () => message.success(t("Tovar muvaffaqiyatli chiqarildi"))
+            onSuccess: () => message.success(t("Buyurtma chiqarishga tayyorlandi"))
         });
     };
 
+
     return (
         <Card title={<Space><Button icon={<ArrowLeftOutlined/>} onClick={() => history.back()} /><Typography.Text>{`${t("Buyurtma raqami")}: #${order?.code || order?.id}`}</Typography.Text></Space>}>
-            <p><b>{t("Buyurtmachi")}:</b> {order.client}</p>
+            <p><b>{t("Buyurtmachi")}:</b> {order?.client}</p>
             <p><b>{t("Mahsulotlar")}:</b></p>
-            {order.items?.map((item, i) => (
+            {order?.items?.map((item, i) => (
                 <p key={i}>
                     <b>L {item.product?.model}</b> x {item.quantity} {t("dona")}
                 </p>
             ))}
-            <p><b>{t("Menejer")}:</b> {order.manager}</p>
+            <p><b>{t("Menejer")}:</b> {order?.manager}</p>
             <p><b>{t("Yaratuvchi izohi")}:</b> {order?.creatorComment || 'Ma\'lumot yo‘q'}</p>
             <p><b>{t("WW izohi")}:</b> {order?.warehouseWorkerComment || 'Ma\'lumot yo‘q'}</p>
             <p><b>{t("Courier izohi")}:</b> {order?.courierComment || 'Ma\'lumot yo‘q'}</p>
             <p><b>{t("Status")}:</b> <Text type="success">{t("Yangi")}</Text></p>
-            <p><b>{t("Kuryer")}:</b> {order.courier || t("Biriktirilmagan")}</p>
+            <p><b>{t("Kuryer")}:</b> {order?.courier || t("Biriktirilmagan")}</p>
 
             <p style={{ marginTop: 16 }}><b>{t("Kuryerni tanlang")}:</b></p>
             <Select
@@ -118,14 +98,27 @@ const WarehouseSendItemViewPage = () => {
                 {t("Biriktirish")}
             </Button>
 
-            <Button
-                type="primary"
-                style={{ marginTop: 16 }}
-                block
-                onClick={handleSend}
-            >
-                {t("Buyurtma chiqarishga tayyorligini tasdiqlash")}
-            </Button>
+            <Space direction="vertical" style={{width:'100%', marginTop: 80}}>
+                <Button
+                    type="primary"
+                    danger
+                    style={{ marginTop: 16 }}
+                    block
+                    onClick={() => handleConfirm(false)}
+                    disabled={!isEqual(get(order,'status'),'CREATED')}
+                >
+                    {t("Buyurtma chiqarishni bekor qilish")}
+                </Button>
+                <Button
+                    type="primary"
+                    style={{ marginTop: 16 }}
+                    block
+                    onClick={() => handleConfirm(true)}
+                    disabled={!isEqual(get(order,'status'),'CREATED')}
+                >
+                    {t("Buyurtma chiqarishga tayyorligini tasdiqlash")}
+                </Button>
+            </Space>
         </Card>
     );
 };
