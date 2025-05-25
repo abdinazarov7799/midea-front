@@ -15,5 +15,6 @@ export const KEYS = {
     orders_list: "orders_list",
     stock_movements_list: "stock_movements_list",
     payments_list: "payments_list",
-    accruals_list: "accruals_list"
+    accruals_list: "accruals_list",
+    inventory_list: "inventory_list"
 };

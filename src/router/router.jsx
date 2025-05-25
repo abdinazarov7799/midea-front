@@ -44,6 +44,9 @@ import PaymentsPage from "../modules/payments/PaymentsPage.jsx";
 import AccrualsPage from "../modules/accruals/AccrualsPage.jsx";
 import WarehouseTransferPage from "../modules/tg-web-app/WarehouseTransferPage.jsx";
 import WarehouseTransferFormPage from "../modules/tg-web-app/WarehouseTransferFormPage.jsx";
+import CourierOrdersPage from "../modules/tg-web-app/CourierOrders.jsx";
+import CourierOrderViewPage from "../modules/tg-web-app/CourierOrderViewPage.jsx";
+import InventoryPage from "../modules/inventory/InventoryPage.jsx";
 // PAGES
 
 
@@ -70,6 +73,7 @@ const Router = () => {
               <Route path={"/stock-movements"} element={<StockMovementsPage />}/>
               <Route path={"/payments"} element={<PaymentsPage />}/>
               <Route path={"/accruals"} element={<AccrualsPage />}/>
+              <Route path={"/inventories"} element={<InventoryPage />}/>
               <Route path={"auth/*"} element={<Navigate to={"/categories"} replace />}/>
               <Route path={"/"} element={<Navigate to={"/categories"} replace />}/>
               <Route path={"*"} element={<NotFoundPage />} />
@@ -92,7 +96,9 @@ const Router = () => {
             <Route path={"/warehouse-transfers/:roleId/:userId"} element={<WarehouseTransferPage />}/>
             <Route path={"/warehouse-transfers-form/:roleId/:userId"} element={<WarehouseTransferFormPage />}/>
 
-            <Route path={"/view-courier-orders/:roleId/:userId"} element={<ViewOrders />}/>
+            <Route path={"/view-courier-orders/:roleId/:userId"} element={<CourierOrdersPage />}/>
+            <Route path={"/view-courier-order/:id/:roleId/:userId"} element={<CourierOrderViewPage />}/>
+
             <Route path={"/view-payment-history/:roleId/:userId"} element={<ViewOrders />}/>
             <Route path={"/view-balance/:roleId/:userId"} element={<ViewOrders />}/>
             <Route path={"*"} element={<Navigate to={"/auth"} replace />} />
