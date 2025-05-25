@@ -47,4 +47,5 @@ export const URLS = {
     client_types_list: '/api/client-types/get',
     orders_list: '/api/admin/orders/get-all',
     stock_movements_list: '/api/admin/stock-movements/get-all',
+    payments_list: '/api/admin/payments/get-all',
 };
