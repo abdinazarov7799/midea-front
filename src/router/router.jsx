@@ -49,6 +49,7 @@ import InventoryPage from "../modules/inventory/InventoryPage.jsx";
 import BalanceScreen from "../modules/tg-web-app/BalanceScreen.jsx";
 import PaymentListScreen from "../modules/tg-web-app/PaymentListScreen.jsx";
 import PaymentConfirmScreen from "../modules/tg-web-app/PaymentConfirmScreen.jsx";
+import InventoryViewPage from "../modules/inventory/view/InventoryViewPage.jsx";
 // PAGES
 
 
@@ -76,6 +77,7 @@ const Router = () => {
               <Route path={"/payments"} element={<PaymentsPage />}/>
               <Route path={"/accruals"} element={<AccrualsPage />}/>
               <Route path={"/inventories"} element={<InventoryPage />}/>
+              <Route path={"/inventory/:id"} element={<InventoryViewPage />}/>
               <Route path={"auth/*"} element={<Navigate to={"/categories"} replace />}/>
               <Route path={"/"} element={<Navigate to={"/categories"} replace />}/>
               <Route path={"*"} element={<NotFoundPage />} />

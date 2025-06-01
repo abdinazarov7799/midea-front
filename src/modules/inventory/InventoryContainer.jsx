@@ -1,17 +1,19 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Checkbox, Pagination, Row, Space, Table, Typography} from "antd";
+import {Pagination, Row, Space, Table, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
 import {KEYS} from "../../constants/key.js";
 import {URLS} from "../../constants/url.js";
 import dayjs from "dayjs";
+import {useNavigate} from "react-router-dom";
 
 const InventoryContainer = () => {
     const {t} = useTranslation();
     const [page, setPage] = useState(0);
     const [params, setParams] = useState({});
+    const navigate = useNavigate();
 
     const {data,isLoading} = usePaginateQuery({
         key: KEYS.inventory_list,
@@ -81,6 +83,12 @@ const InventoryContainer = () => {
                     size={"middle"}
                     pagination={false}
                     loading={isLoading}
+                    onRow={(record) => {
+                        return {
+                            style: {cursor: "pointer"},
+                            onDoubleClick: () => navigate(`/inventory/${get(record,'id')}`)
+                        }
+                    }}
                 />
 
                 <Row justify={"space-between"} style={{marginTop: 10}}>
