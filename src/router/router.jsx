@@ -32,7 +32,6 @@ import CouriersPage from "../modules/couriers/CouriersPage.jsx";
 import ClientsPage from "../modules/clients/ClientsPage.jsx";
 import CreateOrderPage from "../modules/tg-web-app/CreateOrderPage.jsx";
 import CreateClientPage from "../modules/tg-web-app/CreateClientPage.jsx";
-import ViewOrders from "../modules/tg-web-app/ViewOrders.jsx";
 import AddStockPage from "../modules/tg-web-app/AddStockPage.jsx";
 import ReturnedOrderViewPage from "../modules/tg-web-app/ReturnedOrderViewPage.jsx";
 import ReturnedOrderPage from "../modules/tg-web-app/ReturnedOrderPage.jsx";
@@ -47,6 +46,9 @@ import WarehouseTransferFormPage from "../modules/tg-web-app/WarehouseTransferFo
 import CourierOrdersPage from "../modules/tg-web-app/CourierOrders.jsx";
 import CourierOrderViewPage from "../modules/tg-web-app/CourierOrderViewPage.jsx";
 import InventoryPage from "../modules/inventory/InventoryPage.jsx";
+import BalanceScreen from "../modules/tg-web-app/BalanceScreen.jsx";
+import PaymentListScreen from "../modules/tg-web-app/PaymentListScreen.jsx";
+import PaymentConfirmScreen from "../modules/tg-web-app/PaymentConfirmScreen.jsx";
 // PAGES
 
 
@@ -99,8 +101,9 @@ const Router = () => {
             <Route path={"/view-courier-orders/:roleId/:userId"} element={<CourierOrdersPage />}/>
             <Route path={"/view-courier-order/:id/:roleId/:userId"} element={<CourierOrderViewPage />}/>
 
-            <Route path={"/view-payment-history/:roleId/:userId"} element={<ViewOrders />}/>
-            <Route path={"/view-balance/:roleId/:userId"} element={<ViewOrders />}/>
+            <Route path={"/view-payment-history/:roleId/:userId"} element={<PaymentListScreen />}/>
+            <Route path={"/view-payment-confirm/:id/:roleId/:userId"} element={<PaymentConfirmScreen />}/>
+            <Route path={"/view-balance/:roleId/:userId"} element={<BalanceScreen />}/>
             <Route path={"*"} element={<Navigate to={"/auth"} replace />} />
           </Routes>
         </IsGuest>
