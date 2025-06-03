@@ -99,9 +99,6 @@ const CreateClientPage = () => {
                         value: 'NON_ACCOUNTED'
                     }]}/>
                 </Form.Item>
-                <Form.Item name={'balance'} rules={[{required: true}]} label={'Balance'}>
-                    <InputNumber style={{width: '100%'}}/>
-                </Form.Item>
                 <Form.Item name={'legal'} label={'Legal'} valuePropName={'checked'}>
                     <Checkbox />
                 </Form.Item>
