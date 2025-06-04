@@ -15,18 +15,18 @@ const PaymentListScreen = () => {
         url: `/api/web/payments/get/${userId}`
     });
 
-    const payments = data?.data || [];
+    const payments = data?.data?.content || [];
 
     const getColor = (item) => {
-        if (!item.confirmed) return 'warning';   // sariq
-        if (item.amount < 0) return 'error';     // qizil
-        return 'success';                        // yashil
+        if (!item?.confirmed) return 'warning';
+        if (item?.amount < 0) return 'error';
+        return 'success';
     };
 
     const getText = (item) => {
-        const amount = item.amount > 0 ? `+${item.amount}` : `${item.amount}`;
-        if (!item.confirmed) return `${t("Tushum raqami")}: ${item.id} - ${amount}$`;
-        return `${t("Tushum raqami")}: ${item.id} ${item.orderId ? `| ${t("Zakaz")}: ${item.orderId}` : ''} - ${amount}$`;
+        const amount = item?.amount > 0 ? `+${item?.amount}` : `${item?.amount}`;
+        if (!item?.confirmed) return `${t("Tushum raqami")}: ${item?.id} - ${amount}$`;
+        return `${t("Tushum raqami")}: ${item?.id} ${item?.orderId ? `| ${t("Zakaz")}: ${item?.orderId}` : ''} - ${amount}$`;
     };
 
     return (
