@@ -22,7 +22,7 @@ const GlobalStyles = createGlobalStyle`
     font-size: 16px;
     line-height: 1.45;
     font-weight: 400;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Play', sans-serif!important;
   }
 
   #nprogress .bar {
@@ -69,8 +69,8 @@ const Theme = ({ children }) => {
     const themeConfig = {
         algorithm:  getAlgorithm(),
         fonts: {
-            heading: 'Montserrat',
-            body: 'Montserrat',
+            heading: 'Play',
+            body: 'Play',
         },
         token: {
             colorPrimary: '#488cf3',
