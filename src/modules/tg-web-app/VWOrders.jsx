@@ -1,13 +1,15 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import {List, Card, Typography, Flex} from 'antd';
-import Container from '../../components/Container.jsx';
+import React, { useState } from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import {Button, Card, Input, Typography, message, List, Flex} from 'antd';
+import { useTranslation } from 'react-i18next';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
-import { get } from 'lodash';
-import {useTranslation} from "react-i18next";
+import Container from '../../components/Container';
+import {get} from "lodash";
 import {getStatusColor} from "../../utils/index.js";
 
-const CourierOrdersPage = () => {
+const { Text } = Typography;
+
+const VWViewOrdersPage = () => {
     const { roleId, userId } = useParams();
     const navigate = useNavigate();
     const {t} = useTranslation();
@@ -33,7 +35,7 @@ const CourierOrdersPage = () => {
                     <List.Item>
                         <Card
                             style={{ backgroundColor: getStatusColor(order?.status), width: '100%' }}
-                            onClick={() => navigate(`/view-courier-order/${order.id}/${roleId}/${userId}`)}
+                            onClick={() => navigate(`/view-vw-order/${order.id}/${roleId}/${userId}`)}
                         >
                             <Flex justify="space-between" align="center">
                                 <Typography.Title level={5}>{t("Buyurtma raqami")}: #{order?.code || order?.id}</Typography.Title>
@@ -48,4 +50,4 @@ const CourierOrdersPage = () => {
     );
 };
 
-export default CourierOrdersPage;
+export default VWViewOrdersPage;

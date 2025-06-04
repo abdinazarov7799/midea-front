@@ -34,7 +34,7 @@ const WarehouseSendItemViewPage = () => {
     const couriers = get(couriersData, 'data.content', []);
 
     useEffect(() => {
-        if (!isEqual(get(order,'status'),'READY_TO_SHIP')) {
+        if (isEqual(get(order,'status'),'READY_TO_SHIP')) {
             setFormDisabled(true);
         }
     }, [order]);
@@ -71,32 +71,38 @@ const WarehouseSendItemViewPage = () => {
                 </p>
             ))}
             <p><b>{t("Menejer")}:</b> {order?.manager}</p>
-            <p><b>{t("Yaratuvchi izohi")}:</b> {order?.creatorComment || 'Ma\'lumot yo‘q'}</p>
-            <p><b>{t("WW izohi")}:</b> {order?.warehouseWorkerComment || 'Ma\'lumot yo‘q'}</p>
-            <p><b>{t("Courier izohi")}:</b> {order?.courierComment || 'Ma\'lumot yo‘q'}</p>
-            <p><b>{t("Status")}:</b> <Text type="success">{t("Yangi")}</Text></p>
+            <p><b>{t("Yaratuvchi izohi")}:</b> {order?.creatorComment || t('Ma\'lumot yo‘q')}</p>
+            <p><b>{t("WW izohi")}:</b> {order?.warehouseWorkerComment || t('Ma\'lumot yo‘q')}</p>
+            <p><b>{t("Courier izohi")}:</b> {order?.courierComment || t('Ma\'lumot yo‘q')}</p>
+            <p><b>{t("Status")}:</b> <Text type="success">{order?.status || t("Yangi")}</Text></p>
             <p><b>{t("Kuryer")}:</b> {order?.courier || t("Biriktirilmagan")}</p>
 
-            <p style={{ marginTop: 16 }}><b>{t("Kuryerni tanlang")}:</b></p>
-            <Select
-                placeholder={t("Tanlash")}
-                options={couriers?.map(c => ({
-                    label: `${c.fullName} | ${c.phone}`,
-                    value: c.id
-                }))}
-                value={courierId}
-                onChange={val => setCourierId(val)}
-                disabled={formDisabled}
-                style={{ width: '100%', marginBottom: 12 }}
-            />
-            <Button
-                type="primary"
-                onClick={handleCourierAssign}
-                block
-                disabled={formDisabled}
-            >
-                {t("Biriktirish")}
-            </Button>
+            {
+                isEqual(get(order,'status'),'READY_TO_SHIP') && (
+                    <>
+                        <p style={{ marginTop: 16 }}><b>{t("Kuryerni tanlang")}:</b></p>
+                        <Select
+                            placeholder={t("Tanlash")}
+                            options={couriers?.map(c => ({
+                                label: `${c.fullName} | ${c.phone}`,
+                                value: c.id
+                            }))}
+                            value={courierId}
+                            onChange={val => setCourierId(val)}
+                            disabled={formDisabled}
+                            style={{ width: '100%', marginBottom: 12 }}
+                        />
+                        <Button
+                            type="primary"
+                            onClick={handleCourierAssign}
+                            block
+                            disabled={formDisabled}
+                        >
+                            {t("Biriktirish")}
+                        </Button>
+                    </>
+                )
+            }
 
             <Space direction="vertical" style={{width:'100%', marginTop: 80}}>
                 <Button

@@ -5,6 +5,7 @@ import Container from '../../components/Container.jsx';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery.js';
 import { get } from 'lodash';
 import {useTranslation} from "react-i18next";
+import {getStatusColor} from "../../utils/index.js";
 
 const ReturnedOrderPage = () => {
     const { userId, roleId } = useParams();
@@ -34,13 +35,14 @@ const ReturnedOrderPage = () => {
                 renderItem={(order) => (
                     <List.Item>
                         <Card
-                            style={{ backgroundColor: '#ffd6d6', width: '100%' }}
+                            style={{ backgroundColor: getStatusColor(order?.status), width: '100%' }}
                             onClick={() => navigate(`/returned-order-view/${order.id}/${userId}/${roleId}`)}
                         >
                             <Flex justify="space-between" align="center">
                                 <Typography.Title level={5}>{t("Buyurtma raqami")}: #{order?.code || order?.id}</Typography.Title>
                                 <Typography.Text>{t("Total amount")}: {order?.totalAmount}</Typography.Text>
                             </Flex>
+                            <Typography.Text>{t("Status")}: {t(order?.status)}</Typography.Text>
                         </Card>
                     </List.Item>
                 )}

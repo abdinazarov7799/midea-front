@@ -7,7 +7,7 @@ import { get } from 'lodash';
 import {useTranslation} from "react-i18next";
 import {getStatusColor} from "../../utils/index.js";
 
-const CourierOrdersPage = () => {
+const BotOrdersPage = () => {
     const { roleId, userId } = useParams();
     const navigate = useNavigate();
     const {t} = useTranslation();
@@ -33,7 +33,7 @@ const CourierOrdersPage = () => {
                     <List.Item>
                         <Card
                             style={{ backgroundColor: getStatusColor(order?.status), width: '100%' }}
-                            onClick={() => navigate(`/view-courier-order/${order.id}/${roleId}/${userId}`)}
+                            onClick={() => navigate(`/view-order/${order.id}/${roleId}/${userId}`)}
                         >
                             <Flex justify="space-between" align="center">
                                 <Typography.Title level={5}>{t("Buyurtma raqami")}: #{order?.code || order?.id}</Typography.Title>
@@ -48,4 +48,4 @@ const CourierOrdersPage = () => {
     );
 };
 
-export default CourierOrdersPage;
+export default BotOrdersPage;

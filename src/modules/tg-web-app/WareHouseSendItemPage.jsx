@@ -5,6 +5,7 @@ import Container from '../../components/Container.jsx';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import { get } from 'lodash';
 import {useTranslation} from "react-i18next";
+import {getStatusColor} from "../../utils/index.js";
 
 const WarehouseSendItemPage = () => {
     const { roleId, userId } = useParams();
@@ -21,7 +22,9 @@ const WarehouseSendItemPage = () => {
         }
     });
 
-    const orders = get(data, 'data.content', []);
+    const orders = get(data, 'data.content', [])?.filter(
+        (order) => ['READY_TO_SHIP', 'CREATED'].includes(order?.status)
+    );
 
     return (
         <Container>
@@ -31,13 +34,14 @@ const WarehouseSendItemPage = () => {
                 renderItem={(order) => (
                     <List.Item>
                         <Card
-                            style={{ backgroundColor: '#fff5cc', width: '100%' }}
-                            onClick={() => navigate(`/warehouse-send-item-view/${order.id}/${roleId}/${userId}`)}
+                            style={{ backgroundColor: getStatusColor(order?.status), width: '100%' }}
+                            onClick={() => navigate(`/warehouse-send-item-view/${order?.id}/${roleId}/${userId}`)}
                         >
                             <Flex justify="space-between" align="center">
                                 <Typography.Title level={5}>{t("Buyurtma raqami")}: #{order?.code || order?.id}</Typography.Title>
                                 <Typography.Text>{t("Total amount")}: {order?.totalAmount}</Typography.Text>
                             </Flex>
+                            <Typography.Text>{t("Status")}: {t(order?.status)}</Typography.Text>
                         </Card>
                     </List.Item>
                 )}

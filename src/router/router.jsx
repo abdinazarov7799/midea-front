@@ -51,6 +51,8 @@ import PaymentListScreen from "../modules/tg-web-app/PaymentListScreen.jsx";
 import PaymentConfirmScreen from "../modules/tg-web-app/PaymentConfirmScreen.jsx";
 import InventoryViewPage from "../modules/inventory/view/InventoryViewPage.jsx";
 import RolesPage from "../modules/roles/pages/RolesPage.jsx";
+import VWOrdersPage from "../modules/tg-web-app/VWOrders.jsx";
+import ViewVWOrdersPage from "../modules/tg-web-app/ViewVWOrders.jsx";
 // PAGES
 
 
@@ -96,14 +98,18 @@ const Router = () => {
             <Route path={"/create-client-form/:roleId/:userId"} element={<CreateClientPage />}/>
             <Route path={"/add-stock/:roleId/:userId"} element={<AddStockPage />}/>
             <Route path={"/returned-order/:roleId/:userId"} element={<ReturnedOrderPage />}/>
-            <Route path="/returned-order-view/:id/:userId/:roleId" element={<ReturnedOrderViewPage />} />
+            <Route path={"/returned-order-view/:id/:userId/:roleId"} element={<ReturnedOrderViewPage />} />
+
             <Route path={"/warehouse-send-item/:roleId/:userId"} element={<WareHouseSendItemPage />}/>
             <Route path={"/warehouse-send-item-view/:id/:roleId/:userId"} element={<WarehouseSendItemViewPage />}/>
             <Route path={"/warehouse-transfers/:roleId/:userId"} element={<WarehouseTransferPage />}/>
             <Route path={"/warehouse-transfers-form/:roleId/:userId"} element={<WarehouseTransferFormPage />}/>
 
-            <Route path={"/view-orders/:roleId/:userId"} element={<CourierOrdersPage />}/>
-            <Route path={"/view-warehouse-worker-orders/:roleId/:userId"} element={<CourierOrdersPage />}/>
+            <Route path={"/view-orders/:roleId/:userId"} element={<VWOrdersPage />}/>
+            <Route path={"/view-order/:id/:roleId/:userId"} element={<ViewVWOrdersPage />}/>
+            <Route path={"/view-vw-order/:id/:roleId/:userId"} element={<ViewVWOrdersPage />}/>
+            <Route path={"/view-warehouse-worker-orders/:roleId/:userId"} element={<VWOrdersPage />}/>
+
             <Route path={"/view-courier-orders/:roleId/:userId"} element={<CourierOrdersPage />}/>
             <Route path={"/view-courier-order/:id/:roleId/:userId"} element={<CourierOrderViewPage />}/>
 
