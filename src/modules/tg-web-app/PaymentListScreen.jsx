@@ -65,9 +65,14 @@ const PaymentListScreen = () => {
                                 </Typography.Text>
                                 <Tag color={color}>{getStatusText(item)}</Tag>
                             </div>
-                            <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                                {item.receiver} | {dayjs(item.createdAt).format('YYYY-MM-DD HH:mm')}
-                            </Typography.Text>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center',justifyContent: 'space-between', marginTop: 10}}>
+                                <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+                                    {item.receiver}
+                                </Typography.Text>
+                                <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+                                    {dayjs(item.createdAt).format('YYYY-MM-DD HH:mm')}
+                                </Typography.Text>
+                            </div>
                         </Card>
                     );
                 }}
