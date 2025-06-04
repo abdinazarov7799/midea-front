@@ -16,7 +16,6 @@ const CreateClientPage = () => {
     const {t} = useTranslation();
     const params = window.location.search
 
-    const telegram = useTelegram();
     const {data, isLoading} = useGetAllQuery({
         key: ['web-dealers-list',userId],
         url: '/api/web/dealers/get-all',
@@ -35,7 +34,7 @@ const CreateClientPage = () => {
             attributes: {...values,creatorId: userId, phone: `+998${values.phone?.trim()}`},
         }, {
             onSuccess: () => {
-                telegram.onClose();
+
             },
         })
     };
