@@ -28,11 +28,11 @@ const WarehouseSendItemViewPage = () => {
     });
 
     const confirmShipping = usePutQuery({});
-    const linkCourier = usePostQuery({});
+    const linkCourier = usePutQuery({});
 
     const order = get(orderData, 'data', {});
     const couriers = get(couriersData, 'data.content', []);
-    console.log(isEqual(get(order,'status'),'READY_TO_SHIP'))
+
     useEffect(() => {
         if (!isEqual(get(order,'status'),'READY_TO_SHIP')) {
             setFormDisabled(true);
