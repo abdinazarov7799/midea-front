@@ -100,6 +100,8 @@ const Router = () => {
             <Route path={"/warehouse-transfers/:roleId/:userId"} element={<WarehouseTransferPage />}/>
             <Route path={"/warehouse-transfers-form/:roleId/:userId"} element={<WarehouseTransferFormPage />}/>
 
+            <Route path={"/view-orders/:roleId/:userId"} element={<CourierOrdersPage />}/>
+            <Route path={"/view-warehouse-worker-orders/:roleId/:userId"} element={<CourierOrdersPage />}/>
             <Route path={"/view-courier-orders/:roleId/:userId"} element={<CourierOrdersPage />}/>
             <Route path={"/view-courier-order/:id/:roleId/:userId"} element={<CourierOrderViewPage />}/>
 
