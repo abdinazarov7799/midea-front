@@ -20,14 +20,14 @@ const WarehouseTransferFormPage = () => {
     const [toWarehouse, setToWarehouse] = useState(null);
     const [comment, setComment] = useState(null);
 
-    const { data: sectionsData } = useGetAllQuery({
-        key: ['sections',userId],
-        url: `/api/web/warehouse-sections/get/${userId}`
-    });
-
     const { data: warehousesData } = useGetAllQuery({
         key: ['warehouses'],
         url: `/api/web/warehouses/get`
+    });
+
+    const { data: sectionsData } = useGetAllQuery({
+        key: ['sections',userId],
+        url: `/api/web/warehouse-sections/get/${userId}`
     });
 
     const { data: productsData } = useGetAllQuery({
