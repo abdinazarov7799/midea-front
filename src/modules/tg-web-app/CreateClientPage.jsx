@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from "../../components/Container.jsx";
 import {useTelegram} from "../../hooks/telegram/useTelegram.js";
-import {Button, Checkbox, Form, Input, InputNumber, Select} from "antd";
+import {Button, Checkbox, Form, Input, Select} from "antd";
 import {useTranslation} from "react-i18next";
 import useGetAllQuery from "../../hooks/api/useGetAllQuery.js";
 import {get} from "lodash";
@@ -18,11 +18,12 @@ const CreateClientPage = () => {
 
     const telegram = useTelegram();
     const {data, isLoading} = useGetAllQuery({
-        key: 'web-dealers-list',
+        key: ['web-dealers-list',userId],
         url: '/api/web/dealers/get-all',
         params: {
             params: {
-                size: 1000
+                size: 1000,
+                userId
             }
         }
     })

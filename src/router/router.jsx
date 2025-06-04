@@ -90,7 +90,7 @@ const Router = () => {
             <Route path={"/auth"} element={<AuthLayout />}>
               <Route index element={<LoginPage />} />
             </Route>
-            <Route path={"/create-order-form/:roleId/:userId"} element={<CreateOrderPage />}/>
+            <Route path={"/create-order-form/:roleId/:userId/:dealerId"} element={<CreateOrderPage />}/>
             <Route path={"/create-client-form/:roleId/:userId"} element={<CreateClientPage />}/>
             <Route path={"/add-stock/:roleId/:userId"} element={<AddStockPage />}/>
             <Route path={"/returned-order/:roleId/:userId"} element={<ReturnedOrderPage />}/>

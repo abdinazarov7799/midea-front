@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Select, InputNumber, Switch } from 'antd';
+import { Form, Button, Select, InputNumber, Switch } from 'antd';
 import Container from "../../components/Container.jsx";
 import { useTranslation } from "react-i18next";
 import { get } from 'lodash';
@@ -13,14 +13,14 @@ import {useTelegram} from "../../hooks/telegram/useTelegram.js";
 const CreateOrderPage = () => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
-    const { userId, roleId } = useParams();
+    const { userId, roleId,dealerId } = useParams();
     const navigate = useNavigate();
     const telegram = useTelegram()
     const [items, setItems] = useState([]);
 
     const { data: clientsData } = useGetAllQuery({
-        key: ['client-list', userId],
-        url: `/api/web/clients/get-all/${userId}`
+        key: ['client-list', dealerId],
+        url: `/api/web/clients/get-all/${dealerId}`
     });
 
     const { data: warehousesData } = useGetAllQuery({
@@ -83,7 +83,7 @@ const CreateOrderPage = () => {
                 items
             }
         },{
-            onSuccess: (res) => {
+            onSuccess: () => {
                 telegram.onClose()
             }
         });
