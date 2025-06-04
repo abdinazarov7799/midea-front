@@ -29,22 +29,22 @@ const RolesContainer = () => {
             dataIndex: "name",
             key: "name",
         },
-        // {
-        //     title: t("Web"),
-        //     dataIndex: "web",
-        //     key: "web",
-        //     render: (props,data,index) => (
-        //         <Checkbox checked={get(data,'web')} />
-        //     )
-        // },
-        // {
-        //     title: t("Bot"),
-        //     dataIndex: "bot",
-        //     key: "bot",
-        //     render: (props,data,index) => (
-        //         <Checkbox checked={get(data,'bot')} />
-        //     )
-        // },
+        {
+            title: t("Web"),
+            dataIndex: "web",
+            key: "web",
+            render: (props,data,index) => (
+                <Checkbox checked={get(data,'web')} disabled />
+            )
+        },
+        {
+            title: t("Bot"),
+            dataIndex: "bot",
+            key: "bot",
+            render: (props,data,index) => (
+                <Checkbox checked={get(data,'bot')} disabled />
+            )
+        },
         {
             title: t("Created at"),
             dataIndex: "createdAt",
