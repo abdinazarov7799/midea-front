@@ -33,6 +33,9 @@ const  usePostQuery = ({hideSuccessToast = false, listKeyId = null}) => {
                     get(data,'response.data.errors',[]).map((err) => (
                         notification.error({message: t(get(err,'errorMsg') || 'ERROR')})
                     ))
+                    if (get(data,'response.data.message')){
+                        notification.error({message: t(get(data,'response.data.message') || 'ERROR')})
+                    }
                 }
             }
         );
