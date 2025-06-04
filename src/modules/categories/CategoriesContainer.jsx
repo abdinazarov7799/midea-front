@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Button, Input, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
+import {Button, DatePicker, Input, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -9,6 +9,7 @@ import {URLS} from "../../constants/url.js";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
 import CreateEditCategories from "./components/CreateEditCategories.jsx";
+import dayjs from "dayjs";
 
 const CategoriesContainer = () => {
     const {t} = useTranslation();
@@ -24,7 +25,9 @@ const CategoriesContainer = () => {
         params: {
             params: {
                 size: 10,
-                ...params
+                ...params,
+                from: get(params,'from') ? get(params,'from')?.toISOString() : null,
+                to: get(params,'to') ? get(params,'to')?.toISOString() : null
             }
         },
         page
@@ -43,23 +46,75 @@ const CategoriesContainer = () => {
 
     const columns = [
         {
-            title: t("ID"),
+            title: (
+                <Space direction="vertical">
+                    {t("ID")}
+                    <Input
+                        placeholder={t("ID")}
+                        allowClear
+                        value={get(params,'id','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('id', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "id",
             key: "id",
             width: 250,
         },
         {
-            title: t("Name"),
+            title: (
+                <Space direction="vertical">
+                    {t("Name")}
+                    <Input
+                        placeholder={t("Name")}
+                        allowClear
+                        value={get(params,'name','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('name', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "name",
             key: "name"
         },
         {
-            title: t("Code"),
+            title: (
+                <Space direction="vertical">
+                    {t("Code")}
+                    <Input
+                        placeholder={t("Code")}
+                        allowClear
+                        value={get(params,'code','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('code', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "code",
             key: "code"
         },
         {
-            title: t("Dscription"),
+            title: (
+                <Space direction="vertical">
+                    {t("Description")}
+                    <Input
+                        placeholder={t("Description")}
+                        allowClear
+                        value={get(params,'description','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('description', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "description",
             key: "description"
         },
@@ -98,6 +153,20 @@ const CategoriesContainer = () => {
                     >
                         {t("New")}
                     </Button>
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Dan")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'from') ? dayjs(get(params, 'from')) : null}
+                        onChange={(date) => onChangeParams('from', date)}
+                    />
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Gacha")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
+                        onChange={(date) => onChangeParams('to', date)}
+                    />
                 </Space>
 
                 <Table
