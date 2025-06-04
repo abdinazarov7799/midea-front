@@ -50,4 +50,5 @@ export const URLS = {
     payments_list: '/api/admin/payments/get-all',
     accruals_list: '/api/admin/accruals/get',
     inventory_list: '/api/admin/inventories/get',
+    roles_list: '/api/common/roles/get',
 };

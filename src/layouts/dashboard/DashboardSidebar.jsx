@@ -4,9 +4,6 @@ import React from "react";
 import Sider from "antd/es/layout/Sider";
 import {useTranslation} from "react-i18next";
 import {useLocation, useNavigate} from "react-router-dom";
-import config from "../../config.js";
-import {hasAccess} from "../../services/auth/HasAccess.jsx";
-import {useStore} from "../../store/index.js";
 
 const DashboardSidebar = () => {
     const { t } = useTranslation();
@@ -77,6 +74,10 @@ const DashboardSidebar = () => {
         {
             label: t("Constants"),
             key: "/constants",
+        },
+        {
+            label: t("Roles"),
+            key: "/roles",
         },
         {
             label: t("Translations"),
