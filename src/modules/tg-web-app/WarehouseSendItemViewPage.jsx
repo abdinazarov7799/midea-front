@@ -32,10 +32,12 @@ const WarehouseSendItemViewPage = () => {
 
     const order = get(orderData, 'data', {});
     const couriers = get(couriersData, 'data.content', []);
-
+    console.log(isEqual(get(order,'status'),'READY_TO_SHIP'))
     useEffect(() => {
-        if (isEqual(get(order,'status'),'READY_TO_SHIP')) {
+        if (!isEqual(get(order,'status'),'READY_TO_SHIP')) {
             setFormDisabled(true);
+        }else {
+            setFormDisabled(false);
         }
     }, [order]);
 
