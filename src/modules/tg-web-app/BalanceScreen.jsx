@@ -46,8 +46,8 @@ const BalanceScreen = () => {
                 </Button>
 
                 <Typography.Paragraph style={{ marginTop: 20 }}>
-                    <b>{t("Sizning rolingiz")}:</b> {t("Menejer")}<br />
-                    <b>{t("FIO")}:</b> Diyorbek Abdinazarov<br />
+                    <b>{t("Sizning rolingiz")}:</b> {data?.data?.roleName || '-'}<br />
+                    <b>{t("FIO")}:</b> {data?.data?.fullName || '-'}<br />
                     <b>{t("Balans")}:</b> $ {data?.data?.balance || 0}
                 </Typography.Paragraph>
 
