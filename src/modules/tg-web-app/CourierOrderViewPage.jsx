@@ -72,7 +72,7 @@ const CourierOrderViewPage = () => {
                 <p><b>{t("Status")}:</b> <Text >{t(status)}</Text></p>
                 <p><b>{t("Kuryer uchun izoh")}:</b> {order.courierComment}</p>
 
-                {status === 'READY_TO_SHIP' && !showReject && (
+                {status === 'WAITING_COURIER' && !showReject && (
                     <>
                         <Button danger block style={{ marginTop: 16 }} onClick={() => setShowReject(true)}>
                             {t("Bekor qilish")}
