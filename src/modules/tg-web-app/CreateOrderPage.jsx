@@ -79,7 +79,7 @@ const CreateOrderPage = () => {
                 ...values,
                 creatorId: userId,
                 creatorRoleId: roleId,
-                dealerId: userId,
+                dealerId: dealerId,
                 items
             }
         },{
