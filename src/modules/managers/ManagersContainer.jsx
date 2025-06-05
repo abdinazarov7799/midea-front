@@ -75,6 +75,12 @@ const ManagersContainer = () => {
             key: "fullName"
         },
         {
+            title: t("Balance"),
+            dataIndex: "balance",
+            key: "balance",
+            render: props => `${props} $`
+        },
+        {
             title: t("Team lead"),
             dataIndex: "teamLead",
             key: "teamLead",

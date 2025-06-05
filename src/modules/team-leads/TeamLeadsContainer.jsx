@@ -75,6 +75,12 @@ const TeamLeadsContainer = () => {
             key: "fullName"
         },
         {
+            title: t("Balance"),
+            dataIndex: "balance",
+            key: "balance",
+            render: props => `${props} $`
+        },
+        {
             title: t("Dealer"),
             dataIndex: "dealer",
             key: "dealer",
