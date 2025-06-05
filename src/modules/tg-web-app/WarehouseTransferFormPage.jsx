@@ -32,8 +32,9 @@ const WarehouseTransferFormPage = () => {
 
     const { data: productsData } = useGetAllQuery({
         key: ['products'],
-        url: `/api/web/products/get`,
-        params: { params: { size: 1000, page: 0 } }
+        url: `/api/web/products/get/${fromSection}`,
+        params: { params: { size: 1000, page: 0 } },
+        enabled: !!fromSection
     });
 
     const transferMutation = usePostQuery({});
@@ -94,7 +95,7 @@ const WarehouseTransferFormPage = () => {
                     style={{ width: '100%', marginBottom: 16 }}
                 />
 
-                {stocks.map((stock, index) => (
+                {stocks?.map((stock, index) => (
                     <Row gutter={10} key={index} style={{ marginBottom: 8}}>
                         <Col span={15}>
                             <Select

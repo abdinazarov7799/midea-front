@@ -53,7 +53,7 @@ const WarehouseTransferPage = () => {
                     {t("Ko'chirish (Перемещение)")}
                 </Button>
             </Flex>
-            {transfers.map((transfer) => (
+            {transfers?.map((transfer) => (
                 <Card
                     key={transfer.id}
                     title={`${t("Ko‘chirish raqami")}: #${transfer.id.slice(0, 6)}...`}
