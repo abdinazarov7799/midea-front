@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 
 const PaymentListScreen = () => {
     const { t } = useTranslation();
-    const { userId } = useParams();
+    const { userId,roleId } = useParams();
     const navigate = useNavigate();
 
     const { data, isLoading } = useGetAllQuery({
@@ -19,7 +19,7 @@ const PaymentListScreen = () => {
     const payments = data?.data?.content || [];
 
     const getColor = (item) => {
-        if (!item.confirmed) return 'warning';
+        if (!item?.confirmed) return 'warning';
         if (!item?.income) return 'error';
         if (item?.income) return 'success';
         return 'success';
@@ -51,13 +51,13 @@ const PaymentListScreen = () => {
                 dataSource={payments}
                 renderItem={(item) => {
                     const color = getColor(item);
-                    const amount = item.action === 'ACCRUAL' ?  `+${item.amount}$` : `-${item.amount}$`;
+                    const amount = item?.action === 'ACCRUAL' ?  `+${item?.amount}$` : `-${item?.amount}$`;
 
                     return (
                         <Card
                             size="small"
-                            style={{ marginBottom: 12, cursor: !item.confirmed ? 'pointer' : 'default' }}
-                            onClick={() => !item.confirmed && navigate(`/payments/confirm/${item.id}/${userId}`)}
+                            style={{ marginBottom: 12, cursor: !item?.confirmed ? 'pointer' : 'default' }}
+                            onClick={() => !item?.confirmed && navigate(`/view-payment-confirm/${item?.id}/${roleId}/${userId}`)}
                         >
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <Typography.Text strong>
@@ -67,10 +67,10 @@ const PaymentListScreen = () => {
                             </div>
                             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center',justifyContent: 'space-between', marginTop: 10}}>
                                 <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                                    {item.receiver}
+                                    {item?.receiver}
                                 </Typography.Text>
                                 <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                                    {dayjs(item.createdAt).format('YYYY-MM-DD HH:mm')}
+                                    {dayjs(item?.createdAt).format('YYYY-MM-DD HH:mm')}
                                 </Typography.Text>
                             </div>
                         </Card>

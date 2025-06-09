@@ -22,6 +22,7 @@ return (
     <>
         <Button icon={<ArrowLeftOutlined/>} style={{margin: '10px'}} onClick={() => history.back()}>{t("Orqaga")}</Button>
         <Card title={`${t("Buyurtma raqami")}: #${order?.code || order?.id}`}>
+            <p><b>{t("Warehouse")}:</b> {order?.warehouse}</p>
             <p><b>{t("Buyurtmachi")}:</b> {order?.client}</p>
             <p><b>{t("Mahsulotlar")}:</b></p>
             {order?.items?.map((item, i) => (
@@ -41,7 +42,8 @@ return (
             <p><b>{t("To‘lanishi kerak summa")}:</b> ${order?.mustPay}</p>
             <p><b>{t("Yaratuvchi izohi")}:</b> {order?.creatorComment || t("Ma'lumot yo‘q")}</p>
             <p><b>{t("Status")}:</b> <Text >{t(status)}</Text></p>
-            <p><b>{t("Kuryer uchun izoh")}:</b> {order?.courierComment}</p>
+            <p><b>{t("Warehouse worker izohi")}:</b> {order?.warehouseWorkerComment}</p>
+            <p><b>{t("Kuryer izohi")}:</b> {order?.courierComment}</p>
         </Card>
     </>
 );
