@@ -30,6 +30,7 @@ return (
             <p><b>{t("Menejer")}:</b> {order?.manager}</p>
             <p><b>{t("Diler")}:</b> {order?.dealer}</p>
             <p><b>{t("Team Lead")}:</b> {order?.teamLead}</p>
+            <p><b>{t("Courier")}:</b> {order?.courier}</p>
             {order?.address && (
                 <p>
                     <b>{t("Manzil")}:</b> <a href={order?.address} target="_blank" rel="noreferrer">

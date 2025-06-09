@@ -27,8 +27,8 @@ const WarehouseSendItemViewPage = () => {
         url: `/api/web/couriers/get`
     });
 
-    const confirmShipping = usePutQuery({});
-    const linkCourier = usePutQuery({});
+    const confirmShipping = usePutQuery({listKeyId: ['order']});
+    const linkCourier = usePutQuery({listKeyId: ['order']});
 
     const order = get(orderData, 'data', {});
     const couriers = get(couriersData, 'data.content', []);
@@ -54,6 +54,16 @@ const WarehouseSendItemViewPage = () => {
         });
     };
 
+    const handlePickUp = () => {
+        linkCourier.mutate({
+            url: `/api/web/warehouse-workers/link-courier/${id}/${userId}?completed=true`,
+        }, {
+            onSuccess: () => {
+                message.success(t("Muvaffaqqiyatli"));
+            }
+        });
+    }
+
     const handleConfirm = (confirmed) => {
         confirmShipping.mutate({
             url: `/api/web/warehouse-workers/confirm-shipping/${id}/${userId}?confirm=${confirmed}`,
@@ -61,7 +71,6 @@ const WarehouseSendItemViewPage = () => {
             onSuccess: () => message.success(t("Buyurtma chiqarishga tayyorlandi"))
         });
     };
-
 
     return (
         <Card title={<Space><Button icon={<ArrowLeftOutlined/>} onClick={() => history.back()} /><Typography.Text>{`${t("Buyurtma raqami")}: #${order?.code || order?.id}`}</Typography.Text></Space>}>
@@ -80,7 +89,7 @@ const WarehouseSendItemViewPage = () => {
             <p><b>{t("Kuryer")}:</b> {order?.courier || t("Biriktirilmagan")}</p>
 
             {
-                isEqual(get(order,'status'),'READY_TO_SHIP') && (
+                (isEqual(get(order,'status'),'READY_TO_SHIP') && get(order,'delivery')) && (
                     <>
                         <p style={{ marginTop: 16 }}><b>{t("Kuryerni tanlang")}:</b></p>
                         <Select
@@ -103,6 +112,19 @@ const WarehouseSendItemViewPage = () => {
                             {t("Biriktirish")}
                         </Button>
                     </>
+                )
+            }
+
+            {
+                !get(order,'delivery') && (
+                    <Button
+                        type="primary"
+                        style={{ marginTop: 16 }}
+                        block
+                        onClick={handlePickUp}
+                    >
+                        {t("Olib ketildi")}
+                    </Button>
                 )
             }
 

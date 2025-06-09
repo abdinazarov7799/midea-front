@@ -24,8 +24,8 @@ const CourierOrderViewPage = () => {
     const order = data?.data || {};
     const status = order.status;
 
-    const confirmDelivery = usePutQuery({});
-    const completeDelivery = usePutQuery({});
+    const confirmDelivery = usePutQuery({listKeyId: ['courier-order']});
+    const completeDelivery = usePutQuery({listKeyId: ['courier-order']});
 
     const handleConfirm = (confirm) => {
         confirmDelivery.mutate({

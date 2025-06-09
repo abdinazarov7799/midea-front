@@ -13,7 +13,7 @@ const CourierOrdersPage = () => {
     const {t} = useTranslation();
 
     const { data, isLoading } = useGetAllQuery({
-        key: ['send-item-orders', userId],
+        key: ['orders', userId],
         url: `/api/web/orders/get-all/${userId}`,
         params: {
             params: {
