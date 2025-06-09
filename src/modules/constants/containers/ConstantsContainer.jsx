@@ -20,11 +20,6 @@ const ConstantsContainer = () => {
     })
     const columns = [
         {
-            title: t("Id"),
-            dataIndex: "id",
-            key: "id",
-        },
-        {
             title: t("Key"),
             dataIndex: "key",
             key: "key",

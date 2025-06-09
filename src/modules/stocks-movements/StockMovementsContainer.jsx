@@ -33,11 +33,6 @@ const StockMovementsContainer = () => {
 
     const columns = [
         {
-            title: t("ID"),
-            dataIndex: "id",
-            key: "id",
-        },
-        {
             title: t("Order id"),
             dataIndex: "orderId",
             key: "orderId",

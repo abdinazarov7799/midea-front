@@ -31,11 +31,6 @@ const AccrualsContainer = () => {
 
     const columns = [
         {
-            title: t("ID"),
-            dataIndex: "id",
-            key: "id",
-        },
-        {
             title: t("Role"),
             dataIndex: "role",
             key: "role",

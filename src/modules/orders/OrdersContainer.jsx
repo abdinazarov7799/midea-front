@@ -31,11 +31,6 @@ const OrdersContainer = () => {
 
     const columns = [
         {
-            title: t("ID"),
-            dataIndex: "id",
-            key: "id",
-        },
-        {
             title: t("Client"),
             dataIndex: "client",
             key: "client",

@@ -31,11 +31,6 @@ const PaymentsContainer = () => {
 
     const columns = [
         {
-            title: t("ID"),
-            dataIndex: "id",
-            key: "id",
-        },
-        {
             title: t("Amount"),
             dataIndex: "amount",
             key: "amount",

@@ -43,18 +43,6 @@ const TeamLeadsContainer = () => {
 
     const columns = [
         {
-            title: t("ID"),
-            dataIndex: "id",
-            key: "id",
-            width: 250
-        },
-        {
-            title: t("User ID"),
-            dataIndex: "userId",
-            key: "userId",
-            width: 250
-        },
-        {
             title: t("Telegram ID"),
             dataIndex: "telegramId",
             key: "telegramId",

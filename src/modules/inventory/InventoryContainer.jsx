@@ -33,11 +33,6 @@ const InventoryContainer = () => {
 
     const columns = [
         {
-            title: t("ID"),
-            dataIndex: "id",
-            key: "id",
-        },
-        {
             title: t("Category"),
             dataIndex: "product",
             key: "category",

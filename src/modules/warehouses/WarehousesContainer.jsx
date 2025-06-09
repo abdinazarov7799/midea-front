@@ -43,12 +43,6 @@ const WarehousesContainer = () => {
 
     const columns = [
         {
-            title: t("ID"),
-            dataIndex: "id",
-            key: "id",
-            width: 250
-        },
-        {
             title: t("Name"),
             dataIndex: "name",
             key: "name"

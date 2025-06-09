@@ -40,16 +40,22 @@ const DashboardSidebar = () => {
             key: "/clients",
         },
         {
-            label: t("Warehouses"),
+            label: t("Warehouse"),
             key: "/warehouses",
-        },
-        {
-            label: t("Warehouse workers"),
-            key: "/warehouse-workers",
-        },
-        {
-            label: t("Warehouse sections"),
-            key: "/warehouse-sections",
+            children: [
+                {
+                    label: t("Warehouses"),
+                    key: "/warehouses",
+                },
+                {
+                    label: t("Workers"),
+                    key: "/warehouse-workers",
+                },
+                {
+                    label: t("Sections"),
+                    key: "/warehouse-sections",
+                },
+            ]
         },
         {
             label: t("Orders"),
