@@ -16,16 +16,16 @@ const CreateClientPage = () => {
     const {t} = useTranslation();
     const params = window.location.search
 
-    const {data, isLoading} = useGetAllQuery({
-        key: ['web-dealers-list',userId],
-        url: '/api/web/dealers/get-all',
-        params: {
-            params: {
-                size: 1000,
-                userId
-            }
-        }
-    })
+    // const {data, isLoading} = useGetAllQuery({
+    //     key: ['web-dealers-list',userId],
+    //     url: '/api/web/dealers/get-all',
+    //     params: {
+    //         params: {
+    //             size: 1000,
+    //             userId
+    //         }
+    //     }
+    // })
     const {mutate, isLoading: isLoadingCreate} = usePostQuery({})
 
     const createClient = (values) => {
@@ -43,25 +43,25 @@ const CreateClientPage = () => {
         <Container>
             {!!params && <Button icon={<ArrowLeftOutlined/>} style={{marginBottom: 10}} onClick={() => history.back()}>{t("Orqaga")}</Button>}
             <Form form={form} onFinish={createClient} layout="vertical">
-                <Form.Item
-                    label={t("Dealer")}
-                    name="dealerId"
-                    rules={[{required: true,}]}>
-                    <Select
-                        showSearch
-                        placeholder={t("Dealer")}
-                        optionFilterProp="children"
-                        filterOption={(input, option) =>
-                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-                        loading={isLoading}
-                        options={get(data, 'data.content')?.map((item) => {
-                            return {
-                                value: get(item, 'id'),
-                                label: get(item, 'fullName')
-                            }
-                        })}
-                    />
-                </Form.Item>
+                {/*<Form.Item*/}
+                {/*    label={t("Dealer")}*/}
+                {/*    name="dealerId"*/}
+                {/*    rules={[{required: true,}]}>*/}
+                {/*    <Select*/}
+                {/*        showSearch*/}
+                {/*        placeholder={t("Dealer")}*/}
+                {/*        optionFilterProp="children"*/}
+                {/*        filterOption={(input, option) =>*/}
+                {/*            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}*/}
+                {/*        loading={isLoading}*/}
+                {/*        options={get(data, 'data.content')?.map((item) => {*/}
+                {/*            return {*/}
+                {/*                value: get(item, 'id'),*/}
+                {/*                label: get(item, 'fullName')*/}
+                {/*            }*/}
+                {/*        })}*/}
+                {/*    />*/}
+                {/*</Form.Item>*/}
                 <Form.Item name={'name'} rules={[{required: true}]} label={'Name'}>
                     <Input/>
                 </Form.Item>
