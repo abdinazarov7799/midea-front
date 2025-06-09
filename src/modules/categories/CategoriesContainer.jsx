@@ -100,6 +100,12 @@ const CategoriesContainer = () => {
             key: "description"
         },
         {
+            title: t("Created at"),
+            dataIndex: "createdAt",
+            key: "createdAt",
+            render: (props) => dayjs(props).format('YYYY-MM-DD HH:mm:ss'),
+        },
+        {
             title: t("Edit / Delete"),
             width: 120,
             fixed: 'right',

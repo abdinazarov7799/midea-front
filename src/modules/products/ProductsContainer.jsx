@@ -1,6 +1,19 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Button, Checkbox, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
+import {
+    Button,
+    Checkbox,
+    DatePicker,
+    Input,
+    Modal,
+    Pagination,
+    Popconfirm,
+    Row,
+    Select,
+    Space,
+    Table,
+    Typography
+} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -9,6 +22,7 @@ import {URLS} from "../../constants/url.js";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
 import CreateEditProducts from "./components/CreateEditProducts.jsx";
+import dayjs from "dayjs";
 
 const ProductsContainer = () => {
     const {t} = useTranslation();
@@ -24,7 +38,9 @@ const ProductsContainer = () => {
         params: {
             params: {
                 size: 10,
-                ...params
+                ...params,
+                from: get(params,'from') ? get(params,'from')?.toISOString() : null,
+                to: get(params,'to') ? get(params,'to')?.toISOString() : null
             }
         },
         page
@@ -43,7 +59,20 @@ const ProductsContainer = () => {
 
     const columns = [
         {
-            title: t("Model"),
+            title: (
+                <Space direction="vertical">
+                    {t("Model")}
+                    <Input
+                        placeholder={t("Model")}
+                        allowClear
+                        value={get(params,'model','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('model', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "model",
             key: "model"
         },
@@ -68,18 +97,61 @@ const ProductsContainer = () => {
             key: "dealerInterest"
         },
         {
-            title: t("Category"),
+            title: (
+                <Space direction="vertical">
+                    {t("Category")}
+                    <Input
+                        placeholder={t("Category")}
+                        allowClear
+                        value={get(params,'categoryName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('categoryName', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "category",
             key: "category",
             render: (text, record) => get(text,'name')
         },
         {
-            title: t("is active"),
+            title: (
+                <Space direction="vertical">
+                    {t("Is active")}
+                    <Select
+                        allowClear
+                        style={{width: 100}}
+                        placeholder={t("Is active")}
+                        defaultValue={get(params,'active',true)}
+                        value={get(params,'active','')}
+                        options={[
+                            {
+                                label: 'Active',
+                                value: true
+                            },
+                            {
+                                label: 'Disable',
+                                value: false
+                            },
+                        ]}
+                        onChange={(value) => {
+                            onChangeParams('active', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "active",
             key: "active",
             render: (props,data,index) => (
                 <Checkbox checked={get(data,'active')} />
             )
+        },
+        {
+            title: t("Created at"),
+            dataIndex: "createdAt",
+            key: "createdAt",
+            render: (props) => dayjs(props).format('YYYY-MM-DD HH:mm:ss'),
         },
         {
             title: t("Edit / Delete"),
@@ -116,6 +188,20 @@ const ProductsContainer = () => {
                     >
                         {t("New")}
                     </Button>
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Dan")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'from') ? dayjs(get(params, 'from')) : null}
+                        onChange={(date) => onChangeParams('from', date)}
+                    />
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Gacha")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
+                        onChange={(date) => onChangeParams('to', date)}
+                    />
                 </Space>
 
                 <Table

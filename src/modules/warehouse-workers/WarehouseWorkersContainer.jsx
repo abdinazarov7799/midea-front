@@ -1,6 +1,19 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Button, Checkbox, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
+import {
+    Button,
+    Checkbox,
+    DatePicker,
+    Input,
+    Modal,
+    Pagination,
+    Popconfirm,
+    Row,
+    Select,
+    Space,
+    Table,
+    Typography
+} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -9,6 +22,7 @@ import {URLS} from "../../constants/url.js";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
 import CreateEditWarehouseWorkers from "./components/CreateEditWarehouseWorkers.jsx";
+import dayjs from "dayjs";
 
 const WarehouseWorkersContainer = () => {
     const {t} = useTranslation();
@@ -24,7 +38,9 @@ const WarehouseWorkersContainer = () => {
         params: {
             params: {
                 size: 10,
-                ...params
+                ...params,
+                from: get(params,'from') ? get(params,'from')?.toISOString() : null,
+                to: get(params,'to') ? get(params,'to')?.toISOString() : null
             }
         },
         page
@@ -43,28 +59,104 @@ const WarehouseWorkersContainer = () => {
 
     const columns = [
         {
-            title: t("Username"),
+            title: (
+                <Space direction="vertical">
+                    {t("Username")}
+                    <Input
+                        placeholder={t("Username")}
+                        allowClear
+                        value={get(params,'username','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('username', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "username",
             key: "username"
         },
         {
-            title: t("Phone"),
+            title: (
+                <Space direction="vertical">
+                    {t("Phone")}
+                    <Input
+                        placeholder={t("Phone")}
+                        allowClear
+                        value={get(params,'phone','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('phone', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "phone",
             key: "phone"
         },
         {
-            title: t("Full name"),
+            title: (
+                <Space direction="vertical">
+                    {t("Full name")}
+                    <Input
+                        placeholder={t("Full name")}
+                        allowClear
+                        value={get(params,'fullName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('fullName', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "fullName",
             key: "fullName"
         },
         {
-            title: t("Warehouse"),
+            title: (
+                <Space direction="vertical">
+                    {t("Warehouse")}
+                    <Input
+                        placeholder={t("Warehouse")}
+                        allowClear
+                        value={get(params,'warehouseName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('warehouseName', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "warehouse",
             key: "warehouse",
             render: (text, record) => get(text,'name')
         },
         {
-            title: t("is active"),
+            title: (
+                <Space direction="vertical">
+                    {t("Is active")}
+                    <Select
+                        style={{width: 100}}
+                        placeholder={t("Is active")}
+                        allowClear
+                        defaultValue={get(params,'active',true)}
+                        value={get(params,'active','')}
+                        options={[
+                            {
+                                label: 'Active',
+                                value: true
+                            },
+                            {
+                                label: 'Disable',
+                                value: false
+                            },
+                        ]}
+                        onChange={(value) => {
+                            onChangeParams('active', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "active",
             key: "active",
             render: (props,data,index) => (
@@ -106,6 +198,20 @@ const WarehouseWorkersContainer = () => {
                     >
                         {t("New")}
                     </Button>
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Dan")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'from') ? dayjs(get(params, 'from')) : null}
+                        onChange={(date) => onChangeParams('from', date)}
+                    />
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Gacha")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
+                        onChange={(date) => onChangeParams('to', date)}
+                    />
                 </Space>
 
                 <Table

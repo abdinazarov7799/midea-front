@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Checkbox, Pagination, Row, Space, Table, Typography} from "antd";
+import {Checkbox, DatePicker, Input, Pagination, Row, Select, Space, Table, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -19,7 +19,9 @@ const OrdersContainer = () => {
         params: {
             params: {
                 size: 10,
-                ...params
+                ...params,
+                from: get(params,'from') ? get(params,'from')?.toISOString() : null,
+                to: get(params,'to') ? get(params,'to')?.toISOString() : null
             }
         },
         page
@@ -31,32 +33,110 @@ const OrdersContainer = () => {
 
     const columns = [
         {
-            title: t("Client"),
+            title: (
+                <Space direction="vertical">
+                    {t("Client")}
+                    <Input
+                        placeholder={t("Client")}
+                        allowClear
+                        value={get(params,'client','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('client', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "client",
             key: "client",
         },
         {
-            title: t("Courier"),
+            title: (
+                <Space direction="vertical">
+                    {t("Courier")}
+                    <Input
+                        placeholder={t("Courier")}
+                        allowClear
+                        value={get(params,'courier','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('courier', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "courier",
             key: "courier",
         },
         {
-            title: t("Manager"),
+            title: (
+                <Space direction="vertical">
+                    {t("Manager")}
+                    <Input
+                        placeholder={t("Manager")}
+                        allowClear
+                        value={get(params,'manager','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('manager', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "manager",
             key: "manager"
         },
         {
-            title: t("Dealer"),
+            title: (
+                <Space direction="vertical">
+                    {t("Dealer")}
+                    <Input
+                        placeholder={t("Dealer")}
+                        allowClear
+                        value={get(params,'dealer','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('dealer', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "dealer",
             key: "dealer"
         },
         {
-            title: t("Team lead"),
+            title: (
+                <Space direction="vertical">
+                    {t("Team lead")}
+                    <Input
+                        placeholder={t("Team lead")}
+                        allowClear
+                        value={get(params,'teamLead','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('teamLead', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "teamLead",
             key: "teamLead"
         },
         {
-            title: t("Status"),
+            title: (
+                <Space direction="vertical">
+                    {t("Status")}
+                    <Input
+                        placeholder={t("Status")}
+                        allowClear
+                        value={get(params,'status','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('status', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "status",
             key: "status"
         },
@@ -66,7 +146,20 @@ const OrdersContainer = () => {
             key: "totalAmount"
         },
         {
-            title: t("Warehouse"),
+            title: (
+                <Space direction="vertical">
+                    {t("Warehouse")}
+                    <Input
+                        placeholder={t("Warehouse")}
+                        allowClear
+                        value={get(params,'warehouse','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('warehouse', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "warehouse",
             key: "warehouse"
         },
@@ -77,7 +170,31 @@ const OrdersContainer = () => {
             render: (props) => dayjs(props).format('YYYY-MM-DD HH:mm:ss'),
         },
         {
-            title: t("delivery"),
+            title: (
+                <Space direction="vertical">
+                    {t("Delivery")}
+                    <Select
+                        style={{width: 100}}
+                        placeholder={t("Delivery")}
+                        allowClear
+                        defaultValue={get(params,'delivery',true)}
+                        value={get(params,'delivery','')}
+                        options={[
+                            {
+                                label: 'Delivery',
+                                value: true
+                            },
+                            {
+                                label: 'Pick up',
+                                value: false
+                            },
+                        ]}
+                        onChange={(value) => {
+                            onChangeParams('delivery', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "delivery",
             key: "delivery",
             render: (props) => (
@@ -88,6 +205,22 @@ const OrdersContainer = () => {
     return (
         <Container>
             <Space direction={"vertical"} style={{width: "100%"}} size={"middle"}>
+                <Space size={"middle"}>
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Dan")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'from') ? dayjs(get(params, 'from')) : null}
+                        onChange={(date) => onChangeParams('from', date)}
+                    />
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Gacha")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
+                        onChange={(date) => onChangeParams('to', date)}
+                    />
+                </Space>
                 <Table
                     columns={columns}
                     dataSource={get(data,'data.content',[])}

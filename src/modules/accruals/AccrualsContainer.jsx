@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Checkbox, Pagination, Row, Space, Table, Typography} from "antd";
+import {Checkbox, DatePicker, Input, Pagination, Row, Space, Table, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -19,7 +19,9 @@ const AccrualsContainer = () => {
         params: {
             params: {
                 size: 10,
-                ...params
+                ...params,
+                from: get(params,'from') ? get(params,'from')?.toISOString() : null,
+                to: get(params,'to') ? get(params,'to')?.toISOString() : null
             }
         },
         page
@@ -31,12 +33,38 @@ const AccrualsContainer = () => {
 
     const columns = [
         {
-            title: t("Role"),
+            title: (
+                <Space direction="vertical">
+                    {t("Role")}
+                    <Input
+                        placeholder={t("Role")}
+                        allowClear
+                        value={get(params,'role','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('role', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "role",
             key: "role",
         },
         {
-            title: t("Order id"),
+            title: (
+                <Space direction="vertical">
+                    {t("Order id")}
+                    <Input
+                        placeholder={t("Order id")}
+                        allowClear
+                        value={get(params,'orderId','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('orderId', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "orderId",
             key: "orderId",
         },
@@ -51,7 +79,20 @@ const AccrualsContainer = () => {
             key: "amountReceived"
         },
         {
-            title: t("User"),
+            title: (
+                <Space direction="vertical">
+                    {t("User")}
+                    <Input
+                        placeholder={t("User")}
+                        allowClear
+                        value={get(params,'userFullName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('userFullName', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "user",
             key: "user",
             render: props => get(props, "fullName"),
@@ -66,6 +107,22 @@ const AccrualsContainer = () => {
     return (
         <Container>
             <Space direction={"vertical"} style={{width: "100%"}} size={"middle"}>
+                <Space size={"middle"}>
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Dan")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'from') ? dayjs(get(params, 'from')) : null}
+                        onChange={(date) => onChangeParams('from', date)}
+                    />
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Gacha")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
+                        onChange={(date) => onChangeParams('to', date)}
+                    />
+                </Space>
                 <Table
                     columns={columns}
                     dataSource={get(data,'data.content',[])}

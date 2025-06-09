@@ -1,6 +1,19 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Button, Checkbox, Input, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
+import {
+    Button,
+    Checkbox,
+    DatePicker,
+    Input,
+    Modal,
+    Pagination,
+    Popconfirm,
+    Row,
+    Select,
+    Space,
+    Table,
+    Typography
+} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -9,6 +22,7 @@ import {URLS} from "../../constants/url.js";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
 import CreateEditWarehouseSections from "./components/CreateEditWarehouseSections.jsx";
+import dayjs from "dayjs";
 
 const WarehouseSectionsContainer = () => {
     const {t} = useTranslation();
@@ -24,7 +38,9 @@ const WarehouseSectionsContainer = () => {
         params: {
             params: {
                 size: 10,
-                ...params
+                ...params,
+                from: get(params,'from') ? get(params,'from')?.toISOString() : null,
+                to: get(params,'to') ? get(params,'to')?.toISOString() : null
             }
         },
         page
@@ -43,18 +59,68 @@ const WarehouseSectionsContainer = () => {
 
     const columns = [
         {
-            title: t("Name"),
+            title: (
+                <Space direction="vertical">
+                    {t("Name")}
+                    <Input
+                        placeholder={t("Name")}
+                        allowClear
+                        value={get(params,'name','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('name', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "name",
             key: "name"
         },
         {
-            title: t("Warehouse"),
+            title: (
+                <Space direction="vertical">
+                    {t("Warehouse")}
+                    <Input
+                        placeholder={t("Warehouse")}
+                        allowClear
+                        value={get(params,'warehouseName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('warehouseName', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "warehouse",
             key: "warehouse",
             render: (text, record) => get(text,'name')
         },
         {
-            title: t("is service section"),
+            title: (
+                <Space direction="vertical">
+                    {t("Is service section")}
+                    <Select
+                        style={{width: 150}}
+                        placeholder={t("Is service section")}
+                        allowClear
+                        defaultValue={get(params,'serviceSection',true)}
+                        value={get(params,'serviceSection','')}
+                        options={[
+                            {
+                                label: 'Service section',
+                                value: true
+                            },
+                            {
+                                label: 'No service section',
+                                value: false
+                            },
+                        ]}
+                        onChange={(value) => {
+                            onChangeParams('serviceSection', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "serviceSection",
             key: "serviceSection",
             render: (props,data,index) => (
@@ -62,7 +128,31 @@ const WarehouseSectionsContainer = () => {
             )
         },
         {
-            title: t("is trash section"),
+            title: (
+                <Space direction="vertical">
+                    {t("Is trash section")}
+                    <Select
+                        style={{width: 150}}
+                        placeholder={t("Is trash section")}
+                        allowClear
+                        defaultValue={get(params,'trashSection',true)}
+                        value={get(params,'trashSection','')}
+                        options={[
+                            {
+                                label: 'Trash section',
+                                value: true
+                            },
+                            {
+                                label: 'No trash section',
+                                value: false
+                            },
+                        ]}
+                        onChange={(value) => {
+                            onChangeParams('trashSection', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "trashSection",
             key: "trashSection",
             render: (props,data,index) => (
@@ -70,7 +160,31 @@ const WarehouseSectionsContainer = () => {
             )
         },
         {
-            title: t("is active"),
+            title: (
+                <Space direction="vertical">
+                    {t("Is active")}
+                    <Select
+                        style={{width: 100}}
+                        placeholder={t("Is active")}
+                        allowClear
+                        defaultValue={get(params,'active',true)}
+                        value={get(params,'active','')}
+                        options={[
+                            {
+                                label: 'Active',
+                                value: true
+                            },
+                            {
+                                label: 'Disable',
+                                value: false
+                            },
+                        ]}
+                        onChange={(value) => {
+                            onChangeParams('active', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "active",
             key: "active",
             render: (props,data,index) => (
@@ -112,6 +226,20 @@ const WarehouseSectionsContainer = () => {
                     >
                         {t("New")}
                     </Button>
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Dan")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'from') ? dayjs(get(params, 'from')) : null}
+                        onChange={(date) => onChangeParams('from', date)}
+                    />
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Gacha")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
+                        onChange={(date) => onChangeParams('to', date)}
+                    />
                 </Space>
 
                 <Table

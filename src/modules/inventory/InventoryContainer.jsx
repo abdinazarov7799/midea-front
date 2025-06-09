@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Pagination, Row, Space, Table, Typography} from "antd";
+import {DatePicker, Input, Pagination, Row, Space, Table, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -21,7 +21,9 @@ const InventoryContainer = () => {
         params: {
             params: {
                 size: 10,
-                ...params
+                ...params,
+                from: get(params,'from') ? get(params,'from')?.toISOString() : null,
+                to: get(params,'to') ? get(params,'to')?.toISOString() : null
             }
         },
         page
@@ -39,7 +41,20 @@ const InventoryContainer = () => {
             render: product => get(product,'category.name'),
         },
         {
-            title: t("Product"),
+            title: (
+                <Space direction="vertical">
+                    {t("Product")}
+                    <Input
+                        placeholder={t("Product")}
+                        allowClear
+                        value={get(params,'productModel','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('productModel', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "product",
             key: "product",
             render: product => get(product,'model'),
@@ -50,13 +65,39 @@ const InventoryContainer = () => {
             key: "quantity",
         },
         {
-            title: t("Warehouse"),
+            title: (
+                <Space direction="vertical">
+                    {t("Warehouse")}
+                    <Input
+                        placeholder={t("Warehouse")}
+                        allowClear
+                        value={get(params,'warehouseName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('warehouseName', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "section",
             key: "warehouse",
             render: section => get(section,'warehouse.name'),
         },
         {
-            title: t("Section"),
+            title: (
+                <Space direction="vertical">
+                    {t("Section")}
+                    <Input
+                        placeholder={t("Section")}
+                        allowClear
+                        value={get(params,'sectionName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('sectionName', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "section",
             key: "section",
             render: section => get(section,'name'),
@@ -71,6 +112,22 @@ const InventoryContainer = () => {
     return (
         <Container>
             <Space direction={"vertical"} style={{width: "100%"}} size={"middle"}>
+                <Space size={"middle"}>
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Dan")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'from') ? dayjs(get(params, 'from')) : null}
+                        onChange={(date) => onChangeParams('from', date)}
+                    />
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Gacha")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
+                        onChange={(date) => onChangeParams('to', date)}
+                    />
+                </Space>
                 <Table
                     columns={columns}
                     dataSource={get(data,'data.content',[])}

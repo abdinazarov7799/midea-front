@@ -1,6 +1,19 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Button, Checkbox, Input, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
+import {
+    Button,
+    Checkbox,
+    DatePicker,
+    Input,
+    Modal,
+    Pagination,
+    Popconfirm,
+    Row,
+    Select,
+    Space,
+    Table,
+    Typography
+} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -9,6 +22,7 @@ import {URLS} from "../../constants/url.js";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
 import CreateEditWarehouses from "./components/CreateEditWarehouses.jsx";
+import dayjs from "dayjs";
 
 const WarehousesContainer = () => {
     const {t} = useTranslation();
@@ -24,7 +38,9 @@ const WarehousesContainer = () => {
         params: {
             params: {
                 size: 10,
-                ...params
+                ...params,
+                from: get(params,'from') ? get(params,'from')?.toISOString() : null,
+                to: get(params,'to') ? get(params,'to')?.toISOString() : null
             }
         },
         page
@@ -43,16 +59,41 @@ const WarehousesContainer = () => {
 
     const columns = [
         {
-            title: t("Name"),
+            title: (
+                <Space direction="vertical">
+                    {t("Name")}
+                    <Input
+                        placeholder={t("Name")}
+                        allowClear
+                        value={get(params,'name','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('name', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "name",
             key: "name"
         },
         {
-            title: t("Dealers"),
+            title: (
+                <Space direction="vertical">
+                    {t("Dealer")}
+                    <Input
+                        placeholder={t("Dealer")}
+                        allowClear
+                        value={get(params,'dealerFullName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('dealerFullName', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "dealers",
             key: "dealers",
             render: (props, record) => {
-                console.log(props,'text')
                 return Array.isArray(props) && (
                     props?.map((item,index) => {
                         return <>{get(item,'fullName')} {index !== props?.length -1 && ' , '}</>
@@ -61,7 +102,31 @@ const WarehousesContainer = () => {
             }
         },
         {
-            title: t("is active"),
+            title: (
+                <Space direction="vertical">
+                    {t("Is active")}
+                    <Select
+                        style={{width: 100}}
+                        placeholder={t("Is active")}
+                        allowClear
+                        defaultValue={get(params,'active',true)}
+                        value={get(params,'active','')}
+                        options={[
+                            {
+                                label: 'Active',
+                                value: true
+                            },
+                            {
+                                label: 'Disable',
+                                value: false
+                            },
+                        ]}
+                        onChange={(value) => {
+                            onChangeParams('active', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "active",
             key: "active",
             render: (props,data,index) => (
@@ -103,6 +168,20 @@ const WarehousesContainer = () => {
                     >
                         {t("New")}
                     </Button>
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Dan")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'from') ? dayjs(get(params, 'from')) : null}
+                        onChange={(date) => onChangeParams('from', date)}
+                    />
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Gacha")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
+                        onChange={(date) => onChangeParams('to', date)}
+                    />
                 </Space>
 
                 <Table

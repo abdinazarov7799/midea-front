@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Checkbox, Pagination, Row, Space, Table, Typography} from "antd";
+import {Checkbox, DatePicker, Input, Pagination, Row, Space, Table, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -19,7 +19,9 @@ const PaymentsContainer = () => {
         params: {
             params: {
                 size: 10,
-                ...params
+                ...params,
+                from: get(params,'from') ? get(params,'from')?.toISOString() : null,
+                to: get(params,'to') ? get(params,'to')?.toISOString() : null
             }
         },
         page
@@ -36,22 +38,74 @@ const PaymentsContainer = () => {
             key: "amount",
         },
         {
-            title: t("Method"),
+            title: (
+                <Space direction="vertical">
+                    {t("Method")}
+                    <Input
+                        placeholder={t("Method")}
+                        allowClear
+                        value={get(params,'method','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('method', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "method",
             key: "method",
         },
         {
-            title: t("Action"),
+            title: (
+                <Space direction="vertical">
+                    {t("Action")}
+                    <Input
+                        placeholder={t("Action")}
+                        allowClear
+                        value={get(params,'action','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('action', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "action",
             key: "action"
         },
         {
-            title: t("Payer"),
+            title: (
+                <Space direction="vertical">
+                    {t("Payer")}
+                    <Input
+                        placeholder={t("Payer")}
+                        allowClear
+                        value={get(params,'payer','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('payer', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "payer",
             key: "payer"
         },
         {
-            title: t("Receiver"),
+            title: (
+                <Space direction="vertical">
+                    {t("Receiver")}
+                    <Input
+                        placeholder={t("Receiver")}
+                        allowClear
+                        value={get(params,'receiver','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('receiver', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "receiver",
             key: "receiver"
         },
@@ -65,6 +119,22 @@ const PaymentsContainer = () => {
     return (
         <Container>
             <Space direction={"vertical"} style={{width: "100%"}} size={"middle"}>
+                <Space size={"middle"}>
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Dan")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'from') ? dayjs(get(params, 'from')) : null}
+                        onChange={(date) => onChangeParams('from', date)}
+                    />
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Gacha")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
+                        onChange={(date) => onChangeParams('to', date)}
+                    />
+                </Space>
                 <Table
                     columns={columns}
                     dataSource={get(data,'data.content',[])}

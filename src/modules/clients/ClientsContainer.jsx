@@ -1,6 +1,19 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Button, Checkbox, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
+import {
+    Button,
+    Checkbox,
+    DatePicker,
+    Input,
+    Modal,
+    Pagination,
+    Popconfirm,
+    Row,
+    Select,
+    Space,
+    Table,
+    Typography
+} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -9,6 +22,7 @@ import {URLS} from "../../constants/url.js";
 import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
 import CreateEditClients from "./components/CreateEditClients.jsx";
+import dayjs from "dayjs";
 
 const ClientsContainer = () => {
     const {t} = useTranslation();
@@ -24,7 +38,9 @@ const ClientsContainer = () => {
         params: {
             params: {
                 size: 10,
-                ...params
+                ...params,
+                from: get(params,'from') ? get(params,'from')?.toISOString() : null,
+                to: get(params,'to') ? get(params,'to')?.toISOString() : null
             }
         },
         page
@@ -43,12 +59,38 @@ const ClientsContainer = () => {
 
     const columns = [
         {
-            title: t("Name"),
+            title: (
+                <Space direction="vertical">
+                    {t("Name")}
+                    <Input
+                        placeholder={t("Name")}
+                        allowClear
+                        value={get(params,'name','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('name', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "name",
             key: "name"
         },
         {
-            title: t("Phone"),
+            title: (
+                <Space direction="vertical">
+                    {t("Phone")}
+                    <Input
+                        placeholder={t("Phone")}
+                        allowClear
+                        value={get(params,'phone','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('phone', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "phone",
             key: "phone"
         },
@@ -58,13 +100,50 @@ const ClientsContainer = () => {
             key: "balance"
         },
         {
-            title: t("Dealer"),
+            title: (
+                <Space direction="vertical">
+                    {t("Dealer")}
+                    <Input
+                        placeholder={t("Dealer")}
+                        allowClear
+                        value={get(params,'dealerFullName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('dealerFullName', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "dealer",
             key: "dealer",
             render: (text, record) => get(text,'fullName')
         },
         {
-            title: t("is legal"),
+            title: (
+                <Space direction="vertical">
+                    {t("Is legal")}
+                    <Select
+                        style={{width: 100}}
+                        placeholder={t("Is legal")}
+                        allowClear
+                        defaultValue={get(params,'legal',true)}
+                        value={get(params,'legal','')}
+                        options={[
+                            {
+                                label: 'Legal',
+                                value: true
+                            },
+                            {
+                                label: 'Individual',
+                                value: false
+                            },
+                        ]}
+                        onChange={(value) => {
+                            onChangeParams('legal', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "legal",
             key: "legal",
             render: (props,data,index) => (
@@ -106,6 +185,20 @@ const ClientsContainer = () => {
                     >
                         {t("New")}
                     </Button>
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Dan")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'from') ? dayjs(get(params, 'from')) : null}
+                        onChange={(date) => onChangeParams('from', date)}
+                    />
+                    <DatePicker
+                        allowClear
+                        placeholder={t("Gacha")}
+                        format="YYYY-MM-DD"
+                        value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
+                        onChange={(date) => onChangeParams('to', date)}
+                    />
                 </Space>
 
                 <Table
