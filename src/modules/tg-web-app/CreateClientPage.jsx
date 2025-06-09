@@ -103,7 +103,7 @@ const CreateClientPage = () => {
                     <Checkbox defaultChecked={false} />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" block loading={isLoading || isLoadingCreate}>
+                    <Button type="primary" htmlType="submit" block loading={isLoadingCreate}>
                         {t("Create")}
                     </Button>
                 </Form.Item>
