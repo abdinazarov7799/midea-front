@@ -19,8 +19,8 @@ const CreateOrderPage = () => {
     const [items, setItems] = useState([]);
 
     const { data: clientsData } = useGetAllQuery({
-        key: ['client-list', dealerId],
-        url: `/api/web/clients/get-all/${dealerId}`
+        key: ['client-list', userId],
+        url: `/api/web/clients/get-all/${userId}`
     });
 
     const { data: warehousesData } = useGetAllQuery({
