@@ -12,28 +12,40 @@ const DashboardSidebar = () => {
 
     const items = [
         {
-            label: t("Categories"),
-            key: "/categories",
+            label: t("Items"),
+            key: "/items",
+            children: [
+                {
+                    label: t("Categories"),
+                    key: "/categories",
+                },
+                {
+                    label: t("Products"),
+                    key: "/products",
+                },
+            ]
         },
         {
-            label: t("Products"),
-            key: "/products",
-        },
-        {
-            label: t("Dealers"),
-            key: "/dealers",
-        },
-        {
-            label: t("Team leads"),
-            key: "/team-leads",
-        },
-        {
-            label: t("Managers"),
-            key: "/managers",
-        },
-        {
-            label: t("Couriers"),
-            key: "/couriers",
+            label: t("Employees"),
+            key: "/employees",
+            children: [
+                {
+                    label: t("Dealers"),
+                    key: "/dealers",
+                },
+                {
+                    label: t("Team leads"),
+                    key: "/team-leads",
+                },
+                {
+                    label: t("Managers"),
+                    key: "/managers",
+                },
+                {
+                    label: t("Couriers"),
+                    key: "/couriers",
+                },
+            ]
         },
         {
             label: t("Clients"),
@@ -55,6 +67,14 @@ const DashboardSidebar = () => {
                     label: t("Sections"),
                     key: "/warehouse-sections",
                 },
+                {
+                    label: t("Stock movements"),
+                    key: "/stock-movements",
+                },
+                {
+                    label: t("Inventories"),
+                    key: "/inventories",
+                },
             ]
         },
         {
@@ -62,20 +82,18 @@ const DashboardSidebar = () => {
             key: "/orders",
         },
         {
-            label: t("Stock movements"),
-            key: "/stock-movements",
-        },
-        {
             label: t("Payments"),
             key: "/payments",
-        },
-        {
-            label: t("Inventories"),
-            key: "/inventories",
-        },
-        {
-            label: t("Accruals"),
-            key: "/accruals",
+            children: [
+                {
+                    label: t("Payments"),
+                    key: "/payments",
+                },
+                {
+                    label: t("Accruals"),
+                    key: "/accruals",
+                },
+            ]
         },
         {
             label: t("Constants"),
