@@ -31,7 +31,7 @@ const CreateClientPage = () => {
     const createClient = (values) => {
         mutate({
             url: "/api/web/clients/create",
-            attributes: {...values,creatorId: userId, phone: `+998${values.phone?.trim()}`},
+            attributes: {...values,legal: values?.legal || false,creatorId: userId, phone: `+998${values.phone?.trim()}`},
         }, {
             onSuccess: () => {
 
@@ -100,7 +100,7 @@ const CreateClientPage = () => {
                     }]}/>
                 </Form.Item>
                 <Form.Item name={'legal'} label={'Legal'} valuePropName={'checked'}>
-                    <Checkbox />
+                    <Checkbox defaultChecked={false} />
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" block loading={isLoading || isLoadingCreate}>
