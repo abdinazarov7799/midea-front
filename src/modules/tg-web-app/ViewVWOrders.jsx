@@ -4,6 +4,7 @@ import {Card, Typography, Button} from 'antd';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import {useTranslation} from "react-i18next";
 import {ArrowLeftOutlined} from "@ant-design/icons";
+import {get} from "lodash";
 const {Text} = Typography;
 const ViewVWOrdersPage = () => {
 const { id, roleId, userId } = useParams();
@@ -25,9 +26,22 @@ return (
             <p><b>{t("Warehouse")}:</b> {order?.warehouse}</p>
             <p><b>{t("Buyurtmachi")}:</b> {order?.client}</p>
             <p><b>{t("Mahsulotlar")}:</b></p>
-            {order?.items?.map((item, i) => (
-                <p key={i}><b>L {item?.product?.model}</b> x {item?.quantity} {t("dona")}</p>
-            ))}
+            {
+                get(order,'sectionItems',[])?.map((item, index) => {
+                    return (
+                        <Card
+                            key={index}
+                            title={`${t("Section")}: ${get(item,'sectionName') ?? '-'}`}
+                            style={{margin: '10px 0'}}
+                            styles={{body: {padding: 8},header: {padding: '0 8px'}}}
+                        >
+                            {item?.items?.map((item, i) => (
+                                <p key={i}><b>L {item?.product?.model}</b> x {item?.quantity} {t("dona")}</p>
+                            ))}
+                        </Card>
+                    )
+                })
+            }
             <p><b>{t("Menejer")}:</b> {order?.manager}</p>
             <p><b>{t("Diler")}:</b> {order?.dealer}</p>
             <p><b>{t("Team Lead")}:</b> {order?.teamLead}</p>
