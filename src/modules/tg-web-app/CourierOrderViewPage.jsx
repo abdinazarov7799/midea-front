@@ -74,7 +74,7 @@ const CourierOrderViewPage = () => {
                 <p><b>{t("Menejer")}:</b> {order.manager}</p>
                 <p><b>{t("Diler")}:</b> {order.dealer}</p>
                 <p><b>{t("Team Lead")}:</b> {order.teamLead}</p>
-                {order.address && (
+                {order?.address && (
                     <p>
                         <b>{t("Manzil")}:</b> <a href={order.address} target="_blank" rel="noreferrer">
                         {t("Navigatsiyaga o‘tish")}
