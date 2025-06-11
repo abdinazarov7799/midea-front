@@ -4,11 +4,11 @@ import usePostQuery from "../../../hooks/api/usePostQuery.js";
 import {KEYS} from "../../../constants/key.js";
 import {URLS} from "../../../constants/url.js";
 import {Button, Form, Input, Select} from "antd";
-import useGetAllQuery from "../../../hooks/api/useGetAllQuery.js";
 import {get} from "lodash";
 import usePutQuery from "../../../hooks/api/usePatchQuery.js";
+import config from "../../../config.js";
 
-const CreateEditAdmin = ({itemData,setIsModalOpen,refetch}) => {
+const CreateEditAdmin = ({itemData,setIsModalOpen}) => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
 
@@ -19,12 +19,6 @@ const CreateEditAdmin = ({itemData,setIsModalOpen,refetch}) => {
         listKeyId: KEYS.admins_list,
         hideSuccessToast: false
     });
-
-
-    const {data:roles,isLoading:isLoadingRoles} = useGetAllQuery({
-        key: 'roles_list',
-        url: '/api/common/roles/get',
-    })
 
     useEffect(() => {
         form.setFieldsValue({
@@ -39,7 +33,6 @@ const CreateEditAdmin = ({itemData,setIsModalOpen,refetch}) => {
                 {
                     onSuccess: () => {
                         setIsModalOpen(false);
-                        refetch()
                     },
                 }
             );
@@ -49,7 +42,6 @@ const CreateEditAdmin = ({itemData,setIsModalOpen,refetch}) => {
                 {
                     onSuccess: () => {
                         setIsModalOpen(false);
-                        refetch()
                     },
                 }
             );
@@ -85,14 +77,17 @@ const CreateEditAdmin = ({itemData,setIsModalOpen,refetch}) => {
                     name="roleId"
                     rules={[{required: true,}]}>
                     <Select
-                        loading={isLoadingRoles}
                         placeholder={t("Role")}
-                        options={get(roles,'data',[])?.map((item) => {
-                            return {
-                                value: get(item,'id'),
-                                label: get(item,'name'),
+                        options={[
+                            {
+                                value: config.ROLE_ID.ROLE_SUPER_ADMIN,
+                                label: t("ROLE_SUPER_ADMIN"),
+                            },
+                            {
+                                value: config.ROLE_ID.ROLE_ADMIN,
+                                label: t("ROLE_ADMIN"),
                             }
-                        })}
+                        ]}
                     />
                 </Form.Item>
 

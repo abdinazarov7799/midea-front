@@ -1,4 +1,4 @@
-import {Button, Col, Dropdown, Image, Row, Space, Switch, theme} from "antd";
+import {Button, Col, Dropdown, Image, Menu, Row, Space, Switch, theme} from "antd";
 import logo from "../../assets/images/logo.svg";
 import logoDark from "../../assets/images/logoDark.svg";
 import ru from '../../assets/images/ru.svg'
@@ -23,6 +23,7 @@ const DashboardHeader = () => {
     const setDarkMode = useSettingsStore((state) => get(state, "setDarkMode", () => {}));
     const darkMode = useSettingsStore((state) => get(state, "darkMode"));
     const lang = useSettingsStore((state) => get(state, "lang"));
+    const user = useStore((state) => get(state, "user", () => {}));
     const setUser = useStore((state) => get(state, "setUser", () => {}));
     const setAuthenticated = useStore((state) => get(state, "setAuthenticated", () => {}));
     const clearToken = useSettingsStore((state) => get(state, "setToken", () => {}));
@@ -44,7 +45,8 @@ const DashboardHeader = () => {
             key: "UZ",
             icon: <Image src={uz} preview={false} onClick={() => changeLang("uz")} width={25} height={25} alt={"uzbek flag image"} />,
         },
-    ].filter(item => !isEqual(get(item,"key"),lang));;
+    ].filter(item => !isEqual(get(item,"key"),lang));
+
     const logout = () => {
         Swal.fire({
             title: t("Are you sure you want to exit??"),
@@ -90,6 +92,12 @@ const DashboardHeader = () => {
               </Col>
               <Col>
                   <Space size={"middle"}>
+                      <Menu
+                          items={[{label: get(user,'roleName'),key: get(user,'roleName')}]}
+                          selectedKeys={[get(user,'roleName')]}
+                          mode="horizontal"
+                          style={{minWidth: 200,border: 'none'}}
+                      />
                       <Switch
                           checkedChildren={<SunOutlined />}
                           unCheckedChildren={<MoonOutlined />}
