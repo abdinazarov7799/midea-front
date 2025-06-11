@@ -29,7 +29,7 @@ const ViewStocksPage = () => {
             align: 'left',
         },
         {
-            title: t('Nomi'),
+            title: t('Warehouse'),
             dataIndex: 'name',
             key: 'name',
         },
