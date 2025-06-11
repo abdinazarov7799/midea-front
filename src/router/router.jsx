@@ -30,6 +30,7 @@ import ManagersPage from "../modules/managers/ManagersPage.jsx";
 import DealersPage from "../modules/dealers/DealersPage.jsx";
 import CouriersPage from "../modules/couriers/CouriersPage.jsx";
 import ClientsPage from "../modules/clients/ClientsPage.jsx";
+
 import CreateOrderPage from "../modules/tg-web-app/CreateOrderPage.jsx";
 import CreateClientPage from "../modules/tg-web-app/CreateClientPage.jsx";
 import AddStockPage from "../modules/tg-web-app/AddStockPage.jsx";
@@ -53,6 +54,7 @@ import InventoryViewPage from "../modules/inventory/view/InventoryViewPage.jsx";
 import RolesPage from "../modules/roles/pages/RolesPage.jsx";
 import VWOrdersPage from "../modules/tg-web-app/VWOrders.jsx";
 import ViewVWOrdersPage from "../modules/tg-web-app/ViewVWOrders.jsx";
+import ViewStocks from "../modules/tg-web-app/ViewStocks.jsx";
 // PAGES
 
 
@@ -104,6 +106,8 @@ const Router = () => {
             <Route path={"/warehouse-send-item-view/:id/:roleId/:userId"} element={<WarehouseSendItemViewPage />}/>
             <Route path={"/warehouse-transfers/:roleId/:userId"} element={<WarehouseTransferPage />}/>
             <Route path={"/warehouse-transfers-form/:roleId/:userId"} element={<WarehouseTransferFormPage />}/>
+
+            <Route path={"/view-stocks/:roleId/:userId/:dealerId"} element={<ViewStocks />}/>
 
             <Route path={"/view-orders/:roleId/:userId"} element={<VWOrdersPage />}/>
             <Route path={"/view-order/:id/:roleId/:userId"} element={<ViewVWOrdersPage />}/>

@@ -4,7 +4,6 @@ import { Button, Card, Input, Typography, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import usePutQuery from '../../hooks/api/usePutQuery';
-import Container from '../../components/Container';
 import {ArrowLeftOutlined} from "@ant-design/icons";
 import {get} from "lodash";
 
