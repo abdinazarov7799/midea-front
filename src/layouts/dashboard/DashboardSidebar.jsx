@@ -96,8 +96,8 @@ const DashboardSidebar = () => {
             ]
         },
         {
-            label: t("Constants"),
-            key: "/constants",
+            label: t("Admins"),
+            key: "/admins",
         },
         {
             label: t("Roles"),
@@ -106,6 +106,10 @@ const DashboardSidebar = () => {
         {
             label: t("Translations"),
             key: "/translations",
+        },
+        {
+            label: t("Constants"),
+            key: "/constants",
         },
     ]
 

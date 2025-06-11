@@ -51,4 +51,8 @@ export const URLS = {
     accruals_list: '/api/admin/accruals/get',
     inventory_list: '/api/admin/inventories/get',
     roles_list: '/api/common/roles/get',
+    admins_list: '/api/admin/users/get-all-admins',
+    admin_delete: '/api/admin/users/delete-admin',
+    admin_add: '/api/admin/users/add-admin',
+    admin_edit: '/api/admin/users/edit-admin',
 };
