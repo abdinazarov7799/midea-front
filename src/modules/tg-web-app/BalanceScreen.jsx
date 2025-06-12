@@ -6,12 +6,14 @@ import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import usePostQuery from '../../hooks/api/usePostQuery';
 import Container from '../../components/Container';
 import {get} from "lodash";
+import {useTelegram} from "../../hooks/telegram/useTelegram.js";
 
 const BalanceScreen = () => {
     const { t } = useTranslation();
     const { userId } = useParams();
     const [amount, setAmount] = useState(0);
     const [method, setMethod] = useState('CASH');
+    const telegram = useTelegram();
 
     const { data } = useGetAllQuery({
         key: ['balance', userId],
@@ -27,8 +29,12 @@ const BalanceScreen = () => {
             url: `/api/web/payments/${userId}?amount=${amount}&method=${method}`,
         }, {
             onSuccess: () => {
-                message.success(t("So‘rov yuborildi"));
                 setAmount(0);
+                message.success(
+                    t("So'rov yuborildi"),
+                    3,
+                    () => telegram.onClose()
+                );
             }
         });
     };
