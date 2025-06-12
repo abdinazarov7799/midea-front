@@ -89,6 +89,7 @@ const ViewOrdersPage = () => {
                         onClick={returnOrder}
                         type={'primary'}
                         danger
+                        block
                     >
                         {t("Buyurtmani qaytarish")}
                     </Button>
