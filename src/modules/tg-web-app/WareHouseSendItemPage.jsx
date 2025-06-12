@@ -17,7 +17,8 @@ const WarehouseSendItemPage = () => {
         url: `/api/web/orders/get-all/${userId}`,
         params: {
             params: {
-                roleId
+                roleId,
+                size: 100
             }
         }
     });

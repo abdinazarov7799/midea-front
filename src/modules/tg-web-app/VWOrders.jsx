@@ -1,25 +1,26 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import {Button, Card, Input, Typography, message, List, Flex} from 'antd';
+import {Card, Typography, List, Flex, Select} from 'antd';
 import { useTranslation } from 'react-i18next';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import Container from '../../components/Container';
 import {get} from "lodash";
 import {getStatusColor} from "../../utils/index.js";
-
-const { Text } = Typography;
+import config from "../../config.js";
 
 const VWViewOrdersPage = () => {
     const { roleId, userId } = useParams();
     const navigate = useNavigate();
     const {t} = useTranslation();
+    const [status,setStatus] = useState(null)
 
     const { data, isLoading } = useGetAllQuery({
         key: ['send-item-orders', userId],
         url: `/api/web/orders/get-all/${userId}`,
         params: {
             params: {
-                roleId
+                roleId,
+                status
             }
         }
     });
@@ -28,6 +29,11 @@ const VWViewOrdersPage = () => {
 
     return (
         <Container>
+            <Select
+                options={Object.values(config.ORDER_STATUS)?.map(status => ({label: t(status), value: status}))}
+                value={status}
+                onChange={(value) => setStatus(value)}
+            />
             <List
                 loading={isLoading}
                 dataSource={orders}

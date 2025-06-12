@@ -1,23 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import {List, Card, Typography, Flex} from 'antd';
+import {List, Card, Typography, Flex, Select} from 'antd';
 import Container from '../../components/Container.jsx';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import { get } from 'lodash';
 import {useTranslation} from "react-i18next";
 import {getStatusColor} from "../../utils/index.js";
+import config from "../../config.js";
 
 const CourierOrdersPage = () => {
     const { roleId, userId } = useParams();
     const navigate = useNavigate();
     const {t} = useTranslation();
+    const [status,setStatus] = useState(null)
 
     const { data, isLoading } = useGetAllQuery({
         key: ['orders', userId],
         url: `/api/web/orders/get-all/${userId}`,
         params: {
             params: {
-                roleId
+                roleId,
+                status
             }
         }
     });
@@ -26,6 +29,11 @@ const CourierOrdersPage = () => {
 
     return (
         <Container>
+            <Select
+                options={Object.values(config.ORDER_STATUS)?.map(status => ({label: t(status), value: status}))}
+                value={status}
+                onChange={(value) => setStatus(value)}
+            />
             <List
                 loading={isLoading}
                 dataSource={orders}
