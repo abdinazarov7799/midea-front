@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import {Card, Button, Select, Form, Input, Typography, Flex, Space} from 'antd';
+import {Card, Button, Select, Form, Input, Typography, Flex, Space, message} from 'antd';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery.js';
 import usePutQuery from '../../hooks/api/usePutQuery.js';
 import { get } from 'lodash';
@@ -30,7 +30,7 @@ const ReturnedOrderViewPage = () => {
         url: `/api/common/return-codes/get`,
     });
 
-    const { mutate, isLoading } = usePutQuery({});
+    const { mutate, isLoading } = usePutQuery({hideSuccessToast: true});
 
     const order = get(data, 'data', {});
 
@@ -42,7 +42,11 @@ const ReturnedOrderViewPage = () => {
             }
         },{
             onSuccess: () => {
-                telegram.onClose();
+                message.success(
+                    t("Muvoffaqqiyatli yaratildi"),
+                    3,
+                    () => telegram.onClose()
+                );
             }
         });
     };

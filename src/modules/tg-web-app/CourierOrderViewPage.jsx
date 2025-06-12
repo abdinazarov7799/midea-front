@@ -6,6 +6,7 @@ import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import usePutQuery from '../../hooks/api/usePutQuery';
 import {ArrowLeftOutlined} from "@ant-design/icons";
 import {get} from "lodash";
+import {useTelegram} from "../../hooks/telegram/useTelegram.js";
 
 const { Text } = Typography;
 
@@ -14,6 +15,7 @@ const CourierOrderViewPage = () => {
     const { t } = useTranslation();
     const [showReject, setShowReject] = useState(false);
     const [comment, setComment] = useState('');
+    const telegram = useTelegram();
 
     const { data } = useGetAllQuery({
         key: ['courier-order', id],
@@ -32,8 +34,12 @@ const CourierOrderViewPage = () => {
             url: `/api/web/couriers/confirm-delivery/${id}/${userId}?confirm=${confirm}&comment=${comment || ''}`
         }, {
             onSuccess: () => {
-                message.success(t("Holat tasdiqlandi"));
                 setShowReject(false);
+                message.success(
+                    t("Muvoffaqqiyatli tasdiqlandi"),
+                    3,
+                    () => telegram.onClose()
+                );
             }
         });
     };
@@ -43,7 +49,11 @@ const CourierOrderViewPage = () => {
             url: `/api/web/couriers/complete-delivery/${id}/${userId}?completedOrReturned=${completedOrReturned}`
         }, {
             onSuccess: () => {
-                message.success(t("Yetkazib berish yakunlandi"));
+                message.success(
+                    t("Muvoffaqqiyatli yakunlandi"),
+                    3,
+                    () => telegram.onClose()
+                );
             }
         });
     };

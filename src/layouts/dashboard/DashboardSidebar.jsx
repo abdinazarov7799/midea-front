@@ -53,7 +53,7 @@ const DashboardSidebar = () => {
         },
         {
             label: t("Warehouse"),
-            key: "/warehouses",
+            key: "warehouses",
             children: [
                 {
                     label: t("Warehouses"),
@@ -83,7 +83,7 @@ const DashboardSidebar = () => {
         },
         {
             label: t("Payments"),
-            key: "/payments",
+            key: "payments",
             children: [
                 {
                     label: t("Payments"),

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Form, Button, Select, InputNumber, Switch } from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Form, Button, Select, InputNumber, Switch, message} from 'antd';
 import Container from "../../components/Container.jsx";
 import { useTranslation } from "react-i18next";
 import { get } from 'lodash';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import usePostQuery from '../../hooks/api/usePostQuery';
-import { useNavigate, useParams } from 'react-router-dom';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import { DeleteOutlined } from '@ant-design/icons';
 import TextArea from "antd/es/input/TextArea";
 import {useTelegram} from "../../hooks/telegram/useTelegram.js";
@@ -17,6 +17,8 @@ const CreateOrderPage = () => {
     const navigate = useNavigate();
     const telegram = useTelegram()
     const [items, setItems] = useState([]);
+    const params = new URLSearchParams(window.location.search)
+    const clientId = params.get('clientId');
 
     const { data: clientsData } = useGetAllQuery({
         key: ['client-list', userId],
@@ -39,7 +41,13 @@ const CreateOrderPage = () => {
         }
     });
 
-    const { mutate, isLoading: creating } = usePostQuery({});
+    useEffect(() => {
+        if (clientId) {
+            form.setFieldsValue({ clientId });
+        }
+    }, [clientId]);
+
+    const { mutate, isLoading: creating } = usePostQuery({hideSuccessToast: true});
 
     const clientOptions = get(clientsData, 'data.content', [])?.map(c => ({
         label: c.name,
@@ -84,7 +92,11 @@ const CreateOrderPage = () => {
             }
         },{
             onSuccess: () => {
-                telegram.onClose()
+                message.success(
+                    t("Muvoffaqqiyatli yaratildi"),
+                    3,
+                    () => telegram.onClose()
+                );
             }
         });
     };
@@ -96,7 +108,7 @@ const CreateOrderPage = () => {
                     <Form.Item name="clientId" label={t("Klient tanlang yoki qo‘shing")} rules={[{ required: true }]} style={{ flex: 1 }}>
                         <Select placeholder="Tanlash" options={clientOptions} />
                     </Form.Item>
-                    <Button type="primary" onClick={() => navigate(`/create-client-form/${roleId}/${userId}?hasBack=true`)}>
+                    <Button type="primary" onClick={() => navigate(`/create-client-form/${roleId}/${userId}?hasBack=true&dealerId=${dealerId}`)}>
                         {t("Yangi qo‘shish")}
                     </Button>
                 </div>

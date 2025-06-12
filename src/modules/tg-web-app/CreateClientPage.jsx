@@ -1,12 +1,12 @@
 import React from 'react';
 import Container from "../../components/Container.jsx";
 import {useTelegram} from "../../hooks/telegram/useTelegram.js";
-import {Button, Checkbox, Form, Input, Select} from "antd";
+import {Button, Checkbox, Form, Input, message, Select} from "antd";
 import {useTranslation} from "react-i18next";
 import useGetAllQuery from "../../hooks/api/useGetAllQuery.js";
 import {get} from "lodash";
 import usePostQuery from "../../hooks/api/usePostQuery.js";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import InputMask from 'react-input-mask';
 import {ArrowLeftOutlined} from "@ant-design/icons";
 
@@ -14,34 +14,34 @@ const CreateClientPage = () => {
     const {roleId,userId} = useParams()
     const [form] = Form.useForm();
     const {t} = useTranslation();
-    const params = window.location.search
+    const params = new URLSearchParams(window.location.search);
+    const telegram = useTelegram();
+    const navigate = useNavigate();
 
-    // const {data, isLoading} = useGetAllQuery({
-    //     key: ['web-dealers-list',userId],
-    //     url: '/api/web/dealers/get-all',
-    //     params: {
-    //         params: {
-    //             size: 1000,
-    //             userId
-    //         }
-    //     }
-    // })
-    const {mutate, isLoading: isLoadingCreate} = usePostQuery({})
+    const {mutate, isLoading: isLoadingCreate} = usePostQuery({hideSuccessToast: true});
 
     const createClient = (values) => {
         mutate({
             url: "/api/web/clients/create",
             attributes: {...values,legal: values?.legal || false,creatorId: userId, phone: `+998${values.phone?.trim()}`},
         }, {
-            onSuccess: () => {
-
+            onSuccess: (data) => {
+                if (!!params.get('hasBack')){
+                    navigate(`/create-order-form/${roleId}/${userId}/${params.get('dealerId')}?clientId=${get(data,'data.id')}`)
+                }else {
+                    message.success(
+                        t("Muvoffaqqiyatli yaratildi"),
+                        3,
+                        () => telegram.onClose()
+                    );
+                }
             },
         })
     };
 
     return (
         <Container>
-            {!!params && <Button icon={<ArrowLeftOutlined/>} style={{marginBottom: 10}} onClick={() => history.back()}>{t("Orqaga")}</Button>}
+            {!!params.get('hasBack') && <Button icon={<ArrowLeftOutlined/>} style={{marginBottom: 10}} onClick={() => history.back()}>{t("Orqaga")}</Button>}
             <Form form={form} onFinish={createClient} layout="vertical">
                 {/*<Form.Item*/}
                 {/*    label={t("Dealer")}*/}

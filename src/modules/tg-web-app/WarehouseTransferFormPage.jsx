@@ -8,6 +8,7 @@ import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import usePostQuery from '../../hooks/api/usePostQuery';
 import Container from '../../components/Container.jsx';
 import {DeleteOutlined} from "@ant-design/icons";
+import {useTelegram} from "../../hooks/telegram/useTelegram.js";
 
 const WarehouseTransferFormPage = () => {
     const { t } = useTranslation();
@@ -19,6 +20,7 @@ const WarehouseTransferFormPage = () => {
     const [toSection, setToSection] = useState(null);
     const [toWarehouse, setToWarehouse] = useState(null);
     const [comment, setComment] = useState(null);
+    const telegram = useTelegram()
 
     const { data: warehousesData } = useGetAllQuery({
         key: ['warehouses'],
@@ -37,7 +39,7 @@ const WarehouseTransferFormPage = () => {
         enabled: !!fromSection
     });
 
-    const transferMutation = usePostQuery({});
+    const transferMutation = usePostQuery({hideSuccessToast: true});
 
     const sectionOptions = (sectionsData?.data.content || []).map(s => ({ label: s.name, value: s.id }));
     const warehouseOptions = (warehousesData?.data.content || []).map(w => ({ label: w.name, value: w.id }));
@@ -77,8 +79,12 @@ const WarehouseTransferFormPage = () => {
             }
         }, {
             onSuccess: () => {
-                message.success(t("Ko‘chirish amalga oshirildi"));
                 setStocks([]);
+                message.success(
+                    t("Ko‘chirish amalga oshirildi"),
+                    3,
+                    () => telegram.onClose()
+                );
             }
         });
     };

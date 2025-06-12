@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Select, InputNumber, Button, Table } from 'antd';
+import {Form, Select, InputNumber, Button, Table, message} from 'antd';
 import Container from "../../components/Container.jsx";
 import { DeleteOutlined } from '@ant-design/icons';
 import useGetAllQuery from "../../hooks/api/useGetAllQuery.js";
@@ -49,14 +49,14 @@ const AddStockPage = () => {
         }
     });
 
-    const { mutate, isLoading: submitting } = usePostQuery({});
+    const { mutate, isLoading: submitting } = usePostQuery({hideSuccessToast: true});
 
-    const productOptions = get(productsData, 'data.content', []).map(p => ({
+    const productOptions = get(productsData, 'data.content', [])?.map(p => ({
         label: p.model,
         value: p.id
     }));
 
-    const sectionOptions = get(sectionsData, 'data.content', []).map(s => ({
+    const sectionOptions = get(sectionsData, 'data.content', [])?.map(s => ({
         label: s.name,
         value: s.id
     }));
@@ -86,7 +86,11 @@ const AddStockPage = () => {
             }
         },{
             onSuccess: data => {
-                telegram.onClose()
+                message.success(
+                    t("Muvoffaqqiyatli yaratildi"),
+                    3,
+                    () => telegram.onClose()
+                );
             }
         });
     };

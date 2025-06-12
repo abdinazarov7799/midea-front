@@ -7,6 +7,7 @@ import usePutQuery from '../../hooks/api/usePutQuery';
 import usePostQuery from '../../hooks/api/usePostQuery';
 import {get, isEqual} from 'lodash';
 import {ArrowLeftOutlined} from "@ant-design/icons";
+import {useTelegram} from "../../hooks/telegram/useTelegram.js";
 
 const { Text } = Typography;
 
@@ -15,6 +16,7 @@ const WarehouseSendItemViewPage = () => {
     const { id, roleId, userId } = useParams();
     const [courierId, setCourierId] = useState(null);
     const [formDisabled, setFormDisabled] = useState(false);
+    const telegram = useTelegram();
 
     const { data: orderData } = useGetAllQuery({
         key: ['order', id],
@@ -27,8 +29,8 @@ const WarehouseSendItemViewPage = () => {
         url: `/api/web/couriers/get`
     });
 
-    const confirmShipping = usePutQuery({listKeyId: ['order']});
-    const linkCourier = usePutQuery({listKeyId: ['order']});
+    const confirmShipping = usePutQuery({listKeyId: ['order'],hideSuccessToast: true});
+    const linkCourier = usePutQuery({listKeyId: ['order'],hideSuccessToast: true});
 
     const order = get(orderData, 'data', {});
     const couriers = get(couriersData, 'data.content', []);
@@ -48,8 +50,12 @@ const WarehouseSendItemViewPage = () => {
             url: `/api/web/warehouse-workers/link-courier/${id}/${userId}?courierId=${courierId}&completed=${!get(orderData,'data.deliver')}`,
         }, {
             onSuccess: () => {
-                message.success(t("Kuryer biriktirildi"));
                 setFormDisabled(true);
+                message.success(
+                    t("Kuryer biriktirildi"),
+                    3,
+                    () => telegram.onClose()
+                );
             }
         });
     };
@@ -59,7 +65,11 @@ const WarehouseSendItemViewPage = () => {
             url: `/api/web/warehouse-workers/link-courier/${id}/${userId}?completed=true`,
         }, {
             onSuccess: () => {
-                message.success(t("Muvaffaqqiyatli"));
+                message.success(
+                    t("Muvaffaqqiyatli tugatildi"),
+                    3,
+                    () => telegram.onClose()
+                );
             }
         });
     }
@@ -68,7 +78,13 @@ const WarehouseSendItemViewPage = () => {
         confirmShipping.mutate({
             url: `/api/web/warehouse-workers/confirm-shipping/${id}/${userId}?confirm=${confirmed}`,
         }, {
-            onSuccess: () => message.success(t("Buyurtma chiqarishga tayyorlandi"))
+            onSuccess: () => {
+                message.success(
+                    t("Buyurtma chiqarishga tayyorlandi"),
+                    3,
+                    () => telegram.onClose()
+                );
+            }
         });
     };
 

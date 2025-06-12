@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import {Card, Typography, Select, Button, message, Flex} from 'antd';
+import {Card, Select, Button, message, Flex} from 'antd';
 import { useTranslation } from 'react-i18next';
 import Container from '../../components/Container';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import usePutQuery from '../../hooks/api/usePutQuery';
 import { get } from 'lodash';
-
-const { Text } = Typography;
 
 const WarehouseTransferPage = () => {
     const { roleId,userId } = useParams();
@@ -26,7 +24,7 @@ const WarehouseTransferPage = () => {
         url: `/api/web/warehouse-sections/get/${userId}`
     });
 
-    const acceptTransfer = usePutQuery({});
+    const acceptTransfer = usePutQuery({hideSuccessToast: true});
 
     const sections = get(sectionData, 'data.content', []);
     const transfers = get(transferData, 'data.content', []);

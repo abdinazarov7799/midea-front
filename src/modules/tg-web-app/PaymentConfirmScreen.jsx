@@ -17,14 +17,18 @@ const PaymentConfirmScreen = () => {
         url: `/api/web/payments/get/${id}/${userId}`
     });
 
-    const confirmPayment = usePutQuery({});
+    const confirmPayment = usePutQuery({hideSuccessToast: true});
 
     const handleConfirm = () => {
         confirmPayment.mutate({
             url: `/api/web/payments/confirm/${id}/${userId}`
         }, {
             onSuccess: () => {
-                telegram.onClose()
+                message.success(
+                    t("Muvoffaqqiyatli yaratildi"),
+                    3,
+                    () => telegram.onClose()
+                );
             }
         });
     };
