@@ -15,7 +15,7 @@ const CourierOrdersPage = () => {
     const [status,setStatus] = useState(null)
 
     const { data, isLoading } = useGetAllQuery({
-        key: ['orders', userId],
+        key: ['orders', userId,status],
         url: `/api/web/orders/get-all/${userId}`,
         params: {
             params: {
@@ -32,6 +32,7 @@ const CourierOrdersPage = () => {
             <Select
                 options={Object.values(config.ORDER_STATUS)?.map(status => ({label: t(status), value: status}))}
                 value={status}
+                style={{width:'100%'}}
                 onChange={(value) => setStatus(value)}
             />
             <List
