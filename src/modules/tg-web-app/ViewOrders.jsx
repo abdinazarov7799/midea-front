@@ -87,6 +87,7 @@ const ViewOrdersPage = () => {
                     <Button
                         loading={isLoading}
                         onClick={returnOrder}
+                        type={'primary'}
                     >
                         {t("Buyurtmani qaytarish")}
                     </Button>
