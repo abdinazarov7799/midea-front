@@ -57,6 +57,7 @@ import ViewVWOrdersPage from "../modules/tg-web-app/ViewVWOrders.jsx";
 import ViewStocks from "../modules/tg-web-app/ViewStocks.jsx";
 import AdminsPage from "../modules/admins/AdminsPage.jsx";
 import ViewOrdersPage from "../modules/tg-web-app/ViewOrders.jsx";
+import BotOrdersPage from "../modules/tg-web-app/BotOrders.jsx";
 // PAGES
 
 
@@ -112,7 +113,7 @@ const Router = () => {
 
             <Route path={"/view-stocks/:roleId/:userId/:dealerId"} element={<ViewStocks />}/>
 
-            <Route path={"/view-orders/:roleId/:userId"} element={<VWOrdersPage />}/>
+            <Route path={"/view-orders/:roleId/:userId"} element={<BotOrdersPage />}/>
             <Route path={"/view-order/:id/:roleId/:userId"} element={<ViewOrdersPage />}/>
             <Route path={"/view-warehouse-worker-orders/:roleId/:userId"} element={<VWOrdersPage />}/>
             <Route path={"/view-vw-order/:id/:roleId/:userId"} element={<ViewVWOrdersPage />}/>
