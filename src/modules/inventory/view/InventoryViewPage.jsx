@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Container from "../../../components/Container.jsx";
 import usePaginateQuery from "../../../hooks/api/usePaginateQuery.js";
 import {useNavigate, useParams} from "react-router-dom";
-import {List, Card, Spin, Divider, Row, Col, Button} from "antd";
+import {List, Card, Divider, Button, Splitter} from "antd";
 import { get } from "lodash";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
@@ -32,11 +32,12 @@ const InventoryViewPage = () => {
     return (
         <Container>
             <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/inventories')}>{t("Orqaga")}</Button>
-            <Row gutter={[24, 24]}>
-                <Col span={14}>
+            <Splitter >
+                <Splitter.Panel collapsible  defaultSize="50%" min="20%" max="70%" style={{padding: '0 14px'}}>
                     <Divider orientation={'center'}>{t("Inventar qoldiqlar")}</Divider>
                     <List
                         grid={{ gutter: 16, column: 1 }}
+                        // style={{maxWidth: '99%'}}
                         dataSource={get(data, 'data.content', [])}
                         loading={isLoading}
                         pagination={{
@@ -61,8 +62,8 @@ const InventoryViewPage = () => {
                             </List.Item>
                         )}
                     />
-                </Col>
-                <Col span={10}>
+                </Splitter.Panel>
+                <Splitter.Panel collapsible style={{padding: '0 14px'}} >
                     <Divider orientation={'center'}>{t("Inventar harakatlari tarixi")}</Divider>
                     <List
                         grid={{ gutter: 16, column: 1 }}
@@ -87,8 +88,8 @@ const InventoryViewPage = () => {
                             </List.Item>
                         )}
                     />
-                </Col>
-            </Row>
+                </Splitter.Panel>
+            </Splitter>
         </Container>
     );
 };
