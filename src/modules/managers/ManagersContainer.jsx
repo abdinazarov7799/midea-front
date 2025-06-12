@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Container from "../../components/Container.jsx";
 import {
     Button,
@@ -14,7 +14,7 @@ import {
     Table,
     Typography
 } from "antd";
-import {get} from "lodash";
+import {get, isEqual} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
 import {KEYS} from "../../constants/key.js";
@@ -23,6 +23,8 @@ import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
 import CreateEditManagers from "./components/CreateEditManagers.jsx";
 import dayjs from "dayjs";
+import {useStore} from "../../store/index.js";
+import config from "../../config.js";
 
 const ManagersContainer = () => {
     const {t} = useTranslation();
@@ -31,7 +33,8 @@ const ManagersContainer = () => {
     const [isCreateModalOpenCreate, setIsCreateModalOpen] = useState(false)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [params, setParams] = useState({});
-
+    const user = useStore(state => state.user);
+    console.log(user,'user')
     const {data,isLoading} = usePaginateQuery({
         key: KEYS.managers_list,
         url: URLS.managers_list,
@@ -56,6 +59,10 @@ const ManagersContainer = () => {
     const onChangeParams = (name, value) => {
         setParams(prevState => ({...prevState, [name]: value}));
     }
+
+    const dataSource = !isEqual(get(user,'roleName'),'ROLE_TEAM_LEAD') ?
+        get(data,'data.content',[]) :
+        [...get(data,'data.content',[]),user]
 
     const columns = [
         {
@@ -240,7 +247,7 @@ const ManagersContainer = () => {
 
                 <Table
                     columns={columns}
-                    dataSource={get(data,'data.content',[])}
+                    dataSource={dataSource}
                     bordered
                     size={"middle"}
                     pagination={false}
