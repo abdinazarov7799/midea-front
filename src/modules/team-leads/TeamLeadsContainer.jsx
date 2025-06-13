@@ -4,7 +4,7 @@ import {
     Button,
     Checkbox,
     DatePicker,
-    Input,
+    Input, message,
     Modal,
     Pagination,
     Popconfirm,
@@ -19,10 +19,12 @@ import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
 import {KEYS} from "../../constants/key.js";
 import {URLS} from "../../constants/url.js";
-import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
+import {DeleteOutlined, EditOutlined, FileExcelOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
 import CreateEditTeamLeads from "./components/CreateEditTeamLeads.jsx";
 import dayjs from "dayjs";
+import {saveAs} from "file-saver";
+import {request} from "../../services/api/index.js";
 
 const TeamLeadsContainer = () => {
     const {t} = useTranslation();
@@ -31,6 +33,7 @@ const TeamLeadsContainer = () => {
     const [isCreateModalOpenCreate, setIsCreateModalOpen] = useState(false)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [params, setParams] = useState({});
+    const [isDownloading, setIsDownloading] = useState(false);
 
     const {data,isLoading} = usePaginateQuery({
         key: KEYS.team_leads_list,
@@ -45,6 +48,24 @@ const TeamLeadsContainer = () => {
         },
         page
     });
+
+    const getExcel = async () => {
+        try {
+            const response = await request.get("/api/admin/team-leads/export",{
+                responseType: "blob",
+                params: {
+                    from: dayjs(get(params,'from')).format("YYYY-MM-DD"),
+                    to: dayjs(get(params,'to')).format("YYYY-MM-DD"),
+                }
+            });
+            const blob = new Blob([get(response,'data')]);
+            saveAs(blob, `Dealer report ${dayjs().format("YYYY-MM-DD")}.xlsx`)
+        }catch (error) {
+            message.error(t("Fayl shakllantirishda xatolik"))
+        }finally {
+            setIsDownloading(false);
+        }
+    }
 
     const { mutate } = useDeleteQuery({
         listKeyId: KEYS.team_leads_list,
@@ -250,6 +271,12 @@ const TeamLeadsContainer = () => {
                         value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
                         onChange={(date) => onChangeParams('to', date)}
                     />
+                    <Button icon={<FileExcelOutlined/>} type="primary" onClick={() => {
+                        setIsDownloading(true);
+                        getExcel()
+                    }} loading={isDownloading} >
+                        {t("Get excel")}
+                    </Button>
                 </Space>
 
                 <Table
