@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import {Card, Typography, Button, Select, message, Space} from 'antd';
+import {Card, Typography, Button, Select, message, Space, Input} from 'antd';
 import { useTranslation } from 'react-i18next';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import usePutQuery from '../../hooks/api/usePutQuery';
@@ -16,6 +16,8 @@ const WarehouseSendItemViewPage = () => {
     const { id, roleId, userId } = useParams();
     const [courierId, setCourierId] = useState(null);
     const [formDisabled, setFormDisabled] = useState(false);
+    const [isRejecting, setIsRejecting] = useState(false);
+    const [comment, setComment] = useState(null);
     const telegram = useTelegram();
 
     const { data: orderData } = useGetAllQuery({
@@ -76,7 +78,10 @@ const WarehouseSendItemViewPage = () => {
 
     const handleConfirm = (confirmed) => {
         confirmShipping.mutate({
-            url: `/api/web/warehouse-workers/confirm-shipping/${id}/${userId}?confirm=${confirmed}`,
+            url: `/api/web/warehouse-workers/confirm-shipping/${id}/${userId}?confirm=${confirmed}&comment=${comment}`,
+            attributes: {
+                comment
+            }
         }, {
             onSuccess: () => {
                 message.success(
@@ -114,6 +119,17 @@ const WarehouseSendItemViewPage = () => {
             <p><b>{t("Courier izohi")}:</b> {order?.courierComment || t('Ma\'lumot yo‘q')}</p>
             <p><b>{t("Status")}:</b> <Text type="success">{order?.status || t("Yangi")}</Text></p>
             <p><b>{t("Kuryer")}:</b> {order?.courier || t("Biriktirilmagan")}</p>
+
+            {
+                isRejecting && (
+                    <Input.TextArea
+                        placeholder={t("Izoh qoldiring")}
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        style={{ marginTop: 16 }}
+                    />
+                )
+            }
 
             {
                 (isEqual(get(order,'status'),'READY_TO_SHIP') && get(order,'delivery')) && (
@@ -161,8 +177,14 @@ const WarehouseSendItemViewPage = () => {
                     danger
                     style={{ marginTop: 16 }}
                     block
-                    onClick={() => handleConfirm(false)}
-                    disabled={!isEqual(get(order,'status'),'CREATED')}
+                    onClick={() => {
+                        if (isRejecting) {
+                            handleConfirm(false)
+                        }else {
+                            setIsRejecting(true)
+                        }
+                    }}
+                    disabled={!isEqual(get(order,'status'),'CREATED') || (isRejecting && !comment)}
                 >
                     {t("Buyurtma chiqarishni bekor qilish")}
                 </Button>
