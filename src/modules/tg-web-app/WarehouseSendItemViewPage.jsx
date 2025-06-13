@@ -13,7 +13,7 @@ const { Text } = Typography;
 
 const WarehouseSendItemViewPage = () => {
     const { t } = useTranslation();
-    const { id, roleId, userId } = useParams();
+    const { id, roleId, userId,dealerId } = useParams();
     const [courierId, setCourierId] = useState(null);
     const [formDisabled, setFormDisabled] = useState(false);
     const [isRejecting, setIsRejecting] = useState(false);
@@ -78,9 +78,16 @@ const WarehouseSendItemViewPage = () => {
 
     const handleConfirm = (confirmed) => {
         confirmShipping.mutate({
-            url: `/api/web/warehouse-workers/confirm-shipping/${id}/${userId}?confirm=${confirmed}&comment=${comment}`,
+            url: `/api/web/warehouse-workers/confirm-shipping/${id}/${userId}?confirm=${confirmed}`,
             attributes: {
-                comment
+                comment,
+                products: [
+                    {
+                        "sectionId": null,
+                        "productId": null,
+                        "quantity": 0
+                    }
+                ]
             }
         }, {
             onSuccess: () => {
