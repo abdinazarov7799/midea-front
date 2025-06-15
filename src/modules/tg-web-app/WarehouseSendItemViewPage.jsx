@@ -98,7 +98,6 @@ const WarehouseSendItemViewPage = () => {
         });
     }
 
-    console.log(products,'products')
     const handleConfirm = (confirmed) => {
         if (confirmed) {
             const hasMissingSection = products?.some(item => !item?.sectionId);
@@ -110,7 +109,8 @@ const WarehouseSendItemViewPage = () => {
             confirmShipping.mutate({
                 url: `/api/web/warehouse-workers/confirm-shipping/${id}/${userId}?confirm=true`,
                 attributes: {
-                    products
+                    products,
+                    comment: null
                 }
             }, {
                 onSuccess: () => {
@@ -126,7 +126,8 @@ const WarehouseSendItemViewPage = () => {
             confirmShipping.mutate({
                 url: `/api/web/warehouse-workers/confirm-shipping/${id}/${userId}?confirm=false`,
                 attributes: {
-                    comment
+                    comment,
+                    products: null
                 }
             }, {
                 onSuccess: () => {
