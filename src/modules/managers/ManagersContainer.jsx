@@ -61,7 +61,7 @@ const ManagersContainer = () => {
                 }
             });
             const blob = new Blob([get(response,'data')]);
-            saveAs(blob, `Dealer report ${dayjs().format("YYYY-MM-DD")}.xlsx`)
+            saveAs(blob, `Manager report ${dayjs().format("YYYY-MM-DD")}.xlsx`)
         }catch (error) {
             message.error(t("Fayl shakllantirishda xatolik"))
         }finally {
