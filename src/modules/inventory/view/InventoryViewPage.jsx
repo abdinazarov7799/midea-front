@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Container from "../../../components/Container.jsx";
 import usePaginateQuery from "../../../hooks/api/usePaginateQuery.js";
 import {useNavigate, useParams} from "react-router-dom";
-import {List, Card, Divider, Button, Splitter} from "antd";
+import {List, Card, Divider, Button} from "antd";
 import { get } from "lodash";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";

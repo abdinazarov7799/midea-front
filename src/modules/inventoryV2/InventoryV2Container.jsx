@@ -38,6 +38,42 @@ const InventoryV2Container = () => {
         <Container>
             <Space direction={"vertical"} style={{width: "100%"}} size={"middle"}>
                 <Space size={"middle"}>
+                    <Input
+                        placeholder={t("Category")}
+                        allowClear
+                        value={get(params,'categoryName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('categoryName', value)
+                        }}
+                    />
+                    <Input
+                        placeholder={t("Product model")}
+                        allowClear
+                        value={get(params,'productModel','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('productModel', value)
+                        }}
+                    />
+                    <Input
+                        placeholder={t("Warehouse name")}
+                        allowClear
+                        value={get(params,'warehouseName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('warehouseName', value)
+                        }}
+                    />
+                    <Input
+                        placeholder={t("Section name")}
+                        allowClear
+                        value={get(params,'sectionName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('sectionName', value)
+                        }}
+                    />
                     <DatePicker
                         allowClear
                         placeholder={t("Dan")}
