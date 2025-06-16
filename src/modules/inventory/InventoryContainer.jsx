@@ -29,6 +29,9 @@ const InventoryContainer = () => {
         page
     });
 
+    const totalQuantity = get(data, 'data.content', [])?.reduce((sum, item) => sum + (item.quantity || 0), 0);
+
+
     const onChangeParams = (name, value) => {
         setParams(prevState => ({...prevState, [name]: value}));
     }
@@ -73,7 +76,12 @@ const InventoryContainer = () => {
             render: product => get(product,'model'),
         },
         {
-            title: t("Quantity"),
+            title: (
+                <Space direction="vertical">
+                    {t("Quantity")}
+                    <Typography.Text>({totalQuantity})</Typography.Text>
+                </Space>
+            ),
             dataIndex: "quantity",
             key: "quantity",
         },
