@@ -18,7 +18,6 @@ const WarehouseSendItemViewPage = () => {
     const [formDisabled, setFormDisabled] = useState(false);
     const [isRejecting, setIsRejecting] = useState(false);
     const [comment, setComment] = useState(null);
-    const telegram = useTelegram();
     const [products, setProducts] = useState([]);
 
     const {data: orderData} = useGetAllQuery({
@@ -75,11 +74,7 @@ const WarehouseSendItemViewPage = () => {
         }, {
             onSuccess: () => {
                 setFormDisabled(true);
-                message.success(
-                    t("Kuryer biriktirildi"),
-                    3,
-                    () => telegram.onClose()
-                );
+                message.success(t("Kuryer biriktirildi"));
             }
         });
     };
@@ -89,11 +84,7 @@ const WarehouseSendItemViewPage = () => {
             url: `/api/web/warehouse-workers/link-courier/${id}/${userId}?completed=true`,
         }, {
             onSuccess: () => {
-                message.success(
-                    t("Muvaffaqqiyatli tugatildi"),
-                    3,
-                    () => telegram.onClose()
-                );
+                message.success(t("Muvaffaqqiyatli tugatildi"));
             }
         });
     }
@@ -114,11 +105,7 @@ const WarehouseSendItemViewPage = () => {
                 }
             }, {
                 onSuccess: () => {
-                    message.success(
-                        t("Buyurtma chiqarishga tayyorlandi"),
-                        3,
-                        () => telegram.onClose()
-                    );
+                    message.success(t("Buyurtma chiqarishga tayyorlandi"));
                 }
             });
 
@@ -131,11 +118,7 @@ const WarehouseSendItemViewPage = () => {
                 }
             }, {
                 onSuccess: () => {
-                    message.success(
-                        t("Buyurtma chiqarishga tayyorlandi"),
-                        3,
-                        () => telegram.onClose()
-                    );
+                    message.success(t("Buyurtmani chiqarish bekor qilindi"));
                 }
             });
         }
