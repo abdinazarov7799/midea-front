@@ -20,7 +20,7 @@ const InventoryContainer = () => {
         url: URLS.inventory_list,
         params: {
             params: {
-                size: 10,
+                size: 1000,
                 ...params,
                 from: get(params,'from') ? get(params,'from')?.toISOString() : null,
                 to: get(params,'to') ? get(params,'to')?.toISOString() : null
