@@ -35,7 +35,20 @@ const InventoryContainer = () => {
 
     const columns = [
         {
-            title: t("Category"),
+            title: (
+                <Space direction="vertical">
+                    {t("Category")}
+                    <Input
+                        placeholder={t("Category")}
+                        allowClear
+                        value={get(params,'categoryName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('categoryName', value)
+                        }}
+                    />
+                </Space>
+            ),
             dataIndex: "product",
             key: "category",
             render: product => get(product,'category.name'),
