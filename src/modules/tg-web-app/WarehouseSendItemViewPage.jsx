@@ -5,7 +5,7 @@ import {useTranslation} from 'react-i18next';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import usePutQuery from '../../hooks/api/usePutQuery';
 import usePostQuery from '../../hooks/api/usePostQuery';
-import {get, isEqual} from 'lodash';
+import {get, isEmpty, isEqual} from 'lodash';
 import {ArrowLeftOutlined} from "@ant-design/icons";
 import {useTelegram} from "../../hooks/telegram/useTelegram.js";
 
@@ -51,8 +51,10 @@ const WarehouseSendItemViewPage = () => {
     }, [order]);
 
     useEffect(() => {
-        const allItems = get(orderData, 'data.sectionItems', [])?.flatMap(s => s.items);
-        setProducts(allItems?.map(item => ({sectionId: null, productId: get(item,'product.id'), quantity: get(item,'quantity')})));
+        if (isEmpty(products)) {
+            const allItems = get(orderData, 'data.sectionItems', [])?.flatMap(s => s.items);
+            setProducts(allItems?.map(item => ({sectionId: null, productId: get(item,'product.id'), quantity: get(item,'quantity')})));
+        }
     },[orderData])
 
     const handleAssignSection = (sectionId, productId) => {
@@ -65,7 +67,7 @@ const WarehouseSendItemViewPage = () => {
 
         setProducts(updated);
     };
-
+    console.log(products,'products')
     const handleCourierAssign = () => {
         if (!courierId) return message.error(t("Iltimos, kuryerni tanlang"));
 
