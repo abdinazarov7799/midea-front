@@ -141,25 +141,28 @@ const WarehouseSendItemViewPage = () => {
                             style={{margin: '10px 0'}}
                             styles={{body: {padding: 8}, header: {padding: '0 8px'}}}
                         >
-                            {item?.items?.map((item, i) => (
-                                <Row justify={'space-between'} key={i} align={'middle'}>
-                                    <Col span={16}>
-                                        <p><b>L {item?.product?.model}</b> x {item?.quantity} {t("dona")}</p>
-                                    </Col>
-                                    <Col span={8}>
-                                        <Select
-                                            style={{width:'100%'}}
-                                            options={get(sections, 'data', [])?.map((item) =>{
-                                                return {
-                                                    label: get(item, 'name'),
-                                                    value: get(item,'id')
-                                                }
-                                            })}
-                                            onChange={(sectionId) => handleAssignSection(sectionId,item?.product?.id)}
-                                        />
-                                    </Col>
-                                </Row>
-                            ))}
+                            {item?.items?.map((item, i) => {
+                                return (
+                                    <Row justify={'space-between'} key={i} align={'middle'}>
+                                        <Col span={16}>
+                                            <p><b>L {item?.product?.model}</b> x {item?.quantity} {t("dona")}</p>
+                                        </Col>
+                                        <Col span={8}>
+                                            <Select
+                                                style={{width:'100%'}}
+                                                value={products?.find(product=> product?.productId === item?.product?.id)?.sectionId}
+                                                options={get(sections, 'data', [])?.map((item) =>{
+                                                    return {
+                                                        label: get(item, 'name'),
+                                                        value: get(item,'id')
+                                                    }
+                                                })}
+                                                onChange={(sectionId) => handleAssignSection(sectionId,item?.product?.id)}
+                                            />
+                                        </Col>
+                                    </Row>
+                                )
+                            })}
                         </Card>
                     )
                 })
