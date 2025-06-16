@@ -58,6 +58,7 @@ import ViewStocks from "../modules/tg-web-app/ViewStocks.jsx";
 import AdminsPage from "../modules/admins/AdminsPage.jsx";
 import ViewOrdersPage from "../modules/tg-web-app/ViewOrders.jsx";
 import BotOrdersPage from "../modules/tg-web-app/BotOrders.jsx";
+import InventoryV2Page from "../modules/inventoryV2/InventoryV2Page.jsx";
 // PAGES
 
 
@@ -86,6 +87,7 @@ const Router = () => {
               <Route path={"/accruals"} element={<AccrualsPage />}/>
               <Route path={"/roles"} element={<RolesPage />}/>
               <Route path={"/inventories"} element={<InventoryPage />}/>
+              <Route path={"/inventories-v2"} element={<InventoryV2Page />}/>
               <Route path={"/admins"} element={<AdminsPage />}/>
               <Route path={"/inventory/:id"} element={<InventoryViewPage />}/>
               <Route path={"auth/*"} element={<Navigate to={"/categories"} replace />}/>

@@ -75,6 +75,10 @@ const DashboardSidebar = () => {
                     label: t("Inventories"),
                     key: "/inventories",
                 },
+                {
+                    label: t("Inventories v2"),
+                    key: "/inventories-v2",
+                },
             ]
         },
         {
