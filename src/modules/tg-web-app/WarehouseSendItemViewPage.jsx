@@ -208,7 +208,7 @@ const WarehouseSendItemViewPage = () => {
             }
 
             {
-                !get(order, 'delivery') && (
+                (!get(order, 'delivery') && isEqual(get(order,'status'),'READY_TO_SHIP')) && (
                     <Button
                         type="primary"
                         style={{marginTop: 16}}
