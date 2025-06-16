@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {Card, Typography, InputNumber, Button, message, Select, Spin, Table, Pagination, Row} from 'antd';
+import {
+    Card,
+    Typography,
+    InputNumber,
+    Button,
+    message,
+    Select,
+    Spin,
+    Table,
+    Pagination,
+    Row,
+    Divider,
+    Col,
+    Flex
+} from 'antd';
 import { useTranslation } from 'react-i18next';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import usePostQuery from '../../hooks/api/usePostQuery';
@@ -119,11 +133,13 @@ const BalanceScreen = () => {
                         key: 'amount_for_role',
                         title: t('For role'),
                         dataIndex: 'amount_for_role',
+                        render: props => <>{props} $</>
                     },
                     {
                         key: 'total_amount',
                         title: t('Total'),
                         dataIndex: 'total_amount',
+                        render: props => <>{props} $</>
                     },
                 ]}
                 pagination={false}
@@ -139,6 +155,12 @@ const BalanceScreen = () => {
                     showSizeChanger={false}
                 />
             </Row>
+            <Divider style={{margin: '6px 0'}}/>
+            <Flex justify={'space-between'} align={'center'} style={{padding: 6}}>
+                <Typography.Title level={5}>
+                    {t("Non accounted")}: {get(nonAccountedData,'data.amount')} $
+                </Typography.Title>
+            </Flex>
         </Spin>
     );
 };
