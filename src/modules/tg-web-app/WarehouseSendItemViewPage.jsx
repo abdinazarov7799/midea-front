@@ -67,7 +67,7 @@ const WarehouseSendItemViewPage = () => {
 
         setProducts(updated);
     };
-    console.log(products,'products')
+
     const handleCourierAssign = () => {
         if (!courierId) return message.error(t("Iltimos, kuryerni tanlang"));
 

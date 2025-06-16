@@ -1,4 +1,4 @@
-import React, {Suspense} from "react";
+import React, {lazy, Suspense} from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 // LAYOUTS
@@ -18,47 +18,48 @@ import NotFoundPage from  "../modules/auth/pages/NotFoundPage";
 
 // PAGES
 import OverlayLoader from "../components/OverlayLoader.jsx";
-import TranslationPage from "../modules/translations/pages/TranslationPage.jsx";
-import ConstantsPage from "../modules/constants/pages/ConstantsPage.jsx";
-import WarehousesPage from "../modules/warehouses/WarehousesPage.jsx";
-import WarehouseWorkersContainer from "../modules/warehouse-workers/WarehouseWorkersContainer.jsx";
-import WarehouseSectionsPage from "../modules/warehouse-sections/WarehouseSectionsPage.jsx";
-import TeamLeadsPage from "../modules/team-leads/TeamLeadsPage.jsx";
-import CategoriesPage from "../modules/categories/CategoriesPage.jsx";
-import ProductsPage from "../modules/products/ProductsPage.jsx";
-import ManagersPage from "../modules/managers/ManagersPage.jsx";
-import DealersPage from "../modules/dealers/DealersPage.jsx";
-import CouriersPage from "../modules/couriers/CouriersPage.jsx";
-import ClientsPage from "../modules/clients/ClientsPage.jsx";
 
-import CreateOrderPage from "../modules/tg-web-app/CreateOrderPage.jsx";
-import CreateClientPage from "../modules/tg-web-app/CreateClientPage.jsx";
-import AddStockPage from "../modules/tg-web-app/AddStockPage.jsx";
-import ReturnedOrderViewPage from "../modules/tg-web-app/ReturnedOrderViewPage.jsx";
-import ReturnedOrderPage from "../modules/tg-web-app/ReturnedOrderPage.jsx";
-import WareHouseSendItemPage from "../modules/tg-web-app/WareHouseSendItemPage.jsx";
-import WarehouseSendItemViewPage from "../modules/tg-web-app/WarehouseSendItemViewPage.jsx";
-import OrdersPage from "../modules/orders/OrdersPage.jsx";
-import StockMovementsPage from "../modules/stocks-movements/StockMovementsPage.jsx";
-import PaymentsPage from "../modules/payments/PaymentsPage.jsx";
-import AccrualsPage from "../modules/accruals/AccrualsPage.jsx";
-import WarehouseTransferPage from "../modules/tg-web-app/WarehouseTransferPage.jsx";
-import WarehouseTransferFormPage from "../modules/tg-web-app/WarehouseTransferFormPage.jsx";
-import CourierOrdersPage from "../modules/tg-web-app/CourierOrders.jsx";
-import CourierOrderViewPage from "../modules/tg-web-app/CourierOrderViewPage.jsx";
-import InventoryPage from "../modules/inventory/InventoryPage.jsx";
-import BalanceScreen from "../modules/tg-web-app/BalanceScreen.jsx";
-import PaymentListScreen from "../modules/tg-web-app/PaymentListScreen.jsx";
-import PaymentConfirmScreen from "../modules/tg-web-app/PaymentConfirmScreen.jsx";
-import InventoryViewPage from "../modules/inventory/view/InventoryViewPage.jsx";
-import RolesPage from "../modules/roles/pages/RolesPage.jsx";
-import VWOrdersPage from "../modules/tg-web-app/VWOrders.jsx";
-import ViewVWOrdersPage from "../modules/tg-web-app/ViewVWOrders.jsx";
-import ViewStocks from "../modules/tg-web-app/ViewStocks.jsx";
-import AdminsPage from "../modules/admins/AdminsPage.jsx";
-import ViewOrdersPage from "../modules/tg-web-app/ViewOrders.jsx";
-import BotOrdersPage from "../modules/tg-web-app/BotOrders.jsx";
-import InventoryV2Page from "../modules/inventoryV2/InventoryV2Page.jsx";
+const TranslationPage = lazy(() => import("../modules/translations/pages/TranslationPage.jsx"));
+const ConstantsPage = lazy(() => import("../modules/constants/pages/ConstantsPage.jsx"));
+const WarehousesPage = lazy(() => import("../modules/warehouses/WarehousesPage.jsx"));
+const WarehouseWorkersContainer = lazy(() => import("../modules/warehouse-workers/WarehouseWorkersContainer.jsx"));
+const WarehouseSectionsPage = lazy(() => import("../modules/warehouse-sections/WarehouseSectionsPage.jsx"));
+const TeamLeadsPage = lazy(() => import("../modules/team-leads/TeamLeadsPage.jsx"));
+const CategoriesPage = lazy(() => import("../modules/categories/CategoriesPage.jsx"));
+const ProductsPage = lazy(() => import("../modules/products/ProductsPage.jsx"));
+const ManagersPage = lazy(() => import("../modules/managers/ManagersPage.jsx"));
+const DealersPage = lazy(() => import("../modules/dealers/DealersPage.jsx"));
+const CouriersPage = lazy(() => import("../modules/couriers/CouriersPage.jsx"));
+const ClientsPage = lazy(() => import("../modules/clients/ClientsPage.jsx"));
+const OrdersPage = lazy(() => import("../modules/orders/OrdersPage.jsx"));
+const StockMovementsPage = lazy(() => import("../modules/stocks-movements/StockMovementsPage.jsx"));
+const PaymentsPage = lazy(() => import("../modules/payments/PaymentsPage.jsx"));
+const AccrualsPage = lazy(() => import("../modules/accruals/AccrualsPage.jsx"));
+const InventoryPage = lazy(() => import("../modules/inventory/InventoryPage.jsx"));
+const InventoryViewPage = lazy(() => import("../modules/inventory/view/InventoryViewPage.jsx"));
+const InventoryV2Page = lazy(() => import("../modules/inventoryV2/InventoryV2Page.jsx"));
+const RolesPage = lazy(() => import("../modules/roles/pages/RolesPage.jsx"));
+const AdminsPage = lazy(() => import("../modules/admins/AdminsPage.jsx"));
+
+const CreateOrderPage = lazy(() => import("../modules/tg-web-app/CreateOrderPage.jsx"));
+const CreateClientPage = lazy(() => import("../modules/tg-web-app/CreateClientPage.jsx"));
+const AddStockPage = lazy(() => import("../modules/tg-web-app/AddStockPage.jsx"));
+const ReturnedOrderPage = lazy(() => import("../modules/tg-web-app/ReturnedOrderPage.jsx"));
+const ReturnedOrderViewPage = lazy(() => import("../modules/tg-web-app/ReturnedOrderViewPage.jsx"));
+const WareHouseSendItemPage = lazy(() => import("../modules/tg-web-app/WareHouseSendItemPage.jsx"));
+const WarehouseSendItemViewPage = lazy(() => import("../modules/tg-web-app/WarehouseSendItemViewPage.jsx"));
+const WarehouseTransferPage = lazy(() => import("../modules/tg-web-app/WarehouseTransferPage.jsx"));
+const WarehouseTransferFormPage = lazy(() => import("../modules/tg-web-app/WarehouseTransferFormPage.jsx"));
+const ViewStocks = lazy(() => import("../modules/tg-web-app/ViewStocks.jsx"));
+const BotOrdersPage = lazy(() => import("../modules/tg-web-app/BotOrders.jsx"));
+const ViewOrdersPage = lazy(() => import("../modules/tg-web-app/ViewOrders.jsx"));
+const VWOrdersPage = lazy(() => import("../modules/tg-web-app/VWOrders.jsx"));
+const ViewVWOrdersPage = lazy(() => import("../modules/tg-web-app/ViewVWOrders.jsx"));
+const CourierOrdersPage = lazy(() => import("../modules/tg-web-app/CourierOrders.jsx"));
+const CourierOrderViewPage = lazy(() => import("../modules/tg-web-app/CourierOrderViewPage.jsx"));
+const PaymentListScreen = lazy(() => import("../modules/tg-web-app/PaymentListScreen.jsx"));
+const PaymentConfirmScreen = lazy(() => import("../modules/tg-web-app/PaymentConfirmScreen.jsx"));
+const BalanceScreen = lazy(() => import("../modules/tg-web-app/BalanceScreen.jsx"));
 // PAGES
 
 
