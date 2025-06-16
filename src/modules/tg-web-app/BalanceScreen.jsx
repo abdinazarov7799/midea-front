@@ -4,8 +4,6 @@ import {Card, Typography, InputNumber, Button, message, Select} from 'antd';
 import { useTranslation } from 'react-i18next';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import usePostQuery from '../../hooks/api/usePostQuery';
-import Container from '../../components/Container';
-import {get} from "lodash";
 import {useTelegram} from "../../hooks/telegram/useTelegram.js";
 
 const BalanceScreen = () => {
