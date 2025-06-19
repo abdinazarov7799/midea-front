@@ -45,6 +45,10 @@ const DashboardSidebar = () => {
                     label: t("Couriers"),
                     key: "/couriers",
                 },
+                {
+                    label: t("Cashiers"),
+                    key: "/cashiers",
+                },
             ]
         },
         {

@@ -55,4 +55,8 @@ export const URLS = {
     admin_delete: '/api/admin/users/delete-admin',
     admin_add: '/api/admin/users/add-admin',
     admin_edit: '/api/admin/users/edit-admin',
+    cashiers_list: '/api/admin/cashiers/get',
+    cashiers_add: '/api/admin/cashiers/add',
+    cashiers_edit: '/api/admin/cashiers/edit',
+    cashiers_delete: '/api/admin/cashiers/delete',
 };

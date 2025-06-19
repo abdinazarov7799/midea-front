@@ -18,5 +18,6 @@ export const KEYS = {
     accruals_list: "accruals_list",
     inventory_list: "inventory_list",
     roles_list: "roles_list",
-    admins_list: "admins_list"
+    admins_list: "admins_list",
+    cashiers_list: "cashiers_list"
 };

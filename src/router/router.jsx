@@ -18,6 +18,7 @@ import NotFoundPage from  "../modules/auth/pages/NotFoundPage";
 
 // PAGES
 import OverlayLoader from "../components/OverlayLoader.jsx";
+import CashiersPage from "../modules/cashiers/CashiersPage.jsx";
 
 const TranslationPage = lazy(() => import("../modules/translations/pages/TranslationPage.jsx"));
 const ConstantsPage = lazy(() => import("../modules/constants/pages/ConstantsPage.jsx"));
@@ -90,6 +91,7 @@ const Router = () => {
               <Route path={"/inventories"} element={<InventoryPage />}/>
               <Route path={"/inventories-v2"} element={<InventoryV2Page />}/>
               <Route path={"/admins"} element={<AdminsPage />}/>
+              <Route path={"/cashiers"} element={<CashiersPage />}/>
               <Route path={"/inventory/:id"} element={<InventoryViewPage />}/>
               <Route path={"auth/*"} element={<Navigate to={"/categories"} replace />}/>
               <Route path={"/"} element={<Navigate to={"/categories"} replace />}/>
