@@ -4,10 +4,7 @@ import {Card, DatePicker, Input, List, Pagination, Row, Space, Table, Typography
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
-import {KEYS} from "../../constants/key.js";
-import {URLS} from "../../constants/url.js";
 import dayjs from "dayjs";
-import {useNavigate} from "react-router-dom";
 
 const InventoryV2Container = () => {
     const {t} = useTranslation();
@@ -30,6 +27,7 @@ const InventoryV2Container = () => {
 
 
     const onChangeParams = (name, value) => {
+        setPage(0)
         setParams(prevState => ({...prevState, [name]: value}));
     }
 

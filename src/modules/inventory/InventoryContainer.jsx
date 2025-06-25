@@ -33,6 +33,7 @@ const InventoryContainer = () => {
 
 
     const onChangeParams = (name, value) => {
+        setPage(0)
         setParams(prevState => ({...prevState, [name]: value}));
     }
 

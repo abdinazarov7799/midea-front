@@ -19,7 +19,7 @@ import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
 import {KEYS} from "../../constants/key.js";
 import {URLS} from "../../constants/url.js";
 import dayjs from "dayjs";
-import {EyeOutlined, PlusOutlined} from "@ant-design/icons";
+import {EyeOutlined} from "@ant-design/icons";
 
 const StockMovementsContainer = () => {
     const {t} = useTranslation();
@@ -42,6 +42,7 @@ const StockMovementsContainer = () => {
     });
 
     const onChangeParams = (name, value) => {
+        setPage(0)
         setParams(prevState => ({...prevState, [name]: value}));
     }
 

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Checkbox, DatePicker, Input, Pagination, Row, Space, Table, Typography} from "antd";
+import {DatePicker, Input, Pagination, Row, Space, Table, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -28,6 +28,7 @@ const AccrualsContainer = () => {
     });
 
     const onChangeParams = (name, value) => {
+        setPage(0)
         setParams(prevState => ({...prevState, [name]: value}));
     }
 
