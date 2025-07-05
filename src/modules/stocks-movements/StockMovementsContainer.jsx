@@ -13,7 +13,7 @@ import {
     Table,
     Typography
 } from "antd";
-import {get} from "lodash";
+import {get, isEmpty} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
 import {KEYS} from "../../constants/key.js";
@@ -43,7 +43,7 @@ const StockMovementsContainer = () => {
 
     const onChangeParams = (name, value) => {
         setPage(0)
-        setParams(prevState => ({...prevState, [name]: value}));
+        setParams(prevState => ({...prevState, [name]: !isEmpty(value) ? value : null}));
     }
 
     const columns = [
@@ -208,6 +208,15 @@ const StockMovementsContainer = () => {
                         format="YYYY-MM-DD"
                         value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
                         onChange={(date) => onChangeParams('to', date)}
+                    />
+                    <Input
+                        placeholder={t("Search by comment")}
+                        allowClear
+                        value={get(params,'comment','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('comment', value)
+                        }}
                     />
                 </Space>
                 <Table
