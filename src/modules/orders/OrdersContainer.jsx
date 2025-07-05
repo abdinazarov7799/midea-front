@@ -1,17 +1,33 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Checkbox, DatePicker, Input, Pagination, Row, Select, Space, Table, Typography} from "antd";
+import {
+    Button,
+    Checkbox,
+    DatePicker,
+    Divider,
+    Input,
+    Modal,
+    Pagination,
+    Row,
+    Select,
+    Space,
+    Table,
+    Typography
+} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
 import {KEYS} from "../../constants/key.js";
 import {URLS} from "../../constants/url.js";
 import dayjs from "dayjs";
+import {EyeOutlined} from "@ant-design/icons";
 
 const OrdersContainer = () => {
     const {t} = useTranslation();
     const [page, setPage] = useState(0);
     const [params, setParams] = useState({});
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const {data,isLoading} = usePaginateQuery({
         key: KEYS.orders_list,
@@ -199,9 +215,20 @@ const OrdersContainer = () => {
             dataIndex: "delivery",
             key: "delivery",
             render: (props) => (
-                <Checkbox checked={props} />
+                <Checkbox checked={props} disabled />
+            )
+        },
+        {
+            title: t("Actions"),
+            key: "actions",
+            render: (_, record) => (
+                <Button icon={<EyeOutlined />} onClick={() => {
+                    setSelectedOrder(record);
+                    setModalVisible(true);
+                }} />
             )
         }
+
     ]
     return (
         <Container>
@@ -243,6 +270,70 @@ const OrdersContainer = () => {
                     />
                 </Row>
             </Space>
+            <Modal
+                title={t("Buyurtma tafsilotlari")}
+                open={modalVisible}
+                onCancel={() => setModalVisible(false)}
+                footer={null}
+                width={800}
+            >
+                {selectedOrder && (
+                    <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+                        <Typography.Text strong>{t("Buyurtma ID")}: {selectedOrder?.id}</Typography.Text>
+                        <Typography.Text strong>{t("Client")}: {selectedOrder?.client}</Typography.Text>
+                        <Typography.Text strong>{t("Manager")}: {selectedOrder?.manager}</Typography.Text>
+                        <Typography.Text strong>{t("Dealer")}: {selectedOrder?.dealer}</Typography.Text>
+                        <Typography.Text strong>{t("Umumiy summa")}: {selectedOrder?.totalAmount}</Typography.Text>
+                        <Typography.Text strong>{t("Status")}: {selectedOrder?.status}</Typography.Text>
+                        <Divider>{t("Mahsulotlar")}</Divider>
+
+                        {selectedOrder?.sectionItems?.map((section) => (
+                            <div key={section.sectionId} style={{ marginBottom: 20 }}>
+                                <Typography.Title level={5}>
+                                    {t("Bo'lim")}: {section.sectionName}
+                                </Typography.Title>
+                                <Table
+                                    size="small"
+                                    bordered
+                                    pagination={false}
+                                    dataSource={section.items}
+                                    rowKey="id"
+                                    columns={[
+                                        {
+                                            title: t("Model"),
+                                            dataIndex: ["product", "model"],
+                                            key: "model"
+                                        },
+                                        {
+                                            title: t("Narxi"),
+                                            dataIndex: ["product", "price"],
+                                            key: "price",
+                                            render: (v) => `${v} UZS`
+                                        },
+                                        {
+                                            title: t("Miqdor"),
+                                            dataIndex: "quantity",
+                                            key: "quantity"
+                                        },
+                                        {
+                                            title: t("Yakuniy narx"),
+                                            dataIndex: "finalPrice",
+                                            key: "finalPrice",
+                                            render: (v) => `${v} UZS`
+                                        },
+                                        {
+                                            title: t("Qo‘shilgan vaqti"),
+                                            dataIndex: "createdAt",
+                                            key: "createdAt",
+                                            render: (v) => dayjs(v).format("YYYY-MM-DD HH:mm")
+                                        }
+                                    ]}
+                                />
+                            </div>
+                        ))}
+                    </Space>
+                )}
+            </Modal>
         </Container>
     );
 };
