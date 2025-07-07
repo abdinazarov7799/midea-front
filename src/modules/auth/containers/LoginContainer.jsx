@@ -55,17 +55,18 @@ const LoginContainer = ({ ...rest }) => {
   return (
     <div style={{
       backgroundColor: colorBgContainer,
-      padding: 50,
+      padding: 80,
       boxShadow: "0 0 10px 0 #c8cbcb",
       borderRadius,
     }}>
       <Space direction={"vertical"} size={"large"}>
-        <Image src={darkMode ? logoDark : logo} width={200} height={90} preview={false} />
+        <Image src={darkMode ? logoDark : logo} width={240} height={130} preview={false} />
         <Form
             layout={"vertical"}
             name="basic"
             onFinish={onFinish}
             autoComplete="off"
+            size="large"
         >
           <Form.Item
               label={t("Username")}

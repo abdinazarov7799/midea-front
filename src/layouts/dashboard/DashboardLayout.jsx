@@ -8,23 +8,24 @@ const { Content} = Layout;
 
 
 const DashboardLayout = () => {
-
+    const [collapsed, setCollapsed] = React.useState(false);
   return(
-      <Layout hasSider>
+      <Layout hasSider style={{
+          padding: '24px',
+          background: '#F3F5F7'
+      }}>
 
-          <DashboardSidebar />
 
-          <Layout style={{marginLeft: 200, minHeight: '100vh'}}>
-              <DashboardHeader />
+          <DashboardSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+          <DashboardHeader collapsed={collapsed} />
 
+          <Layout style={{
+              marginLeft: collapsed ? 104 : 240,
+              minHeight: 'calc(100vh - 104px)',
+              marginTop: 104,
+          }}>
               <Content
-                  style={{
-                      padding: '24px 16px',
-                      overflow: 'initial',
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "start"
-                  }}
+                  style={{background: '#F3F5F7'}}
               >
                   <Outlet />
               </Content>

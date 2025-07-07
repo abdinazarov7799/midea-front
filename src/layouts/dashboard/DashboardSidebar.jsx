@@ -1,14 +1,19 @@
-import {Menu} from "antd";
+import {Button, Menu, theme} from "antd";
 import {get} from "lodash";
 import React from "react";
 import Sider from "antd/es/layout/Sider";
 import {useTranslation} from "react-i18next";
 import {useLocation, useNavigate} from "react-router-dom";
+import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 
-const DashboardSidebar = () => {
+const DashboardSidebar = ({collapsed,setCollapsed}) => {
     const { t } = useTranslation();
     const location = useLocation()
     const navigate = useNavigate()
+
+    const {
+        token: {colorBgContainer},
+    } = theme.useToken();
 
     const items = [
         {
@@ -123,23 +128,44 @@ const DashboardSidebar = () => {
 
   return(
       <Sider
-          theme={"light"}
+          collapsible
+          collapsed={collapsed}
+          trigger={null}
           style={{
-              overflow: 'auto',
-              height: '100vh',
               position: 'fixed',
-              left: 0,
-              top: 0,
-              bottom: 0,
+              left: 24,
+              top: 24,
+              bottom: 24,
+              scrollbarWidth: 'none',
+              padding: 16,
+              background: colorBgContainer,
+              borderRadius: 20,
           }}
       >
-          <Menu
-              mode="inline"
-              style={{padding: 5}}
-              onSelect={(event) => {navigate(get(event,'key','/'))}}
-              items={items}
-              selectedKeys={[get(location,'pathname','')]}
-          />
+          <Button
+              style={{
+                  position: 'absolute',
+                  top: 72,
+                  right: -15,
+                  borderRadius: 999,
+                  border: 'transparent',
+                  boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'
+              }}
+              icon={collapsed ? <RightOutlined/> : <LeftOutlined/>}
+              onClick={() => setCollapsed(prevState => !prevState)}
+          >
+
+          </Button>
+          <div style={{height:'100%',overflowY:'auto'}}>
+              <Menu
+                  mode="inline"
+                  theme="light"
+                  style={{padding: 5,border: 'none'}}
+                  onSelect={(event) => {navigate(get(event,'key','/'))}}
+                  items={items}
+                  selectedKeys={[get(location,'pathname','')]}
+              />
+          </div>
 
       </Sider>
   )

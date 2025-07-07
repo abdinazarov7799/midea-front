@@ -13,9 +13,9 @@ import Swal from "sweetalert2";
 import {useNavigate} from "react-router-dom";
 import storage from "../../services/storage";
 
-const DashboardHeader = () => {
+const DashboardHeader = ({collapsed}) => {
     const {
-        token: { colorBgContainer },
+        token: { colorBgContainer, colorPrimary },
     } = theme.useToken();
 
     const {t, i18n} = useTranslation();
@@ -74,18 +74,23 @@ const DashboardHeader = () => {
     };
   return(
       <Header
-          theme="dark"
           style={{
-              padding: '0 15px',
-              background: colorBgContainer,
+              position: 'fixed',
+              top: 24,
+              left: collapsed ? 128 : 264,
+              right: 24,
+              background: colorPrimary,
+              paddingInline: 24,
+              borderRadius: 18,
+              zIndex: 2,
           }}
       >
           <Row justify={"space-between"}>
               <Col>
                   <Image
-                      src={darkMode ? logoDark : logo}
+                      src={logoDark}
                       preview={false}
-                      width={90}
+                      width={80}
                       onClick={() => navigate('/')}
                       style={{cursor: "pointer"}}
                   />
@@ -96,14 +101,15 @@ const DashboardHeader = () => {
                           items={[{label: get(user,'roleName'),key: get(user,'roleName')}]}
                           selectedKeys={[get(user,'roleName')]}
                           mode="horizontal"
-                          style={{minWidth: 200,border: 'none'}}
+                          theme="dark"
+                          style={{minWidth: 200,border: 'none',backgroundColor: 'transparent' }}
                       />
-                      <Switch
-                          checkedChildren={<SunOutlined />}
-                          unCheckedChildren={<MoonOutlined />}
-                          checked={darkMode}
-                          onClick={() => setDarkMode()}
-                      />
+                      {/*<Switch*/}
+                      {/*    checkedChildren={<SunOutlined />}*/}
+                      {/*    unCheckedChildren={<MoonOutlined />}*/}
+                      {/*    checked={darkMode}*/}
+                      {/*    onClick={() => setDarkMode()}*/}
+                      {/*/>*/}
                       <Switch
                           checkedChildren={<FullscreenOutlined />}
                           unCheckedChildren={<FullscreenExitOutlined />}
