@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Form, Select, InputNumber, Button, Table, message} from 'antd';
+import {Form, Select, InputNumber, Button, Table, message, Input} from 'antd';
 import Container from "../../components/Container.jsx";
 import { DeleteOutlined } from '@ant-design/icons';
 import useGetAllQuery from "../../hooks/api/useGetAllQuery.js";
@@ -82,6 +82,7 @@ const AddStockPage = () => {
             url: `/api/web/warehouse-workers/add-stock/${userId}`,
             attributes: {
                 sectionId: values.sectionId,
+                comment: values.comment,
                 items
             }
         },{
@@ -139,6 +140,15 @@ const AddStockPage = () => {
                     style={{ marginTop: 16 }}
                 >
                     <Select placeholder="Tanlash" options={sectionOptions} />
+                </Form.Item>
+
+                <Form.Item
+                    name="comment"
+                    label={t("Izoh qoldiring:")}
+                    rules={[{ required: true }]}
+                    style={{ marginTop: 16 }}
+                >
+                    <Input.TextArea />
                 </Form.Item>
 
                 <Form.Item>
