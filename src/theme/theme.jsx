@@ -76,7 +76,7 @@ const Theme = ({ children }) => {
             colorPrimary: '#044635',
             colorSuccess: '#18A058',
             colorWarning: '#F17B0D',
-            fontFamily: 'DM Sans, sans-serif',
+            fontFamily: 'Play, sans-serif',
             colorText: '#464646',
             colorTextSecondary: '#646464',
             colorBgBase: '#FFFCF1',
