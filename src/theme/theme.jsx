@@ -73,7 +73,7 @@ const Theme = ({ children }) => {
             body: 'Play',
         },
         token: {
-            colorPrimary: '#044635',
+            colorPrimary: '#1399D6',
             colorSuccess: '#18A058',
             colorWarning: '#F17B0D',
             fontFamily: 'Play, sans-serif',
@@ -108,7 +108,7 @@ const Theme = ({ children }) => {
             Table: {
                 colorBgContainer: '#ffffff',
 
-                headerBg: '#044635',
+                headerBg: '#1399D6',
                 headerColor: '#ffffff',
                 headerSplitColor: '#e0e0e0',
 

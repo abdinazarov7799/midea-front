@@ -325,15 +325,9 @@ const ClientsContainer = () => {
                                 key: 'order_id',
                             },
                             {
-                                title: t('Price'),
-                                dataIndex: 'price',
-                                key: 'price',
-                                render: (props) => props + ' $'
-                            },
-                            {
-                                title: t('Balance'),
-                                dataIndex: 'balance',
-                                key: 'balance',
+                                title: t('Total amount'),
+                                dataIndex: 'total_amount',
+                                key: 'total_amount',
                                 render: (props) => props + ' $'
                             },
                             {

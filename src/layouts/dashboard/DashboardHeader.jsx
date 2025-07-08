@@ -1,6 +1,5 @@
 import {Button, Col, Dropdown, Image, Menu, Row, Space, Switch, theme} from "antd";
-import logo from "../../assets/images/logo.svg";
-import logoDark from "../../assets/images/logoDark.svg";
+import logo from "../../assets/images/logo.png";
 import ru from '../../assets/images/ru.svg'
 import uz from '../../assets/images/uz.png'
 import React from "react";
@@ -88,7 +87,7 @@ const DashboardHeader = ({collapsed}) => {
           <Row justify={"space-between"}>
               <Col>
                   <Image
-                      src={logoDark}
+                      src={logo}
                       preview={false}
                       width={80}
                       onClick={() => navigate('/')}

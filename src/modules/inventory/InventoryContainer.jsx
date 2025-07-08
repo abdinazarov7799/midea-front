@@ -80,7 +80,7 @@ const InventoryContainer = () => {
             title: (
                 <Space direction="vertical">
                     {t("Quantity")}
-                    <Typography.Text>({totalQuantity})</Typography.Text>
+                    <span>({totalQuantity})</span>
                 </Space>
             ),
             dataIndex: "quantity",

@@ -79,6 +79,7 @@ const InventoryViewPage = () => {
                                 )
                             }
                         >
+                            <p><b>{t("Order id")}:</b> {get(item, 'orderId')}</p>
                             <p><b>{t("Mahsulot")}:</b> {get(item, 'product')}</p>
                             <p><b>{t("Miqdor")}:</b> {get(item, 'quantity')}</p>
                             <p><b>{t("Sabab")}:</b> {get(item, 'reason')}</p>
