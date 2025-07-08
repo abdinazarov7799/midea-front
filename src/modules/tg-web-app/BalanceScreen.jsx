@@ -13,7 +13,7 @@ import {
     Row,
     Divider,
     Col,
-    Flex
+    Flex, Input, Space
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
@@ -29,6 +29,7 @@ const BalanceScreen = () => {
     const [method, setMethod] = useState('CASH');
     const [page, setPage] = useState(0);
     const telegram = useTelegram();
+    const [search, setSearch] = useState('');
 
     const { data,isLoading,isFetching } = useGetAllQuery({
         key: ['balance', userId],
@@ -38,6 +39,11 @@ const BalanceScreen = () => {
     const accountedData = usePaginateQuery({
         key: ['accounted', userId],
         url: `/api/web/orders/order-report/accounted/${userId}`,
+        params: {
+            params: {
+                search
+            }
+        },
         page
     });
 
@@ -108,7 +114,12 @@ const BalanceScreen = () => {
                     {t("Esda tuting, qarzingizdan faqatgina yuqorida pul berganligingiz tasdiqlansagina qutulishingiz mumkin.")}
                 </Typography.Text>
             </Card>
-
+            <div style={{margin: 12}}>
+                <Space direction={'vertical'} style={{width:'100%'}}>
+                    <Input placeholder={"Client"} value={search} onChange={(e) => setSearch(e.target.value)} />
+                    <Button block onClick={() => setSearch('')}>{t("Tozalash")}</Button>
+                </Space>
+            </div>
             <Table
                 dataSource={get(accountedData, 'data.data.content')}
                 loading={accountedData.isLoading || accountedData.isFetching}
