@@ -147,7 +147,7 @@ const CouriersContainer = () => {
                                 value: true
                             },
                             {
-                                label: 'Disable',
+                                label: 'Inactive',
                                 value: false
                             },
                         ]}

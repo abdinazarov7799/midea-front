@@ -171,7 +171,7 @@ const DealersContainer = () => {
                                 value: true
                             },
                             {
-                                label: 'Disable',
+                                label: 'Inactive',
                                 value: false
                             },
                         ]}
@@ -318,7 +318,10 @@ const DealersContainer = () => {
                             }
                         ]}
                         value={clientDataType}
-                        onChange={(e) => setClientDataType(e)}
+                        onChange={(e) => {
+                            setClientPage(0)
+                            setClientDataType(e)
+                        }}
                     />
                     {
                         clientDataType === 'second' && (

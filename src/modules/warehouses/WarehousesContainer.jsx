@@ -118,7 +118,7 @@ const WarehousesContainer = () => {
                                 value: true
                             },
                             {
-                                label: 'Disable',
+                                label: 'Inactive',
                                 value: false
                             },
                         ]}

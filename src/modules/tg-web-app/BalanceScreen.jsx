@@ -198,7 +198,10 @@ const BalanceScreen = () => {
                             }
                         ]}
                         value={clientDataType}
-                        onChange={(e) => setClientDataType(e)}
+                        onChange={(e) => {
+                            setClientPage(0)
+                            setClientDataType(e)
+                        }}
                     />
                     <Table
                         dataSource={get(clientDataQuery,'data.data.content')}

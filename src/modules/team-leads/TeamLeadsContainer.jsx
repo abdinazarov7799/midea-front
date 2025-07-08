@@ -208,7 +208,7 @@ const TeamLeadsContainer = () => {
                                 value: true
                             },
                             {
-                                label: 'Disable',
+                                label: 'Inactive',
                                 value: false
                             },
                         ]}
@@ -363,7 +363,10 @@ const TeamLeadsContainer = () => {
                             }
                         ]}
                         value={clientDataType}
-                        onChange={(e) => setClientDataType(e)}
+                        onChange={(e) => {
+                            setClientPage(0)
+                            setClientDataType(e)
+                        }}
                     />
                     {
                         clientDataType === 'second' && (
