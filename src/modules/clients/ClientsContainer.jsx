@@ -8,7 +8,7 @@ import {
     Modal,
     Pagination,
     Popconfirm,
-    Row,
+    Row, Segmented,
     Select,
     Space,
     Table,
@@ -23,6 +23,7 @@ import {DeleteOutlined, EditOutlined, PlusOutlined} from "@ant-design/icons";
 import useDeleteQuery from "../../hooks/api/useDeleteQuery.js";
 import CreateEditClients from "./components/CreateEditClients.jsx";
 import dayjs from "dayjs";
+import useGetAllQuery from "../../hooks/api/useGetAllQuery.js";
 
 const ClientsContainer = () => {
     const {t} = useTranslation();
@@ -30,7 +31,10 @@ const ClientsContainer = () => {
     const [selected, setSelected] = useState(null);
     const [isCreateModalOpenCreate, setIsCreateModalOpen] = useState(false)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [clientDataType, setClientDataType] = useState('first');
+    const [clientPage, setClientPage] = useState(0);
     const [params, setParams] = useState({});
+    const [selectedClient, setSelectedClient] = useState(null);
 
     const {data,isLoading} = usePaginateQuery({
         key: KEYS.clients_list,
@@ -44,6 +48,17 @@ const ClientsContainer = () => {
             }
         },
         page
+    });
+
+    const clientDataQuery = useGetAllQuery({
+        key: ['clientDataQuery', selectedClient ,clientDataType],
+        url: `/api/admin/clients/get-${clientDataType}-data/${selectedClient?.id}`,
+        params: {
+            params: {
+                page: clientPage
+            }
+        },
+        enabled: !!selectedClient
     });
 
     const { mutate } = useDeleteQuery({
@@ -117,7 +132,7 @@ const ClientsContainer = () => {
             ),
             dataIndex: "dealer",
             key: "dealer",
-            render: (text, record) => get(text,'fullName')
+            render: (text) => get(text,'fullName')
         },
         {
             title: (
@@ -147,7 +162,7 @@ const ClientsContainer = () => {
             ),
             dataIndex: "legal",
             key: "legal",
-            render: (props,data,index) => (
+            render: (props,data) => (
                 <Checkbox checked={get(data,'legal')} />
             )
         },
@@ -209,6 +224,14 @@ const ClientsContainer = () => {
                     size={"middle"}
                     pagination={false}
                     loading={isLoading}
+                    onRow={(record) => {
+                        return {
+                            onDoubleClick: () => {
+                                setSelectedClient(record);
+                            },
+                            style: {cursor: "pointer"}
+                        }
+                    }}
                 />
 
                 <Row justify={"space-between"} style={{marginTop: 10}}>
@@ -241,6 +264,100 @@ const ClientsContainer = () => {
                     selected={selected}
                     setIsModalOpen={setIsEditModalOpen}
                 />
+            </Modal>
+            <Modal width={800} open={!!selectedClient} title={selectedClient?.name} onCancel={() => setSelectedClient(null)} footer={null}>
+                <Space direction={'vertical'} style={{width:'100%'}}>
+                    <Segmented
+                        block
+                        options={[
+                            {
+                                label: '1',
+                                value: 'first',
+                            },
+                            {
+                                label: '2',
+                                value: 'second',
+                            }
+                        ]}
+                        value={clientDataType}
+                        onChange={(e) => setClientDataType(e)}
+                    />
+                    <Table
+                        dataSource={get(clientDataQuery,'data.data.content')}
+                        size={'small'}
+                        columns={clientDataType === 'first' ? [
+                            {
+                                title: t('Order id'),
+                                dataIndex: 'order_id',
+                                key: 'order_id',
+                            },
+                            {
+                                title: t('Model'),
+                                dataIndex: 'model',
+                                key: 'model',
+                            },
+                            {
+                                title: t('Quantity'),
+                                dataIndex: 'quantity',
+                                key: 'quantity',
+                            },
+                            {
+                                title: t('Unit price'),
+                                dataIndex: 'unit_price',
+                                key: 'unit_price',
+                                render: (props) => props + ' $'
+                            },
+                            {
+                                title: t('Price'),
+                                dataIndex: 'price',
+                                key: 'price',
+                                render: (props) => props + ' $'
+                            },
+                            {
+                                title: t('Date'),
+                                dataIndex: '_date',
+                                key: '_date',
+                            },
+                        ] : [
+                            {
+                                title: t('Order id'),
+                                dataIndex: 'order_id',
+                                key: 'order_id',
+                            },
+                            {
+                                title: t('Price'),
+                                dataIndex: 'price',
+                                key: 'price',
+                                render: (props) => props + ' $'
+                            },
+                            {
+                                title: t('Balance'),
+                                dataIndex: 'balance',
+                                key: 'balance',
+                                render: (props) => props + ' $'
+                            },
+                            {
+                                title: t('Date'),
+                                dataIndex: '_date',
+                                key: '_date',
+                            },
+                        ]}
+                        scroll={{x: 'max-content'}}
+                        loading={clientDataQuery.isLoading || clientDataQuery.isFetching}
+                        pagination={false}
+                    />
+                    <Row justify={"space-between"} style={{marginTop: 10,padding: 6}}>
+                        <Typography.Title level={5}>
+                            {t("Miqdori")}: {get(clientDataQuery,'data.data.totalElements')} {t("ta")}
+                        </Typography.Title>
+                        <Pagination
+                            current={clientPage+1}
+                            onChange={(page) => setClientPage(page - 1)}
+                            total={get(clientDataQuery,'data.data.totalPages') * 10 }
+                            showSizeChanger={false}
+                        />
+                    </Row>
+                </Space>
             </Modal>
         </Container>
     );

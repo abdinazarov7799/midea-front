@@ -12,8 +12,7 @@ import {
     Pagination,
     Row,
     Divider,
-    Col,
-    Flex, Input, Space
+    Flex, Input, Space, Modal, Segmented
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
@@ -30,6 +29,9 @@ const BalanceScreen = () => {
     const [page, setPage] = useState(0);
     const telegram = useTelegram();
     const [search, setSearch] = useState('');
+    const [selected, setSelected] = useState(null);
+    const [clientDataType, setClientDataType] = useState('first');
+    const [clientPage, setClientPage] = useState(0);
 
     const { data,isLoading,isFetching } = useGetAllQuery({
         key: ['balance', userId],
@@ -50,6 +52,13 @@ const BalanceScreen = () => {
     const { data:nonAccountedData } = useGetAllQuery({
         key: ['non-accounted', userId],
         url: `/api/web/orders/order-report/non-accounted/${userId}`
+    });
+
+    const clientDataQuery = usePaginateQuery({
+        key: ['clientDataQuery', userId, selected,clientDataType],
+        url: `/api/web/orders/get-${clientDataType}-data/${userId}/${selected?.client_id}`,
+        enabled: !!selected,
+        page: clientPage
     });
 
     const createPayment = usePostQuery({});
@@ -116,7 +125,10 @@ const BalanceScreen = () => {
             </Card>
             <div style={{margin: 12}}>
                 <Space direction={'vertical'} style={{width:'100%'}}>
-                    <Input placeholder={"Client"} value={search} onChange={(e) => setSearch(e.target.value)} />
+                    <Input placeholder={"Client"} value={search} onChange={(e) => {
+                        setPage(0)
+                        setSearch(e.target.value)
+                    }} />
                     <Button block onClick={() => setSearch('')}>{t("Tozalash")}</Button>
                 </Space>
             </div>
@@ -124,6 +136,11 @@ const BalanceScreen = () => {
                 dataSource={get(accountedData, 'data.data.content')}
                 loading={accountedData.isLoading || accountedData.isFetching}
                 size={'small'}
+                onRow={(record) => {
+                    return {
+                        onDoubleClick: () => setSelected(record),
+                    }
+                }}
                 columns={[
                     {
                         key: 'index',
@@ -166,6 +183,100 @@ const BalanceScreen = () => {
                     showSizeChanger={false}
                 />
             </Row>
+            <Modal width={800} open={!!selected} title={selected?.client} onCancel={() => setSelected(null)} footer={null}>
+                <Space direction={'vertical'} style={{width:'100%'}}>
+                    <Segmented
+                        block
+                        options={[
+                            {
+                                label: '1',
+                                value: 'first',
+                            },
+                            {
+                                label: '2',
+                                value: 'second',
+                            }
+                        ]}
+                        value={clientDataType}
+                        onChange={(e) => setClientDataType(e)}
+                    />
+                    <Table
+                        dataSource={get(clientDataQuery,'data.data.content')}
+                        size={'small'}
+                        columns={clientDataType === 'first' ? [
+                            {
+                                title: t('Order id'),
+                                dataIndex: 'order_id',
+                                key: 'order_id',
+                            },
+                            {
+                                title: t('Model'),
+                                dataIndex: 'model',
+                                key: 'model',
+                            },
+                            {
+                                title: t('Quantity'),
+                                dataIndex: 'quantity',
+                                key: 'quantity',
+                            },
+                            {
+                                title: t('Unit price'),
+                                dataIndex: 'unit_price',
+                                key: 'unit_price',
+                                render: (props) => props + ' $'
+                            },
+                            {
+                                title: t('Price'),
+                                dataIndex: 'price',
+                                key: 'price',
+                                render: (props) => props + ' $'
+                            },
+                            {
+                                title: t('Date'),
+                                dataIndex: '_date',
+                                key: '_date',
+                            },
+                        ] : [
+                            {
+                                title: t('Order id'),
+                                dataIndex: 'order_id',
+                                key: 'order_id',
+                            },
+                            {
+                                title: t('Price'),
+                                dataIndex: 'price',
+                                key: 'price',
+                                render: (props) => props + ' $'
+                            },
+                            {
+                                title: t('Balance'),
+                                dataIndex: 'balance',
+                                key: 'balance',
+                                render: (props) => props + ' $'
+                            },
+                            {
+                                title: t('Date'),
+                                dataIndex: '_date',
+                                key: '_date',
+                            },
+                        ]}
+                        scroll={{x: 'max-content'}}
+                        loading={clientDataQuery.isLoading || clientDataQuery.isFetching}
+                        pagination={false}
+                    />
+                    <Row justify={"space-between"} style={{marginTop: 10,padding: 6}}>
+                        <Typography.Title level={5}>
+                            {t("Miqdori")}: {get(clientDataQuery,'data.data.totalElements')} {t("ta")}
+                        </Typography.Title>
+                        <Pagination
+                            current={clientPage+1}
+                            onChange={(page) => setClientPage(page - 1)}
+                            total={get(clientDataQuery,'data.data.totalPages') * 10 }
+                            showSizeChanger={false}
+                        />
+                    </Row>
+                </Space>
+            </Modal>
             <Divider style={{margin: '6px 0'}}/>
             <Flex justify={'space-between'} align={'center'} style={{padding: 6}}>
                 <Typography.Title level={5}>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
 import {
     Button,
@@ -8,13 +8,13 @@ import {
     Modal,
     Pagination,
     Popconfirm,
-    Row,
+    Row, Segmented,
     Select,
     Space,
     Table,
     Typography
 } from "antd";
-import {get, isEqual} from "lodash";
+import {get, head, isEqual} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
 import {KEYS} from "../../constants/key.js";
@@ -26,6 +26,7 @@ import dayjs from "dayjs";
 import {useStore} from "../../store/index.js";
 import {request} from "../../services/api/index.js";
 import {saveAs} from "file-saver";
+import useGetAllQuery from "../../hooks/api/useGetAllQuery.js";
 
 const ManagersContainer = () => {
     const {t} = useTranslation();
@@ -36,6 +37,9 @@ const ManagersContainer = () => {
     const [params, setParams] = useState({});
     const user = useStore(state => state.user);
     const [isDownloading, setIsDownloading] = useState(false);
+    const [clientDataType, setClientDataType] = useState('first');
+    const [clientPage, setClientPage] = useState(0);
+    const [selectedClient, setSelectedClient] = useState(null);
 
     const {data,isLoading} = usePaginateQuery({
         key: KEYS.managers_list,
@@ -50,6 +54,18 @@ const ManagersContainer = () => {
         },
         page
     });
+
+    const clientDataQuery = useGetAllQuery({
+        key: ['clientDataQuery', selectedClient, clientDataType, clientPage],
+        url: `/api/admin/managers/get-${clientDataType}-data/${selectedClient?.id}`,
+        params: {
+            params: {
+                page: clientPage
+            }
+        },
+        enabled: !!selectedClient
+    });
+
 
     const getExcel = async () => {
         try {
@@ -181,7 +197,7 @@ const ManagersContainer = () => {
             ),
             dataIndex: "teamLead",
             key: "teamLead",
-            render: (text, record) => get(text,'fullName')
+            render: (text) => get(text,'fullName')
         },
         {
             title: (
@@ -211,7 +227,7 @@ const ManagersContainer = () => {
             ),
             dataIndex: "active",
             key: "active",
-            render: (props,data,index) => (
+            render: (props,data) => (
                 <Checkbox checked={get(data,'active')} />
             )
         },
@@ -279,6 +295,14 @@ const ManagersContainer = () => {
                     size={"middle"}
                     pagination={false}
                     loading={isLoading}
+                    onRow={(record) => {
+                        return {
+                            onDoubleClick: () => {
+                                setSelectedClient(record);
+                            },
+                            style: {cursor: "pointer"}
+                        }
+                    }}
                 />
 
                 <Row justify={"space-between"} style={{marginTop: 10}}>
@@ -311,6 +335,143 @@ const ManagersContainer = () => {
                     selected={selected}
                     setIsModalOpen={setIsEditModalOpen}
                 />
+            </Modal>
+            <Modal width={800} open={!!selectedClient} title={selectedClient?.username}
+                   onCancel={() => setSelectedClient(null)} footer={null}>
+                <Space direction={'vertical'} style={{width: '100%'}}>
+                    <Segmented
+                        block
+                        options={[
+                            {
+                                label: '1',
+                                value: 'first',
+                            },
+                            {
+                                label: '2',
+                                value: 'second',
+                            },
+                            {
+                                label: '3',
+                                value: 'third',
+                            }
+                        ]}
+                        value={clientDataType}
+                        onChange={(e) => setClientDataType(e)}
+                    />
+                    {
+                        clientDataType === 'second' && (
+                            <Typography.Title
+                                level={5}
+                                style={{margin: 0}}
+                            >{t("Balance")} {get(head(get(clientDataQuery, 'data.data.content')), 'balance')} $</Typography.Title>
+                        )
+                    }
+                    {
+                        clientDataType === 'third' && (
+                            <Typography.Title
+                                level={5}
+                                style={{margin: 0}}
+                            >{t("Total")} {get(head(get(clientDataQuery, 'data.data.content')), 'total')} $</Typography.Title>
+                        )
+                    }
+                    <Table
+                        dataSource={get(clientDataQuery, 'data.data.content')}
+                        size={'small'}
+                        columns={clientDataType === 'first' ? [
+                            {
+                                title: t('Order id'),
+                                dataIndex: 'order_id',
+                                key: 'order_id',
+                            },
+                            {
+                                title: t('Model'),
+                                dataIndex: 'model',
+                                key: 'model',
+                            },
+                            {
+                                title: t('Quantity'),
+                                dataIndex: 'quantity',
+                                key: 'quantity',
+                            },
+                            {
+                                title: t('Unit price'),
+                                dataIndex: 'unit_price',
+                                key: 'unit_price',
+                                render: (props) => props + ' $'
+                            },
+                            {
+                                title: t('Price'),
+                                dataIndex: 'price',
+                                key: 'price',
+                                render: (props) => props + ' $'
+                            },
+                            {
+                                title: t('Date'),
+                                dataIndex: '_date',
+                                key: '_date',
+                            },
+                            {
+                                title: t('Client'),
+                                dataIndex: 'client',
+                                key: 'client',
+                            },
+                        ] : clientDataType === 'second' ? [
+                            {
+                                title: t('Order id'),
+                                dataIndex: 'order_id',
+                                key: 'order_id',
+                            },
+                            {
+                                title: t('Share'),
+                                dataIndex: 'price',
+                                key: 'price',
+                                render: (props) => props + ' $'
+                            },
+                            {
+                                title: t('Date'),
+                                dataIndex: '_date',
+                                key: '_date',
+                            },
+                            {
+                                title: t('Client'),
+                                dataIndex: 'client',
+                                key: 'client',
+                            },
+                        ] : [
+                            {
+                                title: t('Amount'),
+                                dataIndex: 'amount',
+                                key: 'amount',
+                                render: (props) => props + ' $'
+                            },
+                            {
+                                title: t('confirmed'),
+                                dataIndex: 'confirmed',
+                                key: 'confirmed',
+                                render: (props) => props ? t("Ha") : t("Yo'q")
+                            },
+                            {
+                                title: t('Date'),
+                                dataIndex: '_date',
+                                key: '_date',
+                            },
+                        ]}
+                        scroll={{x: 'max-content'}}
+                        loading={clientDataQuery.isLoading || clientDataQuery.isFetching}
+                        pagination={false}
+                    />
+                    <Row justify={"space-between"} style={{marginTop: 10, padding: 6}}>
+                        <Typography.Title level={5}>
+                            {t("Miqdori")}: {get(clientDataQuery, 'data.data.totalElements')} {t("ta")}
+                        </Typography.Title>
+                        <Pagination
+                            current={clientPage + 1}
+                            onChange={(page) => setClientPage(page - 1)}
+                            total={get(clientDataQuery, 'data.data.totalPages') * 10}
+                            showSizeChanger={false}
+                        />
+                    </Row>
+                </Space>
             </Modal>
         </Container>
     );
