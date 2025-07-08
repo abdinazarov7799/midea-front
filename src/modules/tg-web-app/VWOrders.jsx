@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, Typography, List, Flex, Select, Pagination } from 'antd';
+import {Card, Typography, List, Flex, Select, Pagination, Row} from 'antd';
 import { useTranslation } from 'react-i18next';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import Container from '../../components/Container';
@@ -77,17 +77,19 @@ const VWViewOrdersPage = () => {
                 )}
             />
             {totalItems > 0 && (
-                <Pagination
-                    style={{ marginTop: 16, textAlign: 'center' }}
-                    current={currentPage}
-                    pageSize={pageSize}
-                    total={totalItems}
-                    showSizeChanger
-                    onChange={(page, size) => {
-                        setCurrentPage(page);
-                        setPageSize(size);
-                    }}
-                />
+                <Row justify={'end'}>
+                    <Pagination
+                        style={{ marginTop: 16 }}
+                        current={currentPage}
+                        pageSize={pageSize}
+                        total={totalItems}
+                        showSizeChanger
+                        onChange={(page, size) => {
+                            setCurrentPage(page);
+                            setPageSize(size);
+                        }}
+                    />
+                </Row>
             )}
         </Container>
     );
