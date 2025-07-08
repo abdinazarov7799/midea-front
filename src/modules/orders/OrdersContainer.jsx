@@ -308,7 +308,7 @@ const OrdersContainer = () => {
                                             title: t("Narxi"),
                                             dataIndex: ["product", "price"],
                                             key: "price",
-                                            render: (v) => `${v} UZS`
+                                            render: (v) => `${v} $`
                                         },
                                         {
                                             title: t("Miqdor"),
@@ -319,7 +319,7 @@ const OrdersContainer = () => {
                                             title: t("Yakuniy narx"),
                                             dataIndex: "finalPrice",
                                             key: "finalPrice",
-                                            render: (v) => `${v} UZS`
+                                            render: (v) => `${v} $`
                                         },
                                         {
                                             title: t("Qo‘shilgan vaqti"),
