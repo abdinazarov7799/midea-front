@@ -61,6 +61,8 @@ const CourierOrderViewPage = lazy(() => import("../modules/tg-web-app/CourierOrd
 const PaymentListScreen = lazy(() => import("../modules/tg-web-app/PaymentListScreen.jsx"));
 const PaymentConfirmScreen = lazy(() => import("../modules/tg-web-app/PaymentConfirmScreen.jsx"));
 const BalanceScreen = lazy(() => import("../modules/tg-web-app/BalanceScreen.jsx"));
+const CreateReturnFormPage = lazy(() => import("../modules/tg-web-app/CreateReturnFormPage.jsx"));
+const ViewReturnOrderPage = lazy(() => import("../modules/tg-web-app/ViewReturnOrderPage.jsx"));
 // PAGES
 
 
@@ -129,6 +131,9 @@ const Router = () => {
             <Route path={"/view-payment-history/:roleId/:userId"} element={<PaymentListScreen />}/>
             <Route path={"/view-payment-confirm/:id/:roleId/:userId"} element={<PaymentConfirmScreen />}/>
             <Route path={"/view-balance/:roleId/:userId"} element={<BalanceScreen />}/>
+
+            <Route path={"/create-return-form/:roleId/:userId"} element={<CreateReturnFormPage />}/>
+            <Route path={"/view-return/:roleId/:userId"} element={<ViewReturnOrderPage />}/>
             <Route path={"*"} element={<Navigate to={"/auth"} replace />} />
           </Routes>
         </IsGuest>
