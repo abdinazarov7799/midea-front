@@ -37,11 +37,11 @@ const ReturnsContainer = () => {
         url: "/api/admin/returns/get-all",
         params: {
             params: {
-                page,
                 size: 10,
                 ...params
             }
-        }
+        },
+        page
     });
 
     // PUT confirm
