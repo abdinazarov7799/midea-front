@@ -95,6 +95,10 @@ const DashboardSidebar = ({collapsed,setCollapsed}) => {
             key: "/orders",
         },
         {
+            label: t("Returns"),
+            key: "/returns",
+        },
+        {
             label: t("Payments"),
             key: "payments",
             children: [
