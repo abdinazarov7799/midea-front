@@ -66,17 +66,6 @@ const ViewReturnOrderPage = () => {
                   <Card
                       key={order.id}
                       title={`${t('Qaytarish raqami')}: #${order.id}`}
-                      extra={
-                          order.status === 'CREATED' && (
-                              <Button
-                                  type="primary"
-                                  loading={confirming && selectedOrder?.id === order.id}
-                                  onClick={() => openConfirmModal(order)}
-                              >
-                                {t('Qaytarishni qabul qilish')}
-                              </Button>
-                          )
-                      }
                   >
                     <p><b>{t('Ombor')}:</b> {order.warehouse}</p>
                     <p><b>{t('Buyurtmachi')}:</b> {order.client}</p>
@@ -96,6 +85,16 @@ const ViewReturnOrderPage = () => {
                     <p><b>{t('Qabul qilingan vaqti')}:</b> {order.confirmedAt}</p>
                     <p><b>{t('Status')}:</b> <Text>{t(order.status)}</Text></p>
                     <p><b>{t('Izoh')}:</b> {order.creatorComment}</p>
+                    order.status === 'CREATED' && (
+                              <Button
+                                  type="primary"
+                                block
+                                  loading={confirming && selectedOrder?.id === order.id}
+                                  onClick={() => openConfirmModal(order)}
+                              >
+                                {t('Qaytarishni qabul qilish')}
+                              </Button>
+                          )
                   </Card>
               ))
           )}
