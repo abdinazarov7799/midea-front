@@ -85,8 +85,7 @@ const ViewReturnOrderPage = () => {
                     <p><b>{t('Qabul qilingan vaqti')}:</b> {order.confirmedAt}</p>
                     <p><b>{t('Status')}:</b> <Text>{t(order.status)}</Text></p>
                     <p><b>{t('Izoh')}:</b> {order.creatorComment}</p>
-                    order.status === 'CREATED' && (
-                              <Button
+                    <Button
                                   type="primary"
                                 block
                                   loading={confirming && selectedOrder?.id === order.id}
@@ -94,7 +93,6 @@ const ViewReturnOrderPage = () => {
                               >
                                 {t('Qaytarishni qabul qilish')}
                               </Button>
-                          )
                   </Card>
               ))
           )}
