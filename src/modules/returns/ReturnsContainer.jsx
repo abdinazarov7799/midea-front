@@ -80,8 +80,10 @@ const ReturnsContainer = () => {
                     />
                 </Space>
             ),
-            dataIndex: "manager",
-            key: "manager"
+            key: "manager",
+            render: (props) => {
+                return props?.manager + ' | ' + props?.managerAmount + '$'
+            }
         },
         {
             title: (
@@ -95,8 +97,27 @@ const ReturnsContainer = () => {
                     />
                 </Space>
             ),
-            dataIndex: "dealer",
-            key: "dealer"
+            key: "dealer",
+            render: (props) => {
+                return props?.dealer + ' | ' + props?.dealerAmount + '$'
+            }
+        },{
+
+            title: (
+                <Space direction="vertical">
+                    {t("Team lead")}
+                    <Input
+                        allowClear
+                        value={get(params, "dealer", "")}
+                        onChange={e => onChangeParams("dealer", e.target.value)}
+                        placeholder={t("Dealer")}
+                    />
+                </Space>
+            ),
+            key: "teamLead",
+            render: (props) => {
+                return props?.teamLead + ' | ' + props?.teamLeadAmount + '$'
+            }
         },
         {
             title: (
