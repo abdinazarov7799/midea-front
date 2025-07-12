@@ -81,7 +81,8 @@ const ReturnsContainer = () => {
             ),
             key: "manager",
             render: (props) => {
-                return props?.manager + ' | ' + isNil(get(props,'managerAmount')) ? '' : get(props,'managerAmount') + '$'
+                const amount = get(props, 'managerAmount');
+                return `${props?.manager || ''} | ${isNil(amount) ? '' : amount + '$'}`;
             }
         },
         {
@@ -98,8 +99,10 @@ const ReturnsContainer = () => {
             ),
             key: "dealer",
             render: (props) => {
-                return props?.dealer + ' | ' + isNil(get(props,'dealerAmount')) ? '' : get(props,'dealerAmount') + '$'
+                const amount = get(props, 'dealerAmount');
+                return `${props?.dealer || ''} | ${isNil(amount) ? '' : amount + '$'}`;
             }
+
         },{
 
             title: (
@@ -115,7 +118,8 @@ const ReturnsContainer = () => {
             ),
             key: "teamLead",
             render: (props) => {
-                return props?.teamLead + ' | ' + isNil(get(props,'teamLeadAmount')) ? '' : get(props,'teamLeadAmount') + '$'
+                const amount = get(props, 'teamLeadAmount');
+                return `${props?.teamLead || ''} | ${isNil(amount) ? '' : amount + '$'}`;
             }
         },
         {
