@@ -211,17 +211,17 @@ const ReturnsContainer = () => {
             >
                 {selectedOrder && (
                     <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-                        <Typography.Text strong>{t("ID")}: {selectedOrder.id}</Typography.Text>
-                        <Typography.Text strong>{t("Client")}: {selectedOrder.client}</Typography.Text>
-                        <Typography.Text strong>{t("Manager")}: {selectedOrder.manager}</Typography.Text>
-                        <Typography.Text strong>{t("Dealer")}: {selectedOrder.dealer}</Typography.Text>
-                        <Typography.Text strong>{t("Warehouse")}: {selectedOrder.warehouse}</Typography.Text>
-                        <Typography.Text strong>{t("Team Lead")}: {selectedOrder.teamLead}</Typography.Text>
-                        <Typography.Text strong>{t("Skladchi")}: {selectedOrder.warehouseWorker}</Typography.Text>
-                        <Typography.Text strong>{t("Status")}: {selectedOrder.status}</Typography.Text>
-                        <Typography.Text strong>{t("Yaratilgan")}: {selectedOrder.createdAt}</Typography.Text>
-                        <Typography.Text strong>{t("Qabul qilingan")}: {selectedOrder.confirmedAt}</Typography.Text>
-                        <Typography.Text strong>{t("Izoh")}: {selectedOrder.creatorComment}</Typography.Text>
+                        <Typography.Text strong>{t("ID")}: {selectedOrder?.id}</Typography.Text>
+                        <Typography.Text strong>{t("Client")}: {selectedOrder?.client}</Typography.Text>
+                        <Typography.Text strong>{t("Manager")}: {selectedOrder?.manager} - {selectedOrder?.managerAmount}$</Typography.Text>
+                        <Typography.Text strong>{t("Dealer")}: {selectedOrder?.dealer}  - {selectedOrder?.dealerAmount}$</Typography.Text>
+                        <Typography.Text strong>{t("Team Lead")}: {selectedOrder?.teamLead}  - {selectedOrder?.teamLeadAmount}$</Typography.Text>
+                        <Typography.Text strong>{t("Warehouse")}: {selectedOrder?.warehouse}</Typography.Text>
+                        <Typography.Text strong>{t("Skladchi")}: {selectedOrder?.warehouseWorker}</Typography.Text>
+                        <Typography.Text strong>{t("Status")}: {selectedOrder?.status}</Typography.Text>
+                        <Typography.Text strong>{t("Yaratilgan")}: {selectedOrder?.createdAt}</Typography.Text>
+                        <Typography.Text strong>{t("Qabul qilingan")}: {selectedOrder?.confirmedAt}</Typography.Text>
+                        <Typography.Text strong>{t("Izoh")}: {selectedOrder?.creatorComment}</Typography.Text>
 
                         <Divider>{t("Mahsulotlar")}</Divider>
 
@@ -229,7 +229,7 @@ const ReturnsContainer = () => {
                             size="small"
                             bordered
                             pagination={false}
-                            dataSource={selectedOrder.items}
+                            dataSource={selectedOrder?.items}
                             rowKey="productId"
                             columns={[
                                 {
