@@ -14,11 +14,10 @@ import {
     InputNumber,
     message
 } from "antd";
-import { get } from "lodash";
+import { get, isNil } from "lodash";
 import { useTranslation } from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
 import usePutQuery from "../../hooks/api/usePutQuery.js";
-import { KEYS } from "../../constants/key.js";
 import dayjs from "dayjs";
 import { EyeOutlined } from "@ant-design/icons";
 
@@ -82,7 +81,7 @@ const ReturnsContainer = () => {
             ),
             key: "manager",
             render: (props) => {
-                return props?.manager + ' | ' + get(props,'managerAmount','') + '$'
+                return props?.manager + ' | ' + isNil(get(props,'managerAmount')) ? '' : get(props,'managerAmount') + '$'
             }
         },
         {
@@ -99,7 +98,7 @@ const ReturnsContainer = () => {
             ),
             key: "dealer",
             render: (props) => {
-                return props?.dealer + ' | ' + get(props,'dealerAmount','') + '$'
+                return props?.dealer + ' | ' + isNil(get(props,'dealerAmount')) ? '' : get(props,'dealerAmount') + '$'
             }
         },{
 
@@ -116,7 +115,7 @@ const ReturnsContainer = () => {
             ),
             key: "teamLead",
             render: (props) => {
-                return props?.teamLead + ' | ' + get(props,'teamLeadAmount','') + '$'
+                return props?.teamLead + ' | ' + isNil(get(props,'teamLeadAmount')) ? '' : get(props,'teamLeadAmount') + '$'
             }
         },
         {
