@@ -58,6 +58,11 @@ const InventoryViewPage = () => {
             key: 'action',
         },
         {
+            title: t("Return ID"),
+            dataIndex: 'returnId',
+            key: 'returnId',
+        },
+        {
             title: t("Order ID"),
             dataIndex: 'orderId',
             key: 'orderId',
