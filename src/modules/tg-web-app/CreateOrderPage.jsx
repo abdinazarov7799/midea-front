@@ -22,12 +22,24 @@ const CreateOrderPage = () => {
 
     const { data: clientsData } = useGetAllQuery({
         key: ['client-list', userId],
-        url: `/api/web/clients/get-all/${userId}`
+        url: `/api/web/clients/get-all/${userId}`,
+        params: {
+            params: {
+                page: 0,
+                size: 1000,
+            }
+        }
     });
 
     const { data: warehousesData } = useGetAllQuery({
         key: ['warehouse-list'],
-        url: '/api/web/warehouses/get'
+        url: '/api/web/warehouses/get',
+        params: {
+            params: {
+                page: 0,
+                size: 1000,
+            }
+        }
     });
 
     const { data: productsData, isLoading: isLoadingProducts } = useGetAllQuery({
@@ -36,7 +48,8 @@ const CreateOrderPage = () => {
         params: {
             params: {
                 page: 0,
-                size: 1000
+                size: 1000,
+                dealerId
             }
         }
     });
@@ -106,7 +119,14 @@ const CreateOrderPage = () => {
             <Form form={form} layout="vertical" onFinish={onFinish}>
                 <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                     <Form.Item name="clientId" label={t("Klient tanlang yoki qo‘shing")} rules={[{ required: true }]} style={{ flex: 1 }}>
-                        <Select placeholder="Tanlash" options={clientOptions} />
+                        <Select
+                            placeholder={t("Tanlash")}
+                            options={clientOptions}
+                            showSearch
+                            filterOption={(input, option) =>
+                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                            }
+                        />
                     </Form.Item>
                     <Button type="primary" onClick={() => navigate(`/create-client-form/${roleId}/${userId}?hasBack=true&dealerId=${dealerId}`)}>
                         {t("Yangi qo‘shish")}
@@ -114,7 +134,7 @@ const CreateOrderPage = () => {
                 </div>
 
                 <Form.Item name="warehouseId" label="Omborxonani tanlang" rules={[{ required: true }]}>
-                    <Select placeholder="Tanlash" options={warehouseOptions} />
+                    <Select placeholder={t("Tanlash")} options={warehouseOptions} />
                 </Form.Item>
 
                 <div>
@@ -122,7 +142,7 @@ const CreateOrderPage = () => {
                     {items.map((item, index) => (
                         <div key={index} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
                             <Select
-                                placeholder="Tanlash"
+                                placeholder={t("Tanlash")}
                                 style={{ flex: 2 }}
                                 showSearch
                                 loading={isLoadingProducts}

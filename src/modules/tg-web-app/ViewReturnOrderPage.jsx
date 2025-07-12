@@ -1,23 +1,42 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Card, Button, Typography, message, Space, Modal } from 'antd';
+import {Card, Button, Typography, message, Space, Modal, Select, Form} from 'antd';
 import Container from '../../components/Container.jsx';
 import useGetAllQuery from '../../hooks/api/useGetAllQuery';
 import usePutQuery from '../../hooks/api/usePutQuery';
 import { useTranslation } from 'react-i18next';
 import { useTelegram } from '../../hooks/telegram/useTelegram.js';
+import config from "../../config.js";
+import {get} from "lodash";
 
 const { Text } = Typography;
 
 const ViewReturnOrderPage = () => {
-  const { userId } = useParams();
+  const { userId,roleId } = useParams();
   const { t } = useTranslation();
   const telegram = useTelegram();
+    const [sectionsMap, setSectionsMap] = useState({});
 
-  const { data, isLoading } = useGetAllQuery({
+    const { data, isLoading } = useGetAllQuery({
     key: ['return-order', userId],
     url: `/api/web/returns/get-all/${userId}`
   });
+
+    const { data: sectionsData } = useGetAllQuery({
+        key: ['section-list'],
+        url: `/api/web/warehouse-sections/get/${userId}`,
+        params: {
+            params: {
+                page: 0,
+                size: 1000
+            }
+        }
+    });
+
+    const sectionOptions = get(sectionsData, 'data.content', [])?.map(s => ({
+        label: s.name,
+        value: s.id
+    }));
 
   const { mutate, isLoading: confirming } = usePutQuery({ hideSuccessToast: true });
 
@@ -26,33 +45,56 @@ const ViewReturnOrderPage = () => {
   const page = data?.data;
   const orders = page?.content || [];
 
-  const openConfirmModal = (order) => {
-    setSelectedOrder(order);
-  };
+    const openConfirmModal = (order) => {
+        setSelectedOrder(order);
 
-  const handleConfirm = () => {
-    if (!selectedOrder) return;
-    mutate(
-        {
-          url: `/api/web/returns/confirm/${selectedOrder.id}/${userId}`,
-          attributes: {
-            comment: t('Qaytarish qabul qilindi'),
-            products: selectedOrder.items.map(item => ({
-              sectionId: null,              // agar sectionId bo‘lsa kiriting
-              productId: item.productId,
-              quantity: item.quantity
-            }))
-          }
-        },
-        {
-          onSuccess: () => {
-            message.success(t('Qaytarish muvaffaqiyatli qabul qilindi!'));
-            telegram.onClose();
-            setSelectedOrder(null);
-          }
+        // Modal ochilganda productlar uchun default sectionId null qilib qo'yamiz
+        const initialSections = {};
+        order.items.forEach(item => {
+            initialSections[item.productId] = null;
+        });
+        setSectionsMap(initialSections);
+    };
+
+
+    const handleSectionChange = (productId, value) => {
+    setSectionsMap(prev => ({
+        ...prev,
+        [productId]: value
+    }));
+};
+    const handleConfirm = () => {
+        if (!selectedOrder) return;
+
+        // check that all products have sectionId selected
+        const missingSection = selectedOrder.items.find(item => !sectionsMap[item.productId]);
+        if (missingSection) {
+            message.error(t('Iltimos, barcha mahsulotlar uchun ombor bo‘limini tanlang'));
+            return;
         }
-    );
-  };
+
+        mutate(
+            {
+                url: `/api/web/returns/confirm/${selectedOrder.id}/${userId}`,
+                attributes: {
+                    comment: t('Qaytarish qabul qilindi'),
+                    products: selectedOrder.items.map(item => ({
+                        sectionId: sectionsMap[item.productId],  // har bir product uchun alohida sectionId
+                        productId: item.productId,
+                        quantity: item.quantity
+                    }))
+                }
+            },
+            {
+                onSuccess: () => {
+                    message.success(t('Qaytarish muvaffaqiyatli qabul qilindi!'));
+                    telegram.onClose();
+                    setSelectedOrder(null);
+                    setSectionsMap({});
+                }
+            }
+        );
+    };
 
   return (
       <Container>
@@ -85,30 +127,51 @@ const ViewReturnOrderPage = () => {
                     <p><b>{t('Qabul qilingan vaqti')}:</b> {order.confirmedAt}</p>
                     <p><b>{t('Status')}:</b> <Text>{t(order.status)}</Text></p>
                     <p><b>{t('Izoh')}:</b> {order.creatorComment}</p>
-                    <Button
+                      {
+                          (roleId == config.ROLE_ID.ROLE_WAREHOUSE_WORKER && order.status === "CREATED") && (
+                              <Button
                                   type="primary"
-                                block
+                                  block
                                   loading={confirming && selectedOrder?.id === order.id}
                                   onClick={() => openConfirmModal(order)}
                               >
-                                {t('Qaytarishni qabul qilish')}
+                                  {t('Qaytarishni qabul qilish')}
                               </Button>
+                          )
+                      }
                   </Card>
               ))
           )}
         </Space>
 
-        <Modal
-            title={t('Tasdiqlash')}
-            open={!!selectedOrder}
-            onOk={handleConfirm}
-            onCancel={() => setSelectedOrder(null)}
-            confirmLoading={confirming}
-            okText={t('Tasdiqlash')}
-            cancelText={t('Bekor qilish')}
-        >
-          <Text>{t('Qaytarishni qabul qilmoqchimisiz?')}</Text>
-        </Modal>
+          <Modal
+              title={t('Qaytarishni tasdiqlash')}
+              open={!!selectedOrder}
+              onOk={handleConfirm}
+              onCancel={() => setSelectedOrder(null)}
+              confirmLoading={confirming}
+              okText={t('Tasdiqlash')}
+              cancelText={t('Bekor qilish')}
+          >
+              <Form layout={'vertical'}>
+                  {selectedOrder?.items.map(item => (
+                      <Form.Item
+                          key={item.productId}
+                          label={`${item.model} uchun ${t("Omborxona bo‘limini tanlang:")}`}
+                          required
+                          style={{ marginTop: 16 }}
+                      >
+                          <Select
+                              placeholder="Tanlash"
+                              options={sectionOptions}
+                              value={sectionsMap[item.productId]}
+                              onChange={(value) => handleSectionChange(item.productId, value)}
+                          />
+                      </Form.Item>
+                  ))}
+              </Form>
+          </Modal>
+
       </Container>
   );
 };
