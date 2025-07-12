@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Container from "../../../components/Container.jsx";
 import usePaginateQuery from "../../../hooks/api/usePaginateQuery.js";
-import {useNavigate, useParams} from "react-router-dom";
-import {List, Card, Divider, Button, Modal, Form, InputNumber, message} from "antd";
+import { useNavigate, useParams } from "react-router-dom";
+import { Table, Divider, Button, Modal, Form, InputNumber, message } from "antd";
 import { get } from "lodash";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
-import {ArrowLeftOutlined} from "@ant-design/icons";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import usePutQuery from "../../../hooks/api/usePutQuery.js";
 
 const InventoryViewPage = () => {
@@ -38,7 +38,6 @@ const InventoryViewPage = () => {
     const handleSave = async () => {
         try {
             const values = await form.validateFields();
-            console.log(values);
             mutateEdit({
                 url: `/api/admin/inventory_logs/edit/${get(selectedLog, 'id')}`,
                 attributes: values
@@ -52,44 +51,85 @@ const InventoryViewPage = () => {
         }
     };
 
+    const columns = [
+        {
+            title: t("Amal"),
+            dataIndex: 'action',
+            key: 'action',
+        },
+        {
+            title: t("Order ID"),
+            dataIndex: 'orderId',
+            key: 'orderId',
+        },
+        {
+            title: t("Mahsulot"),
+            dataIndex: 'product',
+            key: 'product',
+        },
+        {
+            title: t("Miqdor"),
+            dataIndex: 'quantity',
+            key: 'quantity',
+        },
+        {
+            title: t("Sabab"),
+            dataIndex: 'reason',
+            key: 'reason',
+        },
+        {
+            title: t("Ombor"),
+            dataIndex: 'warehouse',
+            key: 'warehouse',
+        },
+        {
+            title: t("Bo‘lim"),
+            dataIndex: 'section',
+            key: 'section',
+        },
+        {
+            title: t("Kim tomonidan"),
+            dataIndex: ['createdBy'],
+            key: 'createdBy',
+            render: (createdBy) => createdBy?.fullName || createdBy?.username || t("Noma'lum"),
+        },
+        {
+            title: t("Vaqt"),
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            render: (text) => dayjs(text).format("YYYY-MM-DD HH:mm"),
+        },
+        {
+            title: t("Harakatlar"),
+            key: 'actions',
+            render: (_, record) => (
+                record.canEdit && (
+                    <Button type="link" onClick={() => handleEdit(record)}>
+                        {t("Tahrirlash")}
+                    </Button>
+                )
+            )
+        }
+    ];
 
     return (
         <Container>
-            <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/inventories')}>{t("Orqaga")}</Button>
-            <Divider>
-                {t("Inventar harakatlari tarixi")}
-            </Divider>
-            <List
-                grid={{ gutter: 16, column: 1 }}
-                dataSource={get(data, 'data.content', [])}
+            <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/inventories')}>
+                {t("Orqaga")}
+            </Button>
+
+            <Divider>{t("Inventar harakatlari tarixi")}</Divider>
+
+            <Table
+                columns={columns}
+                dataSource={get(data, 'data.content', []).map(item => ({ ...item, key: item.id }))}
                 loading={isLoadingLogs}
                 pagination={{
                     current: page + 1,
                     total: data?.data?.totalElements || 0,
                     pageSize: 20,
-                    onChange: (p) => setPage(p - 1)
+                    onChange: (p) => setPage(p - 1),
                 }}
-                renderItem={item => (
-                    <List.Item>
-                        <Card
-                            title={`${t("Amal")}: ${get(item, 'action')}`}
-                            extra={
-                                get(item, 'canEdit') && (
-                                    <Button type={'primary'} onClick={() => handleEdit(item)}>{t("Tahrirlash")}</Button>
-                                )
-                            }
-                        >
-                            <p><b>{t("Order id")}:</b> {get(item, 'orderId')}</p>
-                            <p><b>{t("Mahsulot")}:</b> {get(item, 'product')}</p>
-                            <p><b>{t("Miqdor")}:</b> {get(item, 'quantity')}</p>
-                            <p><b>{t("Sabab")}:</b> {get(item, 'reason')}</p>
-                            <p><b>{t("Ombor")}:</b> {get(item, 'warehouse')}</p>
-                            <p><b>{t("Bo‘lim")}:</b> {get(item, 'section')}</p>
-                            <p><b>{t("Kim tomonidan")}:</b> {get(item, 'createdBy.fullName') || get(item, 'createdBy.username') || t("Noma'lum")}</p>
-                            <p><b>{t("Vaqt")}:</b> {dayjs(get(item, 'createdAt')).format("YYYY-MM-DD HH:mm")}</p>
-                        </Card>
-                    </List.Item>
-                )}
             />
 
             <Modal
