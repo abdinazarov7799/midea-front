@@ -3,10 +3,11 @@ import {useTranslation} from "react-i18next";
 import usePostQuery from "../../../hooks/api/usePostQuery.js";
 import {KEYS} from "../../../constants/key.js";
 import {URLS} from "../../../constants/url.js";
-import {Button, Form, Input} from "antd";
+import {Button, Form, Input, Select} from "antd";
 import {get} from "lodash";
 import usePutQuery from "../../../hooks/api/usePatchQuery.js";
 import TextArea from "antd/es/input/TextArea";
+import useGetAllQuery from "../../../hooks/api/useGetAllQuery.js";
 
 const CreateEditCategories = ({selected,setIsModalOpen}) => {
     const { t } = useTranslation();
@@ -19,11 +20,22 @@ const CreateEditCategories = ({selected,setIsModalOpen}) => {
         listKeyId: KEYS.categories_list,
     });
 
+    const { data:dealers,isLoading:isLoadingDealers } = useGetAllQuery({
+        key: KEYS.dealers_list,
+        url: URLS.dealers_list,
+        params: {
+            params: {
+                size: 1000
+            }
+        }
+    })
+
     useEffect(() => {
         form.setFieldsValue({
             name: get(selected,'name'),
             code: get(selected,'code'),
             description: get(selected,'description'),
+            dealerId: get(selected,'dealerId'),
         });
     }, [selected]);
 
@@ -57,6 +69,26 @@ const CreateEditCategories = ({selected,setIsModalOpen}) => {
                 layout={"vertical"}
                 form={form}
             >
+                <Form.Item
+                    label={t("Dealer")}
+                    name="dealerId"
+                    rules={[{required: true,}]}>
+                    <Select
+                        showSearch
+                        placeholder={t("Dealer")}
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+                        loading={isLoadingDealers}
+                        options={get(dealers,'data.content')?.map((item) => {
+                            return {
+                                value: get(item,'id'),
+                                label: get(item,'fullName')
+                            }
+                        })}
+                    />
+                </Form.Item>
+
                 <Form.Item
                     label={t("Name")}
                     name="name"

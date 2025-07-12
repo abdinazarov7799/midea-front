@@ -49,6 +49,24 @@ const CategoriesContainer = () => {
         {
             title: (
                 <Space direction="vertical">
+                    {t("Dealer")}
+                    <Input
+                        placeholder={t("Dealer")}
+                        allowClear
+                        value={get(params,'dealer','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('dealer', value)
+                        }}
+                    />
+                </Space>
+            ),
+            dataIndex: "dealer",
+            key: "dealer",
+        },
+        {
+            title: (
+                <Space direction="vertical">
                     {t("Name")}
                     <Input
                         placeholder={t("Name")}
