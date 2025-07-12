@@ -82,7 +82,7 @@ const ReturnsContainer = () => {
             ),
             key: "manager",
             render: (props) => {
-                return props?.manager + ' | ' + props?.managerAmount + '$'
+                return props?.manager + ' | ' + props?.managerAmount || '' + '$'
             }
         },
         {
@@ -99,7 +99,7 @@ const ReturnsContainer = () => {
             ),
             key: "dealer",
             render: (props) => {
-                return props?.dealer + ' | ' + props?.dealerAmount + '$'
+                return props?.dealer + ' | ' + props?.dealerAmount || '' + '$'
             }
         },{
 
@@ -116,7 +116,7 @@ const ReturnsContainer = () => {
             ),
             key: "teamLead",
             render: (props) => {
-                return props?.teamLead + ' | ' + props?.teamLeadAmount + '$'
+                return props?.teamLead + ' | ' + props?.teamLeadAmount || '' + '$'
             }
         },
         {
