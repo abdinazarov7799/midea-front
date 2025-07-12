@@ -202,7 +202,7 @@ const ReturnsContainer = () => {
                     <Button
                         type="primary"
                         onClick={() => setConfirmModalVisible(true)}
-                        disabled={selectedOrder?.status !== "CREATED"}
+                        disabled={selectedOrder?.status !== "CONFIRMED_BY_WAREHOUSE"}
                     >
                         {t("Qaytarishni tasdiqlash")}
                     </Button>
