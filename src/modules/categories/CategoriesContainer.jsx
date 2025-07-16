@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {Button, DatePicker, Input, Modal, Pagination, Popconfirm, Row, Space, Table, Typography} from "antd";
+import {Button, DatePicker, Input, Modal, Pagination, Popconfirm, Row, Space, Table, Tag, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -49,20 +49,23 @@ const CategoriesContainer = () => {
         {
             title: (
                 <Space direction="vertical">
-                    {t("Dealer")}
+                    {t("Dealers")}
                     <Input
                         placeholder={t("Dealer")}
                         allowClear
-                        value={get(params,'dealer','')}
-                        onChange={(e) => {
-                            const value = get(e,'target.value');
-                            onChangeParams('dealer', value)
-                        }}
+                        value={get(params, 'dealer', '')}
+                        onChange={(e) => onChangeParams('dealer', get(e, 'target.value'))}
                     />
                 </Space>
             ),
-            dataIndex: "dealer",
-            key: "dealer",
+            dataIndex: "dealers",
+            key: "dealers",
+            render: (dealers) =>
+                dealers && dealers.length > 0
+                    ? dealers?.map((dealer) => (
+                        <Tag key={dealer.id}>{dealer.fullName}</Tag>
+                    ))
+                    : "-"
         },
         {
             title: (
