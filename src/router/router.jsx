@@ -134,7 +134,7 @@ const Router = () => {
             <Route path={"/view-payment-confirm/:id/:roleId/:userId"} element={<PaymentConfirmScreen />}/>
             <Route path={"/view-balance/:roleId/:userId"} element={<BalanceScreen />}/>
 
-            <Route path={"/create-return-form/:roleId/:userId"} element={<CreateReturnFormPage />}/>
+            <Route path={"/create-return-form/:roleId/:userId/:dealerId"} element={<CreateReturnFormPage />}/>
             <Route path={"/view-return/:roleId/:userId"} element={<ViewReturnOrderPage />}/>
             <Route path={"*"} element={<Navigate to={"/auth"} replace />} />
           </Routes>
