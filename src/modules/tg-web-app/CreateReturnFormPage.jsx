@@ -11,7 +11,7 @@ import {useTelegram} from "../../hooks/telegram/useTelegram.js";
 const CreateReturnFormPage = () => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
-  const { userId, roleId } = useParams();
+  const { userId, roleId, dealerId } = useParams();
   const telegram = useTelegram();
   const [items, setItems] = useState([]);
 
@@ -21,7 +21,8 @@ const CreateReturnFormPage = () => {
   });
   const { data: warehousesData } = useGetAllQuery({
     key: ['warehouse-list'],
-    url: '/api/web/warehouses/get'
+    url: '/api/web/warehouses/get',
+    params: { params: { dealerId }}
   });
   const { data: productsData, isLoading: isLoadingProducts } = useGetAllQuery({
     key: ['product-list'],
