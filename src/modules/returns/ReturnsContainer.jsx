@@ -110,9 +110,9 @@ const ReturnsContainer = () => {
                     {t("Team lead")}
                     <Input
                         allowClear
-                        value={get(params, "dealer", "")}
-                        onChange={e => onChangeParams("dealer", e.target.value)}
-                        placeholder={t("Dealer")}
+                        value={get(params, "teamLead", "")}
+                        onChange={e => onChangeParams("teamLead", e.target.value)}
+                        placeholder={t("Team lead")}
                     />
                 </Space>
             ),
