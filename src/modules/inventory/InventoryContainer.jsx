@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Container from "../../components/Container.jsx";
-import {DatePicker, Input, Pagination, Row, Space, Table, Typography} from "antd";
+import {Button, DatePicker, Input, message, Pagination, Row, Space, Table, Typography} from "antd";
 import {get} from "lodash";
 import {useTranslation} from "react-i18next";
 import usePaginateQuery from "../../hooks/api/usePaginateQuery.js";
@@ -8,12 +8,16 @@ import {KEYS} from "../../constants/key.js";
 import {URLS} from "../../constants/url.js";
 import dayjs from "dayjs";
 import {useNavigate} from "react-router-dom";
+import {request} from "../../services/api/index.js";
+import {saveAs} from "file-saver";
+import {FileExcelOutlined} from "@ant-design/icons";
 
 const InventoryContainer = () => {
     const {t} = useTranslation();
     const [page, setPage] = useState(0);
     const [params, setParams] = useState({});
     const navigate = useNavigate();
+    const [isDownloading, setIsDownloading] = useState(false);
 
     const {data,isLoading} = usePaginateQuery({
         key: KEYS.inventory_list,
@@ -28,6 +32,24 @@ const InventoryContainer = () => {
         },
         page
     });
+
+    const getExcel = async () => {
+        try {
+            const response = await request.get("/api/admin/inventories/export", {
+                responseType: "blob",
+                params: {
+                    from: dayjs(get(params, 'from')).format("YYYY-MM-DD"),
+                    to: dayjs(get(params, 'to')).format("YYYY-MM-DD"),
+                }
+            });
+            const blob = new Blob([get(response, 'data')]);
+            saveAs(blob, `Inventory report ${dayjs().format("YYYY-MM-DD")}.xlsx`)
+        } catch (error) {
+            message.error(t("Fayl shakllantirishda xatolik"))
+        } finally {
+            setIsDownloading(false);
+        }
+    }
 
     const totalQuantity = get(data, 'data.content', [])?.reduce((sum, item) => sum + (item.quantity || 0), 0);
 
@@ -149,6 +171,12 @@ const InventoryContainer = () => {
                         value={get(params, 'to') ? dayjs(get(params, 'to')) : null}
                         onChange={(date) => onChangeParams('to', date)}
                     />
+                    <Button icon={<FileExcelOutlined/>} type="primary" onClick={() => {
+                        setIsDownloading(true);
+                        getExcel()
+                    }} loading={isDownloading}>
+                        {t("Get excel")}
+                    </Button>
                 </Space>
                 <Table
                     columns={columns}
