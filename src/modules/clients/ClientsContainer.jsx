@@ -137,6 +137,44 @@ const ClientsContainer = () => {
         {
             title: (
                 <Space direction="vertical">
+                    {t("Team Lead")}
+                    <Input
+                        placeholder={t("Team Lead")}
+                        allowClear
+                        value={get(params,'teamLeadFullName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('teamLeadFullName', value)
+                        }}
+                    />
+                </Space>
+            ),
+            dataIndex: "teamLead",
+            key: "teamLead",
+            render: (text) => get(text,'fullName')
+        },
+        {
+            title: (
+                <Space direction="vertical">
+                    {t("Manager")}
+                    <Input
+                        placeholder={t("Manager")}
+                        allowClear
+                        value={get(params,'managerFullName','')}
+                        onChange={(e) => {
+                            const value = get(e,'target.value');
+                            onChangeParams('managerFullName', value)
+                        }}
+                    />
+                </Space>
+            ),
+            dataIndex: "manager",
+            key: "manager",
+            render: (text) => get(text,'fullName')
+        },
+        {
+            title: (
+                <Space direction="vertical">
                     {t("Is legal")}
                     <Select
                         style={{width: 100}}

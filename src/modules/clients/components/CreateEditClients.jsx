@@ -12,6 +12,8 @@ const CreateEditClients = ({selected,setIsModalOpen}) => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
     const [legal, setLegal] = useState(get(selected,'legal',false));
+    const [selectedDealerId, setSelectedDealerId] = useState(null);
+    const [selectedTeamLeadId, setSelectedTeamLeadId] = useState(null);
 
     const { mutate, isLoading } = usePostQuery({
         listKeyId: KEYS.clients_list,
@@ -30,14 +32,40 @@ const CreateEditClients = ({selected,setIsModalOpen}) => {
         }
     })
 
+    const { data:teamLeads,isLoading:isLoadingTeamLeads } = useGetAllQuery({
+        key: [KEYS.team_leads_list, selectedDealerId],
+        url: `${URLS.team_leads_by_dealer}/${selectedDealerId}`,
+        enabled: !!selectedDealerId,
+        params: {
+            params: {
+                size: 1000
+            }
+        }
+    })
+
+    const { data:managers,isLoading:isLoadingManagers } = useGetAllQuery({
+        key: [KEYS.managers_list, selectedTeamLeadId],
+        url: `${URLS.managers_by_team_lead}/${selectedTeamLeadId}`,
+        enabled: !!selectedTeamLeadId,
+        params: {
+            params: {
+                size: 1000
+            }
+        }
+    })
+
     useEffect(() => {
         form.setFieldsValue({
             name: get(selected,'name'),
             balance: get(selected,'balance'),
             phone: get(selected,'phone'),
             dealerId: get(selected,'dealer.id'),
+            teamLeadId: get(selected,'teamLead.id'),
+            managerId: get(selected,'manager.id'),
         });
         setLegal(get(selected,'legal',false));
+        setSelectedDealerId(get(selected,'dealer.id'));
+        setSelectedTeamLeadId(get(selected,'teamLead.id'));
     }, [selected]);
 
     const onFinish = (values) => {
@@ -86,6 +114,57 @@ const CreateEditClients = ({selected,setIsModalOpen}) => {
                             (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
                         loading={isLoadingDealers}
                         options={get(dealers,'data.content')?.map((item) => {
+                            return {
+                                value: get(item,'id'),
+                                label: get(item,'fullName')
+                            }
+                        })}
+                        onChange={(value) => {
+                            setSelectedDealerId(value);
+                            setSelectedTeamLeadId(null);
+                            form.setFieldsValue({teamLeadId: null, managerId: null});
+                        }}
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    label={t("Team Lead")}
+                    name="teamLeadId"
+                    rules={[{required: true,}]}>
+                    <Select
+                        showSearch
+                        placeholder={t("Team Lead")}
+                        disabled={!selectedDealerId}
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+                        loading={isLoadingTeamLeads}
+                        options={get(teamLeads,'data.content')?.map((item) => {
+                            return {
+                                value: get(item,'id'),
+                                label: get(item,'fullName')
+                            }
+                        })}
+                        onChange={(value) => {
+                            setSelectedTeamLeadId(value);
+                            form.setFieldsValue({managerId: null});
+                        }}
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    label={t("Manager")}
+                    name="managerId"
+                    rules={[{required: true,}]}>
+                    <Select
+                        showSearch
+                        placeholder={t("Manager")}
+                        disabled={!selectedTeamLeadId}
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+                        loading={isLoadingManagers}
+                        options={get(managers,'data.content')?.map((item) => {
                             return {
                                 value: get(item,'id'),
                                 label: get(item,'fullName')
