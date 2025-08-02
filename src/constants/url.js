@@ -61,4 +61,7 @@ export const URLS = {
     cashiers_delete: '/api/admin/cashiers/delete',
     team_leads_by_dealer: '/api/admin/team-leads/get',
     managers_by_team_lead: '/api/admin/managers/get',
+    incomes_list: '/api/admin/incomes/get-all',
+    incomes_delete: '/api/admin/incomes/delete',
+    incomes_edit: '/api/admin/incomes/edit',
 };

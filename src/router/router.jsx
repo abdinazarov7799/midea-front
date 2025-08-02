@@ -20,6 +20,7 @@ import NotFoundPage from  "../modules/auth/pages/NotFoundPage";
 import OverlayLoader from "../components/OverlayLoader.jsx";
 import CashiersPage from "../modules/cashiers/CashiersPage.jsx";
 import ReturnsPage from "../modules/returns/ReturnsPage.jsx";
+import IncomesPage from "../modules/incomes/IncomesPage.jsx";
 
 const TranslationPage = lazy(() => import("../modules/translations/pages/TranslationPage.jsx"));
 const ConstantsPage = lazy(() => import("../modules/constants/pages/ConstantsPage.jsx"));
@@ -88,6 +89,7 @@ const Router = () => {
               <Route path={"/constants"} element={<ConstantsPage />}/>
               <Route path={"/orders"} element={<OrdersPage />}/>
               <Route path={"/returns"} element={<ReturnsPage />}/>
+              <Route path={"/incomes"} element={<IncomesPage />}/>
               <Route path={"/stock-movements"} element={<StockMovementsPage />}/>
               <Route path={"/payments"} element={<PaymentsPage />}/>
               <Route path={"/accruals"} element={<AccrualsPage />}/>
